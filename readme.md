@@ -1,13 +1,13 @@
-#MeowMusic Player
+# MeowMusic Player
 (name uncertain)
 
-###THE IDEA
+### THE IDEA
 
 Create a new music player like my old one, AaronOS Music,
     but better implemented, with a smoother user experience,
     and more easily extensible.
 
-###OBJECTIVES
+### OBJECTIVES
 
 Better code
     Document all code thorougly.
