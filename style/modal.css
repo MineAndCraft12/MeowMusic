@@ -1,0 +1,14 @@
+/* Modal dialog */
+
+#modal {
+    text-align: center;
+    background: inherit;
+    color: inherit;
+    border: none;
+    border-radius: 16px;
+    box-shadow: 0 0 16px -4px oklch(0% 0% 0deg);
+
+    input, button {
+        margin: 4px;
+    }
+}

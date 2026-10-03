@@ -1,0 +1,53 @@
+/* Present the application at full viewport size */
+
+body {
+         margin: 0;
+    font-family: sans-serif;
+     background: oklch(25% 0% 0deg);
+          color: oklch(100% 0% 0deg);
+}
+
+body,
+#main {
+     width: 100vw;
+    height: 100vh;
+}
+
+/* Helper classes */
+
+.absolute {
+       display: block;
+      position: absolute;
+    box-sizing: border-box;
+}
+
+.padded {
+    padding: 8px;
+}
+
+.hidden {
+    display: none;
+}
+
+.immersive-button {
+    background: inherit;
+    color: inherit;
+    border:none;
+}
+
+.immersive-button:focus,
+.immersive-button:hover {
+    opacity: 0.9;
+}
+
+.immersive-button:active {
+    opacity: 0.75;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.cursor-default {
+    cursor: default;
+}

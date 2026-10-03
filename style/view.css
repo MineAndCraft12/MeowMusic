@@ -1,0 +1,85 @@
+/* Primary content containers */
+
+#main {
+    --controls-height: 4rem;
+
+    > #visualizer {
+        background: oklch(0% 0% 0deg);
+    }
+
+    > #controls {
+               bottom: 0;
+                width: 100vw;
+               height: var(--controls-height);
+            font-size: calc( var(--controls-height) / 2 );
+           text-align: center;
+        align-content: center;
+           background: linear-gradient( oklch(0% 0% 0deg / 0%), oklch(0% 0% 0deg / 50%) );
+        
+        button {
+            font-size: 1em;
+               margin: 0 0.25em;
+        }
+    }
+
+    > #library,
+    > #config {
+        padding-bottom: calc( var(--controls-height) + 8px );
+    }
+}
+
+/* Rearrange containers based on view mode */
+
+#main.view-visualizer,
+#main.view-library {
+    > .primary-content {
+         width: 100vw;
+        height: 100vh;
+    }
+
+    > #config {
+        display: none;
+    }
+}
+
+#main.view-visualizer {
+    > #library {
+        display: none;
+    }
+}
+
+#main.view-library {
+    > #visualizer {
+        display: none;
+    }
+}
+
+#main.view-dual {
+    > .primary-content {
+        height: 100vh;
+    }
+
+    > #visualizer {
+        width: 75vw;
+    }
+
+    > #library {
+        width: 25vw;
+         left: 75vw;
+    }
+
+    > #config {
+        display: none;
+    }
+}
+
+#main.view-config {
+    > #config {
+         width: 100vw;
+        height: 100vh;
+    }
+
+    > .primary-content {
+        display: none;
+    }
+}
