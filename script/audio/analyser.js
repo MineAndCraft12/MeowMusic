@@ -4,11 +4,17 @@ import * as audio from "./audio.js";
 
 export { node, registerNode }
 
+
+// Variables
+
 /**
  * The AnalyserNode. If undefined it hasn't been registered yet.
  * @type {AnalyserNode|undefined}
  */
 let node;
+
+
+// Registration
 
 /**
  * Registers a new AnalyserNode and returns it for connection to other nodes.

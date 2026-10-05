@@ -6,17 +6,23 @@ import * as audio from "../audio/audio.js";
 export {
     currentTrack,
     loadTrack, reset,
-    getPlaying, togglePlaying,
-    play, pause,
     prev, next,
-    getTime, setTime
+    getPlaying, togglePlaying,
+    getTime, setTime,
+    play, pause
 }
+
+
+// Variables
 
 /**
  * Library playlist index of the currently playing track.
  * @type {number}
  */
 let currentTrack = 0;
+
+
+// Track Loading Controls
 
 /**
  * Loads the selected track into the audio player and wraps around the selector
@@ -46,6 +52,33 @@ function reset(){
     unload();
     currentTrack = 0;
 }
+
+/**
+ * If the current timestamp is less than 2 seconds, switches to the previous track and returns true.
+ * 
+ * Otherwise, sets timestamp to the beginning of the current track and returns false.
+ * 
+ * @returns {boolean}
+ */
+function prev() {
+    if (audio.getTime() > 2){
+        audio.setTime(0);
+        return false;
+    } else {
+        loadTrack(currentTrack - 1);
+        return true;
+    }
+}
+
+/**
+ * Switches to the next track.
+ */
+function next() {
+    loadTrack(currentTrack + 1);
+}
+
+
+// Playback Controls
 
 /**
  * Determine whether the audio track is currently playing.
@@ -97,30 +130,6 @@ function play() {
  */
 function pause() {
     audio.pause();
-}
-
-/**
- * If the current timestamp is less than 2 seconds, switches to the previous track and returns true.
- * 
- * Otherwise, sets timestamp to the beginning of the current track and returns false.
- * 
- * @returns {boolean}
- */
-function prev() {
-    if (audio.getTime() > 2){
-        audio.setTime(0);
-        return false;
-    } else {
-        loadTrack(currentTrack - 1);
-        return true;
-    }
-}
-
-/**
- * Switches to the next track.
- */
-function next() {
-    loadTrack(currentTrack + 1);
 }
 
 /**

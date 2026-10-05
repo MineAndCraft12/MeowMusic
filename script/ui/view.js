@@ -1,9 +1,13 @@
 /** Represents the view modes of the primary content */
 
-import * as dom from "../util/dom.js"
-import * as error from "../util/error.js"
+import * as dom from "./dom.js";
+import * as error from "../util/error.js";
+import * as canvas from "../graphics/canvas.js";
 
 export { options, get, set }
+
+
+// Variables
 
 /**
  * The DOM node which hosts view modes.
@@ -12,10 +16,10 @@ export { options, get, set }
 const node = dom.get("#main");
 
 /** List of all valid view mode options. */
-const options = [
-    "view-visualizer", "view-library",
-    "view-dual",       "view-config"
-];
+const options = ["view-visualizer", "view-library", "view-config"];
+
+
+// Methods
 
 /**
  * Gets the current view mode from the DOM.
@@ -47,4 +51,5 @@ function set(mode) {
 
     node.classList.remove(get());
     node.classList.add(mode);
+    canvas.resize();
 }

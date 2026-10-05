@@ -1,6 +1,7 @@
 .config-title {
-    font-size: 2em;
-    cursor: default;
+     font-size: 2em;
+        cursor: default;
+    text-align: center;
 }
 
 .config-details {
@@ -8,7 +9,7 @@
     margin: 16px;
 
     > summary {
-        margin-left: -8px;
+          margin-left: -8px;
         margin-bottom: 8px;
     }
 }
@@ -18,8 +19,8 @@
 }
 
 .config-return {
-    margin-top: -16px;
-    margin-bottom: 32px;
+       margin-top: 0;
+    margin-bottom: -30px;
 }
 
 .config-return .config-link-button::before {

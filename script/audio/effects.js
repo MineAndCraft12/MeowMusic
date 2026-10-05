@@ -4,6 +4,9 @@ import * as audio from "./audio.js";
 
 export { registerDelayNode, registerGainNode }
 
+
+// Variables
+
 /**
  * The DelayNode. If undefined it hasn't been registered yet.
  * @type {DelayNode|undefined}
@@ -15,6 +18,9 @@ let delay;
  * @type {GainNode|undefined}
  */
 let gain;
+
+
+// Registration
 
 /**
  * Registers a new DelayNode and returns it for connection to other nodes.

@@ -1,5 +1,5 @@
-# MeowMusic Player
-(name uncertain)
+# MeowMusic
+(At this stage this is less of a readme and more of a notepad...)
 
 ### THE IDEA
 
@@ -41,10 +41,6 @@ and more easily extensible.
 ##### Less copycat visualizers and themes
 - Rather than half a dozen similar items, combine small changes into settings for one unique item.
 - More configurable options means the user can get exactly what they need easily.
-
-##### Standardize the code
-- It's pretty obvious I started this and then took a months-long break before coming back...
-- Try to use the same practices across modules.
 
 ##### Explore all the new tools I've missed
 - New HTML, CSS, JS tools that weren't around back then. Give them all a whirl and see if they make things easier.

@@ -5,24 +5,20 @@
 // Idea: Create a module for spawning standardized GUI constructs;
 //  the config and other screens should not be inventing their own DOM layouts.
 
-import * as dom from "../util/dom.js";
+import * as dom from "./dom.js";
 import * as error from "../util/error.js";
 import * as menus from "./menus.js";
 
 export { show }
 
-// VARIABLES
+
+// Variables
 
 const node = dom.get("#config");
 
-// BASIC CONFIG OPERATION
 
-/** Deletes all children of the config DOM node */
-function clearContent() {
-    node.replaceChildren();
-}
-
-// PARAGRAPH NODE CONSTRUCTION
+// DOM Node Construction
+// TODO: Rewrite this standardized in ui.js
 
 /**
  * Creates a message paragraph node for use in the config menus.
@@ -101,6 +97,19 @@ function createDirectoryInput(eventListener) {
     });
 }
 
+
+// Config Menu Operation
+
+/** Deletes all children of the config DOM node */
+function clearContent() {
+    node.replaceChildren();
+}
+
+/**
+ * Shows a menu from menus module, by default menus.landing
+ * 
+ * @param {Object?} menu - A menu from menus module
+ */
 function show(menu) {
     // Handle parameter
     if (menu === undefined) {
@@ -111,11 +120,11 @@ function show(menu) {
 
     clearContent();
 
-    node.appendChild(createTitleNode(menu.title));
-
     if (menu !== menus.landing) {
         node.appendChild(createMenuLink());
     }
+
+    node.appendChild(createTitleNode(menu.title));
 
     for (let item in menu) {
         if (item !== "title") {

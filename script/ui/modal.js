@@ -1,8 +1,8 @@
 /** Represents the modal popup */
 
-import * as dom from "../util/dom.js"
+import * as dom from "./dom.js"
 import * as error from "../util/error.js"
-import * as color from "../util/color.js"
+import * as color from "../graphics/color.js"
 
 export {
     getState, getValue,
@@ -14,7 +14,8 @@ export {
     promptColor
 }
 
-// VARIABLES
+
+// Variables
 
 /**
  * The DOM node which hosts the modal dialog.
@@ -34,7 +35,8 @@ let currentCallback;
  */
 let currentColorspace;
 
-// BASIC MODAL OPERATION
+
+// Getters
 
 /**
  * Returns modal DOM node attribute 'open'
@@ -49,6 +51,9 @@ function getValue() {
     return node.returnValue;
 }
 
+
+// Dialog Manipulation
+
 /** Clears modal DOM node property 'returnValue' */
 function clearValue() {
     node.returnValue = '';
@@ -58,6 +63,24 @@ function clearValue() {
 function clearContent() {
     node.replaceChildren();
 }
+
+/** Shows the modal dialog */
+function show() {
+    node.showModal();
+}
+
+/** Submits the form and closes the modal dialog */
+function submit(value) {
+    node.close(value);
+}
+
+/** Closes the modal dialog without submitting the form */
+function cancel() {
+    node.requestClose();
+}
+
+
+// Event Handlers
 
 /** Responds to modal DOM node event 'close' */
 function onclose() {
@@ -75,23 +98,6 @@ function oncancel() {
     currentCallback = undefined;
 }
 node.addEventListener('cancel', oncancel);
-
-/** Shows the modal dialog */
-function show() {
-    node.showModal();
-}
-
-/** Submits the form and closes the modal dialog */
-function submit(value) {
-    node.close(value);
-}
-
-/** Closes the modal dialog without submitting the form */
-function cancel() {
-    node.requestClose();
-}
-
-// KEYBOARD EVENT HANDLERS
 
 /** Routes tab focus to top of modal because Cancel is at the bottom */
 function cancelTabHandler(event) {
@@ -126,7 +132,9 @@ function handleStringEnterKey(event) {
     }
 }
 
-// PARAGRAPH NODE CONSTRUCTION
+
+// DOM Node Construction
+// TODO: Rewrite this standardized in ui.js
 
 /**
  * Creates a message paragraph node for use in the modal.
@@ -367,7 +375,8 @@ function createNumberNode(numberHandler, placeholder, initialValue, range, step)
     return node;
 }
 
-// MODAL SUBMIT EVENT CALLERS
+
+// Submit Action Handlers
 
 /**
  * Handles a submitted choice prompt
@@ -393,7 +402,8 @@ function handleColor() {
 
 }
 
-// MODAL PROMPTERS
+
+// Modal Dialog Creation
 
 /**
  * Sets the callback, builds a prompt from given nodes, and displays it.

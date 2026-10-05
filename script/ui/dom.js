@@ -1,6 +1,6 @@
 /** Contains utils to help manipulate the DOM */
 
-import * as error from "./error.js";
+import * as error from "../util/error.js";
 
 export { get, create }
 

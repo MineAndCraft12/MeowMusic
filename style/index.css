@@ -13,6 +13,10 @@ body,
     height: 100vh;
 }
 
+#main {
+    overflow: hidden;
+}
+
 /* Helper classes */
 
 .absolute {
@@ -31,8 +35,8 @@ body,
 
 .immersive-button {
     background: inherit;
-    color: inherit;
-    border:none;
+         color: inherit;
+        border: none;
 }
 
 .immersive-button:focus,

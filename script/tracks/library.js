@@ -1,15 +1,18 @@
 /** Represents the music library and playlist */
 
 import * as transport from "./transport.js";
-import * as dom from "../util/dom.js";
+import * as dom from "../ui/dom.js";
 
 export {
     ready,
     tracklist, directory, playlist,
-    loadDirectory, buildPlaylist,
+    loadDirectory,
     trackInfoFromPlaylist,
     toggleShuffle
 }
+
+
+// Variables
 
 /**
  * Describes whether the library is ready for action.
@@ -20,6 +23,12 @@ export {
  * @type {boolean}
  */
 let ready = false;
+
+/**
+ * Determines whether library.buildPlaylist() uses shuffle mode.
+ * @type {boolean}
+ */
+let shuffleMode = false;
 
 /**
  * Contains the full paths, titles and blob URLS of all tracks in a flat list.
@@ -69,6 +78,9 @@ let directory = {};
  */
 let playlist = [];
 
+
+// Tracklist Construction
+
 /**
  * Revokes all ObjectURLs and empties the tracklist, directory, and playlist.
  * 
@@ -77,7 +89,7 @@ let playlist = [];
 function clearTracklist() {
     ready = false;
 
-    for (var i in tracklist) {
+    for (let i in tracklist) {
         URL.revokeObjectURL(trackList[i]);
     }
 
@@ -101,12 +113,33 @@ function storeTrack(list, path, file) {
         }
         storeTrack(list[newList], path, file);
     } else {
-        let trackInfo = {
+        tracklist[file.webkitRelativePath] = {
             title: file.name.substring(0, file.name.indexOf(".")),
             src: URL.createObjectURL(file)
-        }
-        tracklist[file.webkitRelativePath] = trackInfo;
+        };
         list[file.name] = file.webkitRelativePath;
+    }
+}
+
+/**
+ * Constructs a playlist from the current tracklist and stores it in library.playlist
+ * 
+ * TODO: Implement shuffle mode and other sort modes.
+ */
+function buildPlaylist() {
+    playlist = [];
+    let debugLibrary = dom.get("#debug-library");
+    if (shuffleMode) {
+        // TODO: implement
+    } else {
+        // TODO: erase all instances of debugLibrary from js and html
+        // TODO: implement the library GUI
+        for (let i in tracklist) {
+            playlist.push(i);
+            debugLibrary.appendChild(dom.create("li", {
+                textContent: tracklist[i].title
+            }))
+        }
     }
 }
 
@@ -138,27 +171,8 @@ function loadDirectory(files) {
     }
 }
 
-/**
- * Constructs a playlist from the current tracklist and stores it in library.playlist
- * 
- * TODO: Implement shuffle mode and other sort modes.
- */
-function buildPlaylist() {
-    playlist = [];
-    let debugLibrary = dom.get("#debug-library");
-    if (shuffleMode) {
-        // TODO: implement
-    } else {
-        // TODO: erase all instances of debugLibrary from js and html
-        // TODO: implement the library GUI
-        for(let i in tracklist) {
-            playlist.push(i);
-            debugLibrary.appendChild(dom.create("li", {
-                textContent: tracklist[i].title
-            }))
-        }
-    }
-}
+
+// Playlist Operation
 
 /**
  * Gets track info from the tracklist for a given index in the playlist.
@@ -176,12 +190,6 @@ function buildPlaylist() {
 function trackInfoFromPlaylist(selected) {
     return tracklist[playlist[selected]];
 }
-
-/**
- * Determines whether library.buildPlaylist() uses shuffle mode.
- * @type {boolean}
- */
-let shuffleMode = false;
 
 /**
  * Toggles shuffle mode then invokes library.buildPlaylist()

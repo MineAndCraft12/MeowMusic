@@ -4,8 +4,10 @@ import * as library from "../tracks/library.js";
 
 export { landing, musiclibrary }
 
+// TODO: I don't like this. Finish standardizing UI then come back.
+
 const musiclibrary = {
-    title: "Music Library",
+    title: "Load your Music Library",
     welcome: {
         title: "Welcome",
         details: "<b>Please add your music to get started.</b><br>" +

@@ -1,55 +1,14 @@
 /** Contains utils to help with colors */
 
-import * as error from "./error.js";
+import * as error from "../util/error.js";
 
 export {
     getValidColorspaces, getColorspace,
     create, parse, createCache
 }
 
-/**
- * Get an array of currently supported colorspaces for the promptColor() function.
- * 
- * @returns {Array.<string>}
- */
-function getValidColorspaces() {
-    let list = [];
-    for (var item in colorspaces) {
-        list.push(item);
-    }
-    return list;
-}
 
-/**
- * Get information about a colorspace.
- * 
- * @example
- * let info = getColorspace("hsl");
- * info = { // Returns:
- *     name: "sRB HSL",
- *     valueNames: ["Hue", "Saturation", "Lightness", "Alpha"],
- *     valueMin: [  0,   0,   0, 0], // The minimum value of each property of this colorspace
- *     valueMax: [360, 100, 100, 1], // The maximum value of each property of this colorspace
- *     valueDef: [  0, 100,  50, 1], // A default value for a graphing interface - typically RGB Red
- *     graphHint: {x: 0, y: 1, z: 2, a: 3}
- *     // If the colorspace were to be plotted on a 2D graph (i.e. for user input),
- *     // graphHint suggests value indices as 'x' and 'y' axes for the graph.
- *     // The 'z' axis should modify the graph overall.
- *     // Finally, 'a' points to the alpha field.
- *     // Ideally, Hue and Chroma are along the axes and Lightness is a slider.
- *     // If graphHint is missing, each value should be a slider.
- * }
- * 
- * @param {string} name - The name of a colorspace
- * @returns {Object} A colorspace's information
- */
-function getColorspace(name) {
-    if (Object.hasOwn(colorspaces, name)) {
-        return colorspaces[name];
-    } else {
-        throw error.range("color.getColorspace", "name", `must be a valid colorspace (see color.getValidColorspaces), instead got ${name}`);
-    }
-}
+// Variables
 
 /**
  * Represents each colorspace.
@@ -122,6 +81,56 @@ const colorspaces = {
     },
 }
 
+
+// Getters
+
+/**
+ * Get an array of currently supported colorspaces for the promptColor() function.
+ * 
+ * @returns {Array.<string>}
+ */
+function getValidColorspaces() {
+    let list = [];
+    for (var item in colorspaces) {
+        list.push(item);
+    }
+    return list;
+}
+
+/**
+ * Get information about a colorspace.
+ * 
+ * @example
+ * let info = getColorspace("hsl");
+ * info = { // Returns:
+ *     name: "sRB HSL",
+ *     valueNames: ["Hue", "Saturation", "Lightness", "Alpha"],
+ *     valueMin: [  0,   0,   0, 0], // The minimum value of each property of this colorspace
+ *     valueMax: [360, 100, 100, 1], // The maximum value of each property of this colorspace
+ *     valueDef: [  0, 100,  50, 1], // A default value for a graphing interface - typically RGB Red
+ *     graphHint: {x: 0, y: 1, z: 2, a: 3}
+ *     // If the colorspace were to be plotted on a 2D graph (i.e. for user input),
+ *     // graphHint suggests value indices as 'x' and 'y' axes for the graph.
+ *     // The 'z' axis should modify the graph overall.
+ *     // Finally, 'a' points to the alpha field.
+ *     // Ideally, Hue and Chroma are along the axes and Lightness is a slider.
+ *     // If graphHint is missing, each value should be a slider.
+ * }
+ * 
+ * @param {string} name - The name of a colorspace
+ * @returns {Object} A colorspace's information
+ */
+function getColorspace(name) {
+    if (Object.hasOwn(colorspaces, name)) {
+        return colorspaces[name];
+    } else {
+        throw error.range("color.getColorspace", "name", `must be a valid colorspace (see color.getValidColorspaces), instead got ${name}`);
+    }
+}
+
+
+// Utilities
+
 /*
     Regarding color.create()...
     I unit-tested many different methods here and found this to be the fastest by 2x over the next fastest option.
@@ -166,19 +175,25 @@ function create(colorspace, values) {
  * 
  * @example
  * color.parse("rgba(4, 3, 2, 1)")
- * // => ["rgba", 4, 3, 2, 1]
+ * // Returns:
+ * {
+ *     colorspace: "rgba",
+ *     values: [4, 3, 2, 1]
+ * }
  * 
- * @returns {Array}
+ * @returns {Object}
  */
 function parse(string) {
-    let list = [];
-    list.push(string.substring(0, string.indexOf("(") - 1));
-    string = string.split(",");
-    list.push(Math.parseFloat(string[0].substring(string[0].indexOf("(") + 1)));
-    list.push(Math.parseFloat(string[1]));
-    list.push(Math.parseFloat(string[2]));
-    list.push(Math.parseFloat(string[3].substring(0, string[3].indexOf(")") - 1)));
-    return list;
+    let split = string.split(",");
+    return {
+        colorspace: string.substring(0, string.indexOf("(") - 1),
+        values: [
+            Math.parseFloat(split[0].substring(split[0].indexOf("(") + 1)),
+            Math.parseFloat(split[1]),
+            Math.parseFloat(split[2]),
+            Math.parseFloat(split[3].substring(0, split[3].indexOf(")") - 1))
+        ]
+    };
 }
 
 /**

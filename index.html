@@ -3,40 +3,35 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width">
+
         <title>MeowMusic</title>
+
         <link rel="stylesheet" href="style/index.css">
         <link rel="stylesheet" href="style/view.css">
         <link rel="stylesheet" href="style/ui.css">
         <link rel="stylesheet" href="style/config.css">
         <link rel="stylesheet" href="style/modal.css">
+
         <script type="module" src="script/index.js"></script>
     </head>
     <body>
         <!-- Full screen primary content container -->
         <main id="main" class="absolute view-config">
-            <!-- Possible view classes:
-                view-visualizer  view-library
-                view-dual        view-config
-            -->
 
-            <section id="visualizer" class="absolute primary-content">
-                Visualizer
+            <section id="visualizer" class="absolute">
+                <canvas id="canvas"></canvas>
             </section>
 
-            <section id="library" class="absolute primary-content padded">
+            <section id="library" class="absolute padded">
                 Music Library
                 <ol id="debug-library"></ol>
             </section>
 
-            <section id="config" class="absolute padded">
-                <!-- TODO: look into the "details" HTML element for collapsible settings -->
-                Configuration
-            </section>
+            <!-- Settings menu -->
+            <section id="config" class="absolute padded"></section>
 
             <!-- Primary user interface -->
-            <nav id="controls" class="absolute">
-
-            </nav>
+            <nav id="controls" class="absolute"></nav>
 
         </main>
 
