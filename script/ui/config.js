@@ -1,10 +1,5 @@
 /** Represents the config menu */
 
-// TODO: Something about this doesn't feel right. It tastes like spaghetti.
-// Remember to revise this when you feel like digging through DOM.
-// Idea: Create a module for spawning standardized GUI constructs;
-//  the config and other screens should not be inventing their own DOM layouts.
-
 import * as dom from "./dom.js";
 import * as ui from "./ui.js";
 import * as error from "../util/error.js";
@@ -95,8 +90,7 @@ function show(menu) {
     node.appendChild(ui.createParagraph(menu.title, ["config-title"]));
 
     for (let item in menu) {
-        if (item !== "title") { // TODO: Urgent: Finish refactoring modal and config, turn these appendChild chains into children properties
-
+        if (item !== "title") {
             if (menu[item].type === "simple") {
                 node.appendChild(
                     ui.createParagraphContainer(["config-container", "config-simple"], [
@@ -119,7 +113,6 @@ function show(menu) {
                     ])
                 )
             }
-
         }
     }
 }
