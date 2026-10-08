@@ -2,7 +2,10 @@
 
 import * as error from "../util/error.js";
 
-export { get, create }
+export {
+    get, create,
+    checkTextType
+}
 
 /**
  * Returns DOM Element(s) matching an ID, a Class name, or a Tag name.
@@ -66,11 +69,15 @@ function get(target, parent) {
  * @param {Object} options - Optional properties to set on the element
  * @param {string} options.id - An optional unique element ID
  * @param {Array.<string>} options.classList - An optional class name or list of class names
+ * @param {any} options.text - An optional string or string[] of text content, which auto-selects the fastest implementation
  * @param {any} options.textContent - An optional string or string[] of text content, fast but doesn't support newlines
  * @param {any} options.innerText - An optional string or string[] of text content, slow but supports newlines
+ * @param {any} options.innerHTML - An optional string or string[] of HTML code (This will be removed, do not rely on it.)
  * @param {{attribute: string}} options.attributes - An optional set of attribute values
  * @param {{property: string}} options.styles - An optional set of style declarations
  * @param {{eventListener: Function}} options.eventListeners - An optional set of event listener callbacks
+ * @param {Array.<HtmlElement>} options.prependChildren - An optional set of prepended child elements
+ * @param {Array.<HTMLElement>} options.children - An optional set of child elements
  * 
  * @returns {HTMLElement}
  */
@@ -121,6 +128,30 @@ function create(tagName, options) {
             }
         }
 
+        // Check for overlapping parameters
+        if (
+            Object.hasOwn(options, "text") +
+            Object.hasOwn(options, "textContent") +
+            Object.hasOwn(options, "innerText") +
+            Object.hasOwn(options, "innerHTML") > 1
+        ) {
+            throw error.custom("dom.create", "Must specify exactly one of the following parameters only: " +
+                "options.text, options.textContent, options.innerText, options.innerHTML");
+        }
+
+        // Check for automatic text content
+        if (Object.hasOwn(options, "text")) {
+            if (typeof options.text === "string"){
+                node[checkTextType(options.text)] = options.text;
+            }else if (Array.isArray(options.text)) {
+                let joined = options.text.join(", ");
+                node[checkTextType(joined)] = joined;
+            } else {
+                let stringed = String(options.text);
+                node[checkTextType(stringed)] = stringed;
+            }
+        }
+
         // Check for text content
         if (Object.hasOwn(options, "textContent")) {
             if (typeof options.textContent === "string") {
@@ -140,6 +171,17 @@ function create(tagName, options) {
                 node.innerText = options.innerText.join(", ");
             } else {
                 node.innerText = String(options.innerText);
+            }
+        }
+        
+        // Check for inner HTML (TODO: Remove this as soon as we're ready for it.)
+        if (Object.hasOwn(options, "innerHTML")) {
+            if (typeof options.innerHTML === "string") {
+                node.innerHTML = options.innerHTML;
+            } else if (Array.isArray(options.innerHTML)) {
+                node.innerHTML = options.innerHTML.join(", ");
+            } else {
+                node.innerHTML = String(options.innerHTML);
             }
         }
 
@@ -205,7 +247,64 @@ function create(tagName, options) {
                 node.addEventListener(item, options.eventListeners[item]);
             }
         }
+        
+        // Check for child elements
+        if (Object.hasOwn(options, "prependChildren")) {
+            // Handle errors
+            if (typeof options.prependChildren !== "object") {
+                throw error.type("dom.create", "options.prependChildren", "object", typeof options.prependChildren);
+            }
+
+            // Iterate children
+            for (let item in options.prependChildren) {
+                // Handle errors
+                if (!(options.prependChildren[item] instanceof HTMLElement) && !(options.prependChildren[item] instanceof Comment)) {
+                    throw error.type("dom.create", "options.prependChildren[" + item + "]", "HTMLElement || Comment", typeof options.prependChildren[item]);
+                }
+
+                node.appendChild(options.prependChildren[item]);
+            }
+        }
+
+        // Check for child elements
+        if (Object.hasOwn(options, "children")) {
+            // Handle errors
+            if (typeof options.children !== "object") {
+                throw error.type("dom.create", "options.children", "object", typeof options.children);
+            }
+
+            // Iterate children
+            for (let item in options.children) {
+                // Handle errors
+                if (!(options.children[item] instanceof HTMLElement) && !(options.children[item] instanceof Comment)) {
+                    throw error.type("dom.create", "options.children[" + item + "]", "HTMLElement || Comment", typeof options.children[item]);
+                }
+
+                node.appendChild(options.children[item]);
+            }
+        }
     }
 
     return node;
+}
+
+/**
+ * Determine the most efficient DOM property to use for a given string
+ * 
+ * @example
+ * dom.checkTextType("Hello World")               // Returns "textContent"
+ * dom.checkTextType("Hello\nWorld")              // Returns "innerText"
+ * dom.checkTextType("<i>Hello</i> <b>World</b>") // Returns "innerHTML"
+ * 
+ * @param {string} text - String to test
+ * @returns {string}
+ */
+function checkTextType(text) {
+    if (text.includes("<")) {
+        return "innerHTML";
+    } else if (text.includes("\n")) {
+        return "innerText";
+    } else {
+        return "textContent";
+    }
 }

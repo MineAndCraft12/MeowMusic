@@ -2,6 +2,7 @@
 
 // The full contents of this file are currently all debug code...
 
+import * as error from "./util/error.js";
 import * as dom from "./ui/dom.js";
 import * as color from "./graphics/color.js";
 import * as view from "./ui/view.js";
@@ -20,6 +21,7 @@ window.onerror = (message, file, line, col, error) => {
     modal.showAlert("Error in " + (file || "Unknown") + " (" + line + ", " + col + "):\n\n" + message, ()=>{});
 }
 
+window.error = error;
 window.dom = dom;
 window.color = color;
 window.view = view;

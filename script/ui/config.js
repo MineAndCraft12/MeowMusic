@@ -6,6 +6,7 @@
 //  the config and other screens should not be inventing their own DOM layouts.
 
 import * as dom from "./dom.js";
+import * as ui from "./ui.js";
 import * as error from "../util/error.js";
 import * as menus from "./menus.js";
 
@@ -14,87 +15,54 @@ export { show }
 
 // Variables
 
+/**
+ * The DOM node which hosts the config menu.
+ * @type {HTMLSectionElement}
+ */
 const node = dom.get("#config");
 
 
-// DOM Node Construction
-// TODO: Rewrite this standardized in ui.js
+// Event Handlers
 
 /**
- * Creates a message paragraph node for use in the config menus.
- * @param {string} message - A message to display to the user
- * 
- * @returns {HTMLParagraphElement}
+ * Handles clicks on links to menus
+ * @param {Event} event 
  */
-function createTitleNode(title) {
-    return dom.create("p", {
-        classList: ["config-title"],
-        textContent: title || ""
-    });
-}
-
-/**
- * Creates an empty container paragraph node
- * 
- * @param {string} className - A class name for the paragraph node
- * @returns {HTMLParagraphElement}
- */
-function createContainerNode(className) {
-    return dom.create("p", {
-        classList: ["config-container", className]
-    });
-}
-
-function createDetailsNode(summary, details) {
-    let node = dom.create("details", {
-        classList: ["config-details"],
-        textContent: details
-    });
-    node.prepend(dom.create("summary", {textContent: summary}));
-    return node;
-}
-
-function createDescriptionNode(summary) {
-    let node = dom.create("p");
-    node.innerHTML = summary;
-    return node;
-}
-
 function handleMenuLink(event) {
     show(event.target.parentNode.linkedMenu);
 }
 
+
+// DOM Node Construction
+
+/**
+ * Creates a link to a menu
+ * @param {Object} menu 
+ * @returns {HTMLParagraphElement}
+ */
 function createMenuLink(menu) {
-    let node;
-    if (menu === undefined) {
+    let linkType;
+
+    if (menu == null) {
         menu = menus.landing;
-        node = createContainerNode("config-return");
+        linkType = "config-return";
     } else {
-        node = createContainerNode("config-link");
+        linkType = "config-link";
     }
 
-    node.appendChild(document.createComment(" The target menu is stored in the linkedMenu property of this .config-link's JS node "));
-    node.appendChild(dom.create("button", {
-        classList: ["config-link-button", "immersive-button"],
-        textContent: menu.title,
-        eventListeners: {"click": handleMenuLink}
-    }));
+    let node = ui.createParagraphContainer(["config-container", linkType], [
+        document.createComment(" The target menu is stored in the linkedMenu property of this .config-container's JS node "),
+        dom.create("button", {
+            textContent: menu.title,
+            classList: ["config-link-button", "immersive-button"],
+            eventListeners: {
+                click: handleMenuLink
+            }
+        })
+    ]);
     node.linkedMenu = menu;
 
     return node;
-}
-
-function createDirectoryInput(eventListener) {
-    return dom.create("input", {
-        attributes: {
-            "type": "file",
-            "webkitdirectory": "true",
-            "directory": "true"
-        },
-        eventListeners: {
-            change: eventListener
-        }
-    });
 }
 
 
@@ -124,16 +92,17 @@ function show(menu) {
         node.appendChild(createMenuLink());
     }
 
-    node.appendChild(createTitleNode(menu.title));
+    node.appendChild(ui.createParagraph(menu.title, ["config-title"]));
 
     for (let item in menu) {
-        if (item !== "title") {
+        if (item !== "title") { // TODO: Urgent: Finish refactoring modal and config, turn these appendChild chains into children properties
 
             if (menu[item].type === "simple") {
-                let container = createContainerNode("config-simple");
-                let details = createDescriptionNode(menu[item].details);
-                container.appendChild(details);
-                node.appendChild(container);
+                node.appendChild(
+                    ui.createParagraphContainer(["config-container", "config-simple"], [
+                        ui.createParagraph(menu[item].details)
+                    ])
+                );
             }
 
             if (menu[item].type === "link") {
@@ -141,11 +110,14 @@ function show(menu) {
             }
 
             if (menu[item].type === "directory") {
-                let container = createContainerNode("config-directory-input");
-                let details = createDetailsNode(menu[item].title, menu[item].details);
-                details.firstChild.appendChild(createDirectoryInput(menu[item].onchange));
-                container.appendChild(details);
-                node.appendChild(container);
+                node.appendChild(
+                    ui.createParagraphContainer(["config-container", "config-directory-input"], [
+                        ui.createDetails(
+                            menu[item].title, menu[item].details, ["config-details"],
+                            ui.createDirectoryInput(menu[item].onchange)
+                        )
+                    ])
+                )
             }
 
         }

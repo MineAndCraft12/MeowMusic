@@ -129,5 +129,5 @@ function custom(trace, message) {
     }
 
     // Construct error
-    return new Error(`Failed to execute ${trace}': ${message}`);
+    return new Error(`Failed to execute '${trace}': ${message}`);
 }

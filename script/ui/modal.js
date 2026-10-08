@@ -1,8 +1,9 @@
 /** Represents the modal popup */
 
-import * as dom from "./dom.js"
-import * as error from "../util/error.js"
-import * as color from "../graphics/color.js"
+import * as dom from "./dom.js";
+import * as ui from "./ui.js";
+import * as error from "../util/error.js";
+import * as color from "../graphics/color.js";
 
 export {
     getState, getValue,
@@ -46,7 +47,10 @@ function getState() {
     return node.open;
 }
 
-/** Returns modal DOM node property 'returnValue' */
+/**
+ * Returns modal DOM node property 'returnValue'
+ * @returns {string}
+ */
 function getValue() {
     return node.returnValue;
 }
@@ -69,7 +73,10 @@ function show() {
     node.showModal();
 }
 
-/** Submits the form and closes the modal dialog */
+/**
+ * Submits the form and closes the modal dialog
+ * @param {string} value - A return value
+ */
 function submit(value) {
     node.close(value);
 }
@@ -134,32 +141,6 @@ function handleStringEnterKey(event) {
 
 
 // DOM Node Construction
-// TODO: Rewrite this standardized in ui.js
-
-/**
- * Creates a message paragraph node for use in the modal.
- * @param {string} message - A message to display to the user
- * 
- * @returns {HTMLParagraphElement}
- */
-function createMessageNode(message) {
-    return dom.create("p", {
-        classList: ["modal-message"],
-        innerText: message || ""
-    });
-}
-
-/**
- * Creates an empty container paragraph node
- * 
- * @param {string} className - A class name for the paragraph node
- * @returns {HTMLParagraphElement}
- */
-function createContainerNode(className) {
-    return dom.create("p", {
-        classList: ["modal-container", className]
-    });
-}
 
 /**
  * Creates a paragraph node containing a cancel button for use in the modal.
@@ -168,18 +149,17 @@ function createContainerNode(className) {
  * @returns {HTMLParagraphElement}
  */
 function createCancelNode(text) {
-    let node = createContainerNode("modal-controls");
-
-    // Create the cancel button
-    node.appendChild(dom.create("button", {
-        id: "modal-cancel",
-        classList: ["immersive-button"],
-        textContent: text || "Cancel",
-        eventListeners: {
-            "click": cancel,
-            "keydown": cancelTabHandler
-        }
-    }));
+    let node = ui.createParagraphContainer(["modal-container", "modal-controls"], [
+        dom.create("button", {
+            id: "modal-cancel",
+            classList: ["immersive-button"],
+            textContent: text || "Cancel",
+            eventListeners: {
+                "click": cancel,
+                "keydown": cancelTabHandler
+            }
+        })
+    ]);
 
     // Return the container node
     return node;
@@ -200,7 +180,7 @@ function createCancelNode(text) {
  * @returns {HTMLParagraphElement}
  */
 function createControlsNode(controlsHandler, controls) {
-    let node = createContainerNode("modal-controls");
+    let node = ui.createParagraphContainer(["modal-container", "modal-controls"]);
 
     // Check for buttons to make
     if (typeof controls === "object") {
@@ -208,11 +188,11 @@ function createControlsNode(controlsHandler, controls) {
         if (typeof controlsHandler === "function") {
             // Iterate the controls and build buttons
             for (let item in controls) {
-                    node.appendChild(dom.create("button", {
-                        textContent: controls[item],
-                        attributes: {"--data-value": item},
-                        eventListeners: {"click": controlsHandler}
-                    }));
+                node.appendChild(dom.create("button", {
+                    textContent: controls[item],
+                    attributes: {"--data-value": item},
+                    eventListeners: {"click": controlsHandler}
+                }));
             }
         } else {
             // A control handler must be specified if controls are specified
@@ -241,7 +221,7 @@ function createControlsNode(controlsHandler, controls) {
  * @returns {HTMLParagraphElement}
  */
 function createStringNode(stringHandler, placeholder, initialValue) {
-    let node = createContainerNode("modal-string");
+    let node = ui.createParagraphContainer(["modal-container", "modal-string"]);
     
     // If a function is specified, then create input with submit button
     if (typeof stringHandler === "function") {
@@ -302,7 +282,7 @@ function createStringNode(stringHandler, placeholder, initialValue) {
  * @returns {HTMLParagraphElement}
  */
 function createNumberNode(numberHandler, placeholder, initialValue, range, step) {
-    let node = createContainerNode("modal-number");
+    let node = ui.createParagraphContainer(["modal-container", "modal-number"]);
     
     // Handle range
     if (Array.isArray(range)) {
@@ -412,7 +392,7 @@ function handleColor() {
  * @param {Function|string} callback - A callback function or "NO CALLBACK"
  * @param {Array.<HTMLParagraphElement>} nodes - A list of nodes to build the prompt from
  */
-function prompt(trace, callback, nodes) {
+function showPrompt(trace, callback, nodes) {
     clearContent();
 
     // Handle callback
@@ -436,8 +416,8 @@ function prompt(trace, callback, nodes) {
  * @param {function} callback
  */
 function showAlert(message, callback) {
-    prompt("modal.showAlert", callback, [
-        createMessageNode(message),
+    showPrompt("modal.showAlert", callback, [
+        ui.createParagraph(message, ["modal-message"]),
         createCancelNode("Okay")
     ]);
 
@@ -449,8 +429,8 @@ function showAlert(message, callback) {
  * 
  * @example
  * // You can use an array or object to define your choices.
- * promptChoice(myCallback, "Make a choice please.", ["Apples", "Oranges"]);
- * promptChoice(myCallback, "Make a choice please.", {apple: "Apples", orange: "Oranges"});
+ * modal.promptChoice(myCallback, "Make a choice please.", ["Apples", "Oranges"]);
+ * modal.promptChoice(myCallback, "Make a choice please.", {apple: "Apples", orange: "Oranges"});
  * // Make a choice please. [Apples] [Oranges] [Cancel]
  * // If Apples is clicked, result is 0 or 'apple'. If Oranges is clicked, result is 1 or 'orange'.
  * 
@@ -460,8 +440,8 @@ function showAlert(message, callback) {
  * @param {String} choices.item - The key will be forwarded to your callback and the value will be displayed to the button.
  */
 function promptChoice(callback, message, choices) {
-    prompt("modal.promptChoice", callback, [
-        createMessageNode(message),
+    showPrompt("modal.promptChoice", callback, [
+        ui.createParagraph(message, ["modal-message"]),
         createControlsNode(handleChoice, choices),
         createCancelNode()
     ]);
@@ -473,7 +453,7 @@ function promptChoice(callback, message, choices) {
  * Shows a string prompt.
  * 
  * @example
- * promptString(myCallback, "Write something please.", "Default value", "Initial value");
+ * modal.promptString(myCallback, "Write something please.", "Default value", "Initial value");
  * // Write something please. [Initial value      ] [Submit] [Cancel]
  * // If a value is submitted, it is returned to callback.
  * 
@@ -483,8 +463,8 @@ function promptChoice(callback, message, choices) {
  * @param {string=} initial - The present value of the item you're describing.
  */
 function promptString(callback, message, placeholder, initial) {
-    prompt("modal.promptString", callback, [
-        createMessageNode(message),
+    showPrompt("modal.promptString", callback, [
+        ui.createParagraph(message, ["modal-message"]),
         createStringNode(handleString, placeholder, initial),
         createCancelNode()
     ]);
@@ -496,7 +476,7 @@ function promptString(callback, message, placeholder, initial) {
  * Shows a number prompt.
  * 
  * @example
- * promptString(myCallback, "Choose a number please.", 0, 0, [0, 10], 1);
+ * modal.promptString(myCallback, "Choose a number please.", 0, 0, [0, 10], 1);
  * // Choose a number please. [0   ] [Submit] [Cancel]
  * // If a value is submitted, it is returned to callback.
  * 
@@ -508,8 +488,8 @@ function promptString(callback, message, placeholder, initial) {
  * @param {number|string=} step - How much is added if the user presses the add or subtract buttons.
  */
 function promptNumber(callback, message, placeholder, initial, range, step) {
-    prompt("modal.promptNumber", callback, [
-        createMessageNode(message),
+    showPrompt("modal.promptNumber", callback, [
+        ui.createParagraph(message, ["modal-message"]),
         createNumberNode(handleNumber, placeholder, initial, range, step),
         createCancelNode()
     ]);
@@ -517,6 +497,21 @@ function promptNumber(callback, message, placeholder, initial, range, step) {
     dom.get("#modal-string-input").focus();
 }
 
+/**
+ * Shows a color prompt.
+ * 
+ * WARNING: Not yet implemented.
+ * 
+ * @example
+ * modal.promptColor(myCallback, "Choose a color please.", "rgba", [255, 0, 0, 1])
+ * // Choose a color please. [Graphical Color Picker] [Submit] [Cancel]
+ * // If a value is submitted, it is returned to callback.
+ * 
+ * @param {*} callback - This function will be called with a return value if the user responds.
+ * @param {*} message - Describes the choice to the user.
+ * @param {*} colorspace - Colorspace for the color picker graph to render.
+ * @param {*} initial - The present value of the item you're describing.
+ */
 function promptColor(callback, message, colorspace, initial) {
     // Check if colorspace is specified
     if (colorspace === "undefined") {
@@ -532,8 +527,8 @@ function promptColor(callback, message, colorspace, initial) {
 
     // TODO: implement
 
-    prompt("modal.promptColor", callback, [
-        createMessageNode(message),
+    showPrompt("modal.promptColor", callback, [
+        ui.createParagraph(message + "\n\nWarning: The color picker is not yet implemented.", ["modal-message"]),
         // TODO: implement
         createCancelNode()
     ]);
