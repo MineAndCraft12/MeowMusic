@@ -262,7 +262,7 @@ function create(tagName, options) {
                     throw error.type("dom.create", "options.prependChildren[" + item + "]", "HTMLElement || Comment", typeof options.prependChildren[item]);
                 }
 
-                node.appendChild(options.prependChildren[item]);
+                node.prepend(options.prependChildren[item]);
             }
         }
 

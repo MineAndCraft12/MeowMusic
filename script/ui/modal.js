@@ -149,7 +149,7 @@ function handleStringEnterKey(event) {
  * @returns {HTMLParagraphElement}
  */
 function createCancelNode(text) {
-    let node = ui.createParagraphContainer(["modal-container", "modal-controls"], [
+    return ui.createParagraphContainer(["modal-container", "modal-controls"], [
         dom.create("button", {
             id: "modal-cancel",
             classList: ["immersive-button"],
@@ -160,9 +160,6 @@ function createCancelNode(text) {
             }
         })
     ]);
-
-    // Return the container node
-    return node;
 }
 
 /**

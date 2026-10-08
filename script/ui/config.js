@@ -50,9 +50,7 @@ function createMenuLink(menu) {
         dom.create("button", {
             textContent: menu.title,
             classList: ["config-link-button", "immersive-button"],
-            eventListeners: {
-                click: handleMenuLink
-            }
+            eventListeners: {click: handleMenuLink}
         })
     ]);
     node.linkedMenu = menu;
