@@ -17,10 +17,12 @@ import * as effects from "./audio/effects.js";
 import * as canvas from "./graphics/canvas.js";
 import * as ctx from "./graphics/ctx.js";
 
+// Popup errors in case i dont notice the console
 window.onerror = (message, file, line, col, error) => {
     modal.showAlert("Error in " + (file || "Unknown") + " (" + line + ", " + col + "):\n\n" + message, ()=>{});
 }
 
+// Set modules to window for debugging sake
 window.error = error;
 window.dom = dom;
 window.color = color;
@@ -43,35 +45,46 @@ function debugView(event) {
 
 // Create debug buttons
 let debugControls = dom.get("#controls");
-for (var i in view.options) {
-    debugControls.appendChild(dom.create("button", {
-        textContent: view.options[i],
-        eventListeners: {
-            "click": debugView
-        },
-        styles: {
-            opacity: 0.5
-        }
-    }));
+
+// Debug event handlers
+function setVisualizer() {
+    view.set("view-visualizer");
+}
+function setLibrary() {
+    view.set("view-library");
+}
+function setConfig() {
+    view.set("view-config");
 }
 
+// Debug visualizer view button
+debugControls.appendChild(dom.create("button", {
+    textContent: "V",
+    eventListeners: {click: setVisualizer}
+}));
+
+// Debug transport controls
 debugControls.appendChild(dom.create("button", {
     textContent: "|<",
-    eventListeners: {
-        "click": transport.prev
-    }
+    eventListeners: {click: transport.prev}
 }));
 debugControls.appendChild(dom.create("button", {
     textContent: ">",
-    eventListeners: {
-        "click": transport.togglePlaying
-    }
+    eventListeners: {click: transport.togglePlaying}
 }));
 debugControls.appendChild(dom.create("button", {
     textContent: ">|",
-    eventListeners: {
-        "click": transport.next
-    }
+    eventListeners: {click: transport.next}
+}));
+
+// Debug library and config view buttons
+debugControls.appendChild(dom.create("button", {
+    textContent: "L",
+    eventListeners: {click: setLibrary}
+}));
+debugControls.appendChild(dom.create("button", {
+    textContent: "C",
+    eventListeners: {click: setConfig}
 }));
 
 // Display the config menu

@@ -10,6 +10,7 @@
         <link rel="stylesheet" href="style/view.css">
         <link rel="stylesheet" href="style/ui.css">
         <link rel="stylesheet" href="style/config.css">
+        <link rel="stylesheet" href="style/library.css">
         <link rel="stylesheet" href="style/modal.css">
 
         <script type="module" src="script/index.js"></script>
@@ -22,32 +23,16 @@
                 <canvas id="canvas"></canvas>
             </section>
 
-            <section id="library" class="absolute padded">
-                Music Library
-                <ol id="debug-library"></ol>
-            </section>
+            <section id="library" class="absolute padded"></section>
 
             <!-- Settings menu -->
             <section id="config" class="absolute padded"></section>
 
-            <!-- Primary user interface -->
+            <!-- Play. pause, etc -->
             <nav id="controls" class="absolute"></nav>
 
         </main>
 
-        <!-- Can contain the following constructs so far...
-            p.modal-message
-            p.modal-string-input
-                input#modal-string-input
-                button#modal-string-submit
-            p.modal-number-input
-                input#modal-string-input
-                button#modal-string-submit
-            p.modal-controls
-                button
-                button#modal-cancel
-          -->
         <dialog id="modal" closedby="any"></dialog>
-
     </body>
 </html>

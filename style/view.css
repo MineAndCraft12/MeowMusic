@@ -1,9 +1,13 @@
 /* Primary content containers */
 
+/* Top-level parent of all context except for the modal dialog */
 #main {
+    /* Height of the container for play, pause, etc buttons */
     --controls-height: 4rem;
+    /* Size of the library and config UI */
          --view-split: 30vw;
 
+    /* Container for play, pause, etc buttons */
     > #controls {
                bottom: 0;
                 width: calc( 100vw - var(--view-split) );
@@ -13,19 +17,26 @@
         align-content: center;
            background: linear-gradient( oklch(0% 0% 0deg / 0%), oklch(0% 0% 0deg / 50%) );
         
+        /* Play button, pause button, etc */
         button {
-            font-size: 1em;
-               margin: 0 0.25em;
+             font-size: 1em;
+                margin: 0 0.25em;
+            background: none;
+                border: none;
+                 color: oklch(100% 0% 0deg);
         }
     }
 
+    /* Primary content container, i.e. #visualizer, #library, #config */
     > section {
+        width: initial;
         height: 100vh;
     }
 
     > #visualizer {
         background: oklch(0% 0% 0deg);
              width: calc(100vw - var(--view-split));
+            height: 100vh;
 
         > canvas {
             background: inherit;
@@ -37,8 +48,11 @@
 
     > #library,
     > #config {
+        bottom: initial;
         right: 0;
         width: var(--view-split);
+        height: 100vh;
+        overflow-y: auto;
     }
 }
 
@@ -65,5 +79,50 @@
 #main.view-config {
     > #library {
         display: none;
+    }
+}
+
+/* Mobile overrides
+ *
+ * Moves the library and config UI to the bottom of the screen,
+ * and makes them a little bigger.
+ */
+
+@media (orientation: portrait) {
+    #main {
+        --view-split: 40vh;
+
+        > #controls {
+            width: 100vw;
+            bottom: var(--view-split);
+        }
+
+        > section {
+            width: 100vw;
+            height: initial;
+        }
+
+        > #visualizer {
+            width: 100vw;
+            height: calc(100vh - var(--view-split));
+        }
+
+        > #library,
+        > #config {
+            bottom: 0;
+            right: initial;
+            width: 100vw;
+            height: var(--view-split);
+        }
+    }
+
+    #main.view-visualizer {
+        > #visualizer {
+            height: 100vh;
+        }
+
+        > #controls {
+            bottom: 0;
+        }
     }
 }

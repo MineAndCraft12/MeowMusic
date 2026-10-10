@@ -12,7 +12,7 @@ export { show }
 
 /**
  * The DOM node which hosts the config menu.
- * @type {HTMLSectionElement}
+ * @type {HTMLElement}
  */
 const node = dom.get("#config");
 
@@ -38,6 +38,7 @@ function handleMenuLink(event) {
 function createMenuLink(menu) {
     let linkType;
 
+    // Determine if this is a back button or regular link
     if (menu == null) {
         menu = menus.landing;
         linkType = "config-return";
@@ -46,6 +47,7 @@ function createMenuLink(menu) {
     }
 
     let node = ui.createParagraphContainer(["config-container", linkType], [
+        // TODO: I don't like that this solution is practically invisible unless you know where to look... fix it.
         document.createComment(" The target menu is stored in the linkedMenu property of this .config-container's JS node "),
         dom.create("button", {
             textContent: menu.title,
@@ -81,14 +83,18 @@ function show(menu) {
 
     clearContent();
 
+    // Create a back button if we're not at home
     if (menu !== menus.landing) {
         node.appendChild(createMenuLink());
     }
 
     node.appendChild(ui.createParagraph(menu.title, ["config-title"]));
 
+    // In the current menu, look at every entry...
     for (let item in menu) {
+        // The menu title is not an entry...
         if (item !== "title") {
+            // Ideally "simple" is just a display of basic information
             if (menu[item].type === "simple") {
                 node.appendChild(
                     ui.createParagraphContainer(["config-container", "config-simple"], [
@@ -97,10 +103,12 @@ function show(menu) {
                 );
             }
 
+            // Link to another menu
             if (menu[item].type === "link") {
                 node.appendChild(createMenuLink(menu[item].target));
             }
 
+            // Directory File Input for the tracklist
             if (menu[item].type === "directory") {
                 node.appendChild(
                     ui.createParagraphContainer(["config-container", "config-directory-input"], [

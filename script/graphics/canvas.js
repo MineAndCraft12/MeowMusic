@@ -9,7 +9,7 @@ export { getContext, resize }
 
 /**
  * The parent node above the canvas
- * @type {HTMLDivElement}
+ * @type {HTMLElement}
  */
 const container = dom.get("#visualizer");
 

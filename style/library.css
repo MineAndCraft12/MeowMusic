@@ -1,0 +1,43 @@
+/* Music Library interface */
+
+#library {
+    line-height: 1.5;
+    user-select: none;
+
+    > .library-title {
+        line-height: initial;
+          font-size: 2rem;
+             margin: 1rem 0;
+             cursor: default;
+         text-align:center;
+    }
+
+    /* .library-directory-button and .library-track-button are always .library-item */
+    .library-item {
+            padding-left: 1rem;
+             border-left: 1px solid oklch(100% 0% 0deg);
+        background-color: oklch(100% 0% 0deg / 0%);
+              transition: background-color 0.1s;
+                  cursor: default;
+    }
+
+    /* Get rid of the top-level border.
+     * Ideally the remaining borders will look like the physical bounds of the folders' contents,
+     * rather than the bounds of the folders themselves.
+     */
+    > .library-item {
+        /* padding-left: 0; */
+        border-left: none;
+    }
+
+    /* If we select the <details> itself then all of its children look hovered too, not good */
+    .library-directory-button > summary:hover,
+    .library-track-button:hover {
+        background-color: oklch(100% 0% 0deg / 10%);
+    }
+
+    /* The currently playing track is highlighted, but intentionally overridden by :hover */
+    .highlighted {
+        background-color: oklch(100% 0% 0deg / 17.5%);
+    }
+}

@@ -66,7 +66,7 @@ function createDetails(title, details, classList, child) {
         prependChildren: [
             dom.create("summary", util.scrubObject({
                 text: title,
-                children: [child]
+                children: util.scrubObject([child]) // TODO: Find a more graceful way to handle this
             }))
         ]
     }));

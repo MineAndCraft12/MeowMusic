@@ -1,18 +1,15 @@
 /** Represents menus in the config screen */
 
 import * as library from "../tracks/library.js";
+import * as view from "./view.js";
 
 export { landing, musiclibrary }
-
-// TODO: I don't like this. Finish standardizing UI then come back.
 
 const musiclibrary = {
     title: "Load your Music Library",
     welcome: {
         title: "Welcome",
-        details: "<b>Please add your music to get started.</b><br>" +
-            "<i>Your files are not uploaded and will never leave your device.</i><br>" +
-            "<i>Currently you must select your folder each time.</i>",
+        details: "<b>Please add your music to get started.</b>",
         type: "simple"
     },
     select: {
@@ -21,6 +18,7 @@ const musiclibrary = {
         type: "directory",
         onchange: function(event) {
             library.loadDirectory(event.target.files);
+            view.set("view-library");
         }
     }
 };

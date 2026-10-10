@@ -32,11 +32,14 @@ let currentTrack = 0;
  */
 function loadTrack(selected){
     if (library.ready) {
+        // Wrap around to the other side if we're beyond playlist bounds
         if (selected >= library.playlist.length) {
             selected = 0
         } else if (selected < 0) {
             selected = library.playlist.length - 1;
         }
+        
+        library.highlightTrack(selected);
         audio.setSrc(library.trackInfoFromPlaylist(selected).src);
         currentTrack = selected;
     }

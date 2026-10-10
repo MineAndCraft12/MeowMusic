@@ -1,3 +1,5 @@
+/* Config menu */
+
 .config-title {
      font-size: 2em;
         cursor: default;
@@ -18,15 +20,18 @@
     margin-left: 16px;
 }
 
+/* Link back to previous menu */
 .config-return {
        margin-top: 0;
     margin-bottom: -30px;
 }
 
+/* Looks like leaving a directory */
 .config-return .config-link-button::before {
     content: "\219A  ";
 }
 
+/* Looks like entering a directory */
 .config-link .config-link-button::before {
     content: "\219B  ";
 }
