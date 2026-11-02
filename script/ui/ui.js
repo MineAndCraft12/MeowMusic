@@ -1,7 +1,7 @@
 /** Creates standardized UI constructs for menus, interfaces, etc. */
 
 import * as util from "../util/util.js";
-import * as dom from "./dom.js";
+import * as dom from "../util/dom.js";
 
 export {
     createParagraph,

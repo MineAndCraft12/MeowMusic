@@ -4,7 +4,7 @@ import * as analyser from "./analyser.js";
 import * as effects from "./effects.js";
 
 export {
-    setSrc,
+    element, setSrc,
     getPlaying, play, pause,
     getTime, setTime, getDuration
 }
@@ -16,7 +16,7 @@ export {
  * The actual audio track element.
  * @type {HTMLAudioElement}
  */
-const element = new Audio();
+const element = new Audio(); // TODO: this is exported for debug code in transport.js, un-export when we're done
 
 /**
  * The AudioContext.

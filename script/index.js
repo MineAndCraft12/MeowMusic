@@ -3,7 +3,7 @@
 // The full contents of this file are currently all debug code...
 
 import * as error from "./util/error.js";
-import * as dom from "./ui/dom.js";
+import * as dom from "./util/dom.js";
 import * as color from "./graphics/color.js";
 import * as view from "./ui/view.js";
 import * as modal from "./ui/modal.js";
@@ -14,7 +14,7 @@ import * as transport from "./tracks/transport.js";
 import * as audio from "./audio/audio.js";
 import * as analyser from "./audio/analyser.js";
 import * as effects from "./audio/effects.js";
-import * as canvas from "./graphics/canvas.js";
+import * as canvas from "./ui/canvas.js";
 import * as ctx from "./graphics/ctx.js";
 
 // Popup errors in case i dont notice the console

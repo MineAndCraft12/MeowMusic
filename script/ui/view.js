@@ -1,8 +1,8 @@
 /** Represents the view modes of the primary content */
 
-import * as dom from "./dom.js";
+import * as dom from "../util/dom.js";
 import * as error from "../util/error.js";
-import * as canvas from "../graphics/canvas.js";
+import * as canvas from "./canvas.js";
 
 export { options, get, set }
 

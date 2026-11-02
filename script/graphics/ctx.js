@@ -2,7 +2,7 @@
 // Note to self: Ideally visualizers should only need to call helper functions,
 //     and this module can handle actual drawing on its own.
 
-import * as canvas from "./canvas.js";
+import * as canvas from "../ui/canvas.js";
 
 export { raw }
 

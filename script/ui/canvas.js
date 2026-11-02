@@ -1,8 +1,8 @@
 /** Represents the visualizer's virtual screen and presentation */
 
-import * as dom from "../ui/dom.js";
+import * as dom from "../util/dom.js";
 
-export { getContext, resize }
+export { getContext, width, height, resize }
 
 
 // Variables
@@ -18,6 +18,10 @@ const container = dom.get("#visualizer");
  * @type {HTMLCanvasElement}
  */
 const node = dom.get("#canvas");
+
+let width = 0;
+
+let height = 0;
 
 
 // Getters
@@ -40,10 +44,12 @@ function getContext() {
  * Clears the contents of the canvas.
  */
 function resize() {
-    node.setAttribute("width", container.offsetWidth);
-    node.setAttribute("height", container.offsetHeight);
-    node.style.width = container.offsetWidth + "px";
-    node.style.height = container.offsetHeight + "px";
+    width = container.offsetWidth
+    height = container.offsetHeight;
+    node.setAttribute("width", width);
+    node.setAttribute("height", height);
+    node.style.width = width + "px";
+    node.style.height = height + "px";
 }
 window.addEventListener("resize", resize);
 resize();

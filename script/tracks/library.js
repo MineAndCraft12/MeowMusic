@@ -1,7 +1,7 @@
 /** Represents the music library and playlist */
 
 import * as transport from "./transport.js";
-import * as dom from "../ui/dom.js";
+import * as dom from "../util/dom.js";
 import * as ui from "../ui/ui.js";
 
 export {
