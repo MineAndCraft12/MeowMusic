@@ -4,7 +4,7 @@
 
 import * as canvas from "../ui/canvas.js";
 
-export { raw }
+export { ctx }
 
 
 // Variables
@@ -13,4 +13,4 @@ export { raw }
  * The standard canvas rendering context.
  * @type {CanvasRenderingContext2D}
  */
-const raw = canvas.getContext();
+const ctx = canvas.getContext();

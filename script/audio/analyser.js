@@ -5,7 +5,7 @@ import * as visualizer from "../graphics/visualizer.js";
 
 export {
     node, registerNode,
-    getData, usefulRange
+    getData, bufferLength, usefulRange
 }
 
 
@@ -17,14 +17,34 @@ export {
  */
 let node;
 
+/**
+ * The total actual size of the analyser.getData() array
+ * @type {number}
+ */
 const bufferLength = 1024;
 
+/**
+ * Based on my music, most frequencies useful to the visualizer are below this index
+ * @type {number}
+ */
 const usefulRange = 128;
 
+/**
+ * Raw data pulled from the AnalyserNode
+ * @type {Uint8Array}
+ */
 const data = new Uint8Array(bufferLength);
 
+/**
+ * Filtered data based on data pulled from the AnalyserNode
+ * @type {Uint8Array}
+ */
 const filteredData = new Uint8Array(usefulRange);
 
+/**
+ * The most recent frame data was pulled on.
+ * @type {number}
+ */
 let recentFrame = 0;
 
 // Registration
@@ -62,7 +82,17 @@ function filterData() {
     }
 }
 
-function getData() {
+/**
+ * Get data from the AnalyserNode.
+ * 
+ * If unfiltered, length will be analyser.bufferLength
+ * 
+ * If filtered, length will be analyser.usefulRange
+ * 
+ * @param {boolean} filtered - Whether to apply a Sinusoid filter to the data.
+ * @returns {Uint8Array}
+ */
+function getData(filtered) {
     if (recentFrame !== visualizer.frameCount) {
         node.getByteFrequencyData(data);
         recentFrame = visualizer.frameCount;

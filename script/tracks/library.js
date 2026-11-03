@@ -1,27 +1,19 @@
 /** Represents the music library and playlist */
 
 import * as transport from "./transport.js";
-import * as dom from "../util/dom.js";
-import * as ui from "../ui/ui.js";
+import * as catalog from "../ui/catalog.js";
 
 export {
     ready,
     tracklist, directory, playlist,
     loadDirectory,
-    highlightTrack,
     trackInfoFromPlaylist,
     playlistIndexFromPath,
-    toggleShuffle
+    toggleShuffle, getShuffle
 }
 
 
 // Variables
-
-/**
- * Host DOM node of the library
- * @type {HTMLElement}
- */
-const node = dom.get("#library");
 
 /**
  * Describes whether the library is ready for action.
@@ -34,12 +26,6 @@ let ready = false;
  * @type {boolean}
  */
 let shuffleMode = false;
-
-/**
- * Points to the currently playing playlist index in the GUI
- * @type {number}
- */
-let highlightedTrack = 0;
 
 /**
  * Contains the full paths, titles and blob URLS of all tracks in a flat list.
@@ -90,6 +76,25 @@ let directory = {};
 let playlist = [];
 
 
+// Shuffle Controls
+
+/**
+ * Gets the state of Shuffle Mode
+ * @returns {boolean}
+ */
+function getShuffle() {
+    return shuffleMode;
+}
+
+/**
+ * Toggles shuffle mode then invokes library.buildPlaylist()
+ */
+function toggleShuffle() {
+    shuffleMode = !shuffleMode;
+    buildPlaylist();
+}
+
+
 // Tracklist Construction
 
 /**
@@ -99,14 +104,14 @@ let playlist = [];
  */
 function clearTracklist() {
     ready = false;
-    clearUI();
+    catalog.clearUI();
 
     // Release our lock on the user's files
     for (let i in tracklist) {
         URL.revokeObjectURL(trackList[i]);
     }
 
-    highlightedTrack = 0;
+    catalog.resetHighlight();
 
     tracklist = {};
     directory = {};
@@ -133,10 +138,29 @@ function storeTrack(list, path, file) {
         storeTrack(list[newList], path, file);
     // If we're looking at a file, create its entry
     } else {
+        let fileMetaHints = file.webkitRelativePath.split("/");
+        let album = "";
+        let artist = "";
+
+        if (fileMetaHints.length > 2) {
+            album = fileMetaHints[fileMetaHints.length - 2];
+            artist = fileMetaHints[fileMetaHints.length - 3];
+        } else if (fileMetaHints.length === 2) {
+            album = fileMetaHints[0];
+        }
+
+        let  title = file.name.substring(0, file.name.lastIndexOf("."));
+
         tracklist[file.webkitRelativePath] = {
-            title: file.name.substring(0, file.name.indexOf(".")),
-            src: URL.createObjectURL(file)
+            title: title,
+            src: URL.createObjectURL(file),
+            meta: new MediaMetadata({
+                title: title,
+                album: album,
+                artist: artist
+            })
         };
+
         list[file.name] = file.webkitRelativePath;
     }
 }
@@ -163,6 +187,8 @@ function loadDirectory(files) {
 
     buildPlaylist();
     if (playlist.length > 0) {
+        catalog.clearUI();
+        catalog.buildUI();
         ready = true;
         transport.loadTrack(0);
     }
@@ -182,106 +208,8 @@ function buildPlaylist() {
             playlist.push(i);
         }
     }
-    buildUI();
+    catalog.buildUI();
 }
-
-
-// Event Handlers
-
-/**
- * Load and play a track when its button is clicked
- * @param {Event} event 
- */
-function handleClick(event) {
-    let trackIndex = parseInt(event.target.id.substring(6));
-    transport.loadTrack(trackIndex);
-    transport.play();
-}
-
-/**
- * Highlight a track's button in the DOM to show that it's playing
- * @param {number} newSelection 
- */
-function highlightTrack(newSelection) {
-    dom.get("#track_" + highlightedTrack).classList.remove("highlighted");
-    highlightedTrack = newSelection;
-    dom.get("#track_" + highlightedTrack).classList.add("highlighted");
-}
-
-
-// DOM Management
-
-/**
- * Clear the library interface except its title
- */
-function clearUI() {
-    node.replaceChildren(ui.createParagraph("Music Library", ["library-title"]));
-}
-
-/**
- * Create a button for a playlist track on the DOM.
- * 
- * @param {HTMLElement} parent - DOM node to be appended to
- * @param {number} index - Playlist track index for click handler
- */
-function buildTrackUI(parent, index) {
-    parent.appendChild(dom.create("div", {
-        id: "track_" + index,
-        classList: ["library-item", "library-track-button"],
-        textContent: trackInfoFromPlaylist(index).title, // TODO: If duplicate title exists, specify filetype and path
-        eventListeners: {click: handleClick}
-    }));
-}
-
-/**
- * Recursive function for building the directory hierarchy on the DOM.
- * 
- * @param {HTMLElement} parent - DOM node to be appended to, topmost is #library
- * @param {Object} obj - Object to crawl, topmost is library.directory
- * @param {string|Object} item - The specific item to handle this turn
- */
-function buildDirectoryUI(parent, obj, item) {
-    // If this is a track, create a button for it
-    if (typeof obj[item] === "string") {
-        buildTrackUI(parent, playlistIndexFromPath(obj[item]));
-    // If this is a directory...
-    } else {
-        // Create a collapsible "folder"
-        let directoryNode = ui.createDetails(
-            item, "", 
-            ["library-item", "library-directory-button"]
-        );
-        // Move one layer deeper and recurse to populate the collapsible
-        for (var subItem in obj[item]) {
-            buildDirectoryUI(directoryNode, obj[item], subItem);
-        }
-        // Add the collapsible to the flow
-        parent.appendChild(directoryNode);
-        // These should be uncollapsed by default for smooth UX
-        directoryNode.open = true;
-    }
-}
-
-/**
- * Construct the directory hierarchy or the playlist in the DOM tree.
- * 
- * Uses the playlist if shuffle is on, otherwise directory tree.
- */
-function buildUI() {
-    if (playlist.length === 0) {
-        node.appendChild(ui.createParagraph("No tracks loaded.\nVisit Settings to load your tracks."));
-    } else if (shuffleMode) {
-        for (let item in playlist) {
-            buildTrackUI(node, item);
-        }
-    } else {
-        for (let item in directory) {
-            buildDirectoryUI(node, directory, item);
-        }
-    }
-}
-clearUI(); // TODO: find a better place for these initial calls
-buildUI();
 
 
 // Playlist Operation
@@ -315,12 +243,4 @@ function trackInfoFromPlaylist(selected) {
  */
 function playlistIndexFromPath(selected) {
     return playlist.indexOf(selected);
-}
-
-/**
- * Toggles shuffle mode then invokes library.buildPlaylist()
- */
-function toggleShuffle() {
-    shuffleMode = !shuffleMode;
-    buildPlaylist();
 }

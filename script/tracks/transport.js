@@ -1,6 +1,7 @@
 /** represents the loaded track and its controls */
 
 import * as library from "./library.js";
+import * as catalog from "../ui/catalog.js";
 import * as audio from "../audio/audio.js";
 
 export {
@@ -39,9 +40,10 @@ function loadTrack(selected){
             selected = library.playlist.length - 1;
         }
         
-        library.highlightTrack(selected);
+        catalog.highlightTrack(selected);
         audio.setSrc(library.trackInfoFromPlaylist(selected).src);
         currentTrack = selected;
+        setMediaMeta();
     }
 }
 
@@ -164,3 +166,15 @@ function getTime() {
 function setTime(newTime) {
     audio.setTime(audio.getDuration() * newTime);
 }
+
+
+// System Media Session
+
+function setMediaMeta() {
+    navigator.mediaSession.metadata = library.trackInfoFromPlaylist(currentTrack).meta;
+}
+
+navigator.mediaSession.setActionHandler("play", play);
+navigator.mediaSession.setActionHandler("pause", pause);
+navigator.mediaSession.setActionHandler("nexttrack", next);
+navigator.mediaSession.setActionHandler("previoustrack", prev);

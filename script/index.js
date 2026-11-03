@@ -9,13 +9,14 @@ import * as view from "./ui/view.js";
 import * as modal from "./ui/modal.js";
 import * as config from "./ui/config.js";
 import * as menus from "./ui/menus.js";
+import * as catalog from "./ui/catalog.js";
 import * as library from "./tracks/library.js";
 import * as transport from "./tracks/transport.js";
 import * as audio from "./audio/audio.js";
 import * as analyser from "./audio/analyser.js";
 import * as effects from "./audio/effects.js";
 import * as canvas from "./ui/canvas.js";
-import * as ctx from "./graphics/ctx.js";
+import * as draw from "./graphics/draw.js";
 
 // Popup errors in case i dont notice the console
 window.onerror = (message, file, line, col, error) => {
@@ -28,7 +29,9 @@ window.dom = dom;
 window.color = color;
 window.view = view;
 window.modal = modal;
-window.cofig = config;
+window.config = config;
+window.menus = menus;
+window.catalog = catalog;
 window.color = color;
 window.library = library;
 window.transport = transport;
@@ -36,7 +39,7 @@ window.audio = audio;
 window.analyser = analyser;
 window.effects = effects;
 window.canvas = canvas;
-window.ctx = ctx;
+window.draw = draw;
 
 // Debug buttons call this function
 function debugView(event) {

@@ -113,6 +113,7 @@ function getPlaying() {
 function play() {
     checkSuspension();
     element.play();
+    navigator.mediaSession.playbackState = "playing";
     firstPlay = false;
 }
 
@@ -120,8 +121,9 @@ function play() {
  * Suspend the AudioContext and pause the audio.
  */
 function pause() {
-    context.suspend();
     element.pause();
+    context.suspend();
+    navigator.mediaSession.playbackState = "paused";
 }
 
 /**

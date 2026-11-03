@@ -2,7 +2,7 @@
 
 import * as audio from "./audio.js";
 
-export { registerDelayNode, registerGainNode }
+export { delay, gain, registerDelayNode, registerGainNode }
 
 
 // Variables
@@ -32,6 +32,9 @@ let gain;
  */
 function registerDelayNode(context) {
     delay = context.createDelay();
+    // TODO: Make this editable
+    // fftSize / likely sample rate / halfway through sample window
+    delay.delayTime.value = 2048 / 44100 / 2;
     return delay;
 }
 
