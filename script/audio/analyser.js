@@ -52,6 +52,12 @@ const filteredData = new Uint8Array(usefulRange);
  */
 let recentFrame = 0;
 
+/**
+ * The most recent frame data was filtered on.
+ * @type {number}
+ */
+let filteredFrame = 0;
+
 
 // Registration
 
@@ -105,15 +111,19 @@ function filterData() {
  * @returns {Uint8Array}
  */
 function getData(filtered) {
+    // Do not pull new data multiple times in the same frame
     if (recentFrame !== visualizer.frameCount) {
         node.getByteFrequencyData(data);
         recentFrame = visualizer.frameCount;
-        if (filtered) {
-            filterData();
-        }
     }
 
     if (filtered) {
+        // Do not filter data that we've already filtered
+        if (filteredFrame !== visualizer.frameCount) {
+            filterData();
+            filteredFrame = visualizer.frameCount;
+        }
+
         return filteredData;
     } else {
         return data;
