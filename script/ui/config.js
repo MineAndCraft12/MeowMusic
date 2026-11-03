@@ -122,9 +122,3 @@ function show(menu) {
         }
     }
 }
-
-
-// Actions
-
-// Show the music library on launch
-show(menus.musiclibrary);

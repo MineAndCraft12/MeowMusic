@@ -2,6 +2,7 @@
 
 import * as library from "../tracks/library.js";
 import * as view from "./view.js";
+import * as config from "./config.js";
 
 export { landing, musiclibrary }
 
@@ -18,6 +19,7 @@ const musiclibrary = {
         type: "directory",
         onchange: function(event) {
             library.loadDirectory(event.target.files);
+            config.show(landing);
             view.set("view-library");
         }
     }

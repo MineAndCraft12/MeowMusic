@@ -67,6 +67,3 @@ function toggleFullscreen() {
         document.exitFullscreen();
     }
 }
-
-// Show the config on launch
-set("view-config");
