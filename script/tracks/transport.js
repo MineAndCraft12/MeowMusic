@@ -81,7 +81,6 @@ function prev() {
 function next() {
     loadTrack(currentTrack + 1);
 }
-audio.element.addEventListener("ended", next); // TODO: This is debug code, replace it with a real solution
 
 
 // Playback Controls

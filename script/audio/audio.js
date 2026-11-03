@@ -2,9 +2,10 @@
 
 import * as analyser from "./analyser.js";
 import * as effects from "./effects.js";
+import * as transport from "../tracks/transport.js";
 
 export {
-    element, setSrc,
+    setSrc,
     getPlaying, play, pause,
     getTime, setTime, getDuration
 }
@@ -16,7 +17,7 @@ export {
  * The actual audio track element.
  * @type {HTMLAudioElement}
  */
-const element = new Audio(); // TODO: this is exported for debug code in transport.js, un-export when we're done
+const element = new Audio();
 
 /**
  * The AudioContext.
@@ -65,6 +66,10 @@ function canplaythrough() {
     }
 }
 element.addEventListener("canplaythrough", canplaythrough);
+
+// I'm not sure I like keeping this here...
+// It's better than exporting the element, at least
+element.addEventListener("ended", transport.next);
 
 
 // Audio Management

@@ -10,9 +10,10 @@ import * as modal from "./ui/modal.js";   // REQUIRED: Loads the modal dialogs
 import "./util/debug.js";
 
 // Show any errors in a modal dialog
-window.onerror = (message, file, line, col, error) => {
+function displayError(message, file, line, col, error) {
     modal.showAlert("Error in " + (file || "Unknown") + " (" + line + ", " + col + "):\n\n" + message, ()=>{});
 }
+window.onerror = displayError;
 
 // Show the config screen
 view.set("view-config");

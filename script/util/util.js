@@ -1,6 +1,17 @@
 /** Contains general-purpose JS utilities */
 
-export { scrubObject }
+export {
+    Tau,
+    scrubObject
+}
+
+
+// Mathematical Constants
+
+const Tau = Math.PI * 2;
+
+
+// Methods
 
 /**
  * Returns a copy of an object, not including properties which are undefined or null.

@@ -1,17 +1,12 @@
 /** represents the audio frequency analyser */
 
-import * as audio from "./audio.js";
+import * as util from "../util/util.js";
 import * as visualizer from "../graphics/visualizer.js";
 
 export {
     node, registerNode,
     getData, bufferLength, usefulRange
 }
-
-
-// Mathematical Constants
-
-const Tau = Math.PI * 2;
 
 
 // Variables
@@ -96,7 +91,7 @@ function filterData() {
         // Pulls valleys closer to the bottom
         // Results in greater contrast between data values
         // Data value ceiling is 255; 255 * 2 = 510; 255 / 2 = 127.5
-        filteredData[i] = -127.5 * Math.cos(Tau * data[i] / 510) + 127.5;
+        filteredData[i] = -127.5 * Math.cos(util.Tau * data[i] / 510) + 127.5;
     }
 }
 
