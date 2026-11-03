@@ -1,8 +1,8 @@
 /** Represents the modal popup */
 
+import * as error from "../util/error.js";
 import * as dom from "../util/dom.js";
 import * as ui from "./ui.js";
-import * as error from "../util/error.js";
 import * as color from "../graphics/color.js";
 
 export {

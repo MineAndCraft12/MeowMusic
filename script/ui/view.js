@@ -1,7 +1,7 @@
 /** Represents the view modes of the primary content */
 
-import * as dom from "../util/dom.js";
 import * as error from "../util/error.js";
+import * as dom from "../util/dom.js";
 import * as canvas from "./canvas.js";
 
 export {
@@ -67,3 +67,6 @@ function toggleFullscreen() {
         document.exitFullscreen();
     }
 }
+
+// Show the config on launch
+set("view-config");

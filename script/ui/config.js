@@ -1,8 +1,8 @@
 /** Represents the config menu */
 
+import * as error from "../util/error.js";
 import * as dom from "../util/dom.js";
 import * as ui from "./ui.js";
-import * as error from "../util/error.js";
 import * as menus from "./menus.js";
 
 export { show }
@@ -122,3 +122,9 @@ function show(menu) {
         }
     }
 }
+
+
+// Actions
+
+// Show the music library on launch
+show(menus.musiclibrary);
