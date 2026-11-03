@@ -17,6 +17,7 @@ import * as analyser from "./audio/analyser.js";
 import * as effects from "./audio/effects.js";
 import * as canvas from "./ui/canvas.js";
 import * as draw from "./graphics/draw.js";
+import * as controls from "./ui/controls.js";
 
 // Popup errors in case i dont notice the console
 window.onerror = (message, file, line, col, error) => {
@@ -40,55 +41,7 @@ window.analyser = analyser;
 window.effects = effects;
 window.canvas = canvas;
 window.draw = draw;
+window.controls = controls;
 
-// Debug buttons call this function
-function debugView(event) {
-    view.set(event.target.innerText);
-}
-
-// Create debug buttons
-let debugControls = dom.get("#controls");
-
-// Debug event handlers
-function setVisualizer() {
-    view.set("view-visualizer");
-}
-function setLibrary() {
-    view.set("view-library");
-}
-function setConfig() {
-    view.set("view-config");
-}
-
-// Debug visualizer view button
-debugControls.appendChild(dom.create("button", {
-    textContent: "V",
-    eventListeners: {click: setVisualizer}
-}));
-
-// Debug transport controls
-debugControls.appendChild(dom.create("button", {
-    textContent: "|<",
-    eventListeners: {click: transport.prev}
-}));
-debugControls.appendChild(dom.create("button", {
-    textContent: ">",
-    eventListeners: {click: transport.togglePlaying}
-}));
-debugControls.appendChild(dom.create("button", {
-    textContent: ">|",
-    eventListeners: {click: transport.next}
-}));
-
-// Debug library and config view buttons
-debugControls.appendChild(dom.create("button", {
-    textContent: "L",
-    eventListeners: {click: setLibrary}
-}));
-debugControls.appendChild(dom.create("button", {
-    textContent: "C",
-    eventListeners: {click: setConfig}
-}));
-
-// Display the config menu
+// Display the music library upload button
 config.show(menus.musiclibrary);

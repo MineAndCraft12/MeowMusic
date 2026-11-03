@@ -5,13 +5,35 @@ import * as draw from "./draw.js";
 import * as analyser from "../audio/analyser.js";
 
 export {
-    frameCount,
-    frame
+    setup,
+    frameCount, frame
 }
+
+
+// Variables
 
 let frameCount = 0;
 
-// Currently all debug logic
+
+// Methods
+
+/**
+ * Prepare for rendering and render the first frame.
+ * Called by analyser.js
+ * 
+ * This weird chain of events is necessary to prevent race conditions
+ */
+function setup() {
+    draw.registerRenderingContext();
+    frame();
+}
+
+/**
+ * Render a visualizer frame.
+ * Called by visualizer.setup
+ * 
+ * Currently the contents of this function are debug code.
+ */
 function frame() {
     frameCount++;
 

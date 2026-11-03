@@ -1,6 +1,7 @@
 /** Represents the visualizer's virtual screen and presentation */
 
 import * as dom from "../util/dom.js";
+import * as controls from "./controls.js";
 
 export { getContext, width, height, resize }
 
@@ -19,8 +20,16 @@ const container = dom.get("#visualizer");
  */
 const node = dom.get("#canvas");
 
+/**
+ * Width of the drawing area.
+ * @type {number}
+ */
 let width = 0;
 
+/**
+ * Height of the drawing area.
+ * @type {number}
+ */
 let height = 0;
 
 
@@ -53,3 +62,8 @@ function resize() {
 }
 window.addEventListener("resize", resize);
 resize();
+
+
+// Actions
+
+container.addEventListener("click", controls.toggle);

@@ -4,7 +4,11 @@ import * as dom from "../util/dom.js";
 import * as error from "../util/error.js";
 import * as canvas from "./canvas.js";
 
-export { options, get, set }
+export {
+    options,
+    get, set,
+    toggleFullscreen
+}
 
 
 // Variables
@@ -52,4 +56,14 @@ function set(mode) {
     node.classList.remove(get());
     node.classList.add(mode);
     canvas.resize();
+}
+
+/** Requests or removes fullscreen for the document. */
+function toggleFullscreen() {
+    // If we are not fullscreen
+    if (document.fullscreenElement === null) {
+        document.documentElement.requestFullscreen();
+    } else {
+        document.exitFullscreen();
+    }
 }

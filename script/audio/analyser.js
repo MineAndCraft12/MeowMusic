@@ -9,6 +9,11 @@ export {
 }
 
 
+// Mathematical Constants
+
+const Tau = Math.PI * 2;
+
+
 // Variables
 
 /**
@@ -47,6 +52,7 @@ const filteredData = new Uint8Array(usefulRange);
  */
 let recentFrame = 0;
 
+
 // Registration
 
 /**
@@ -67,18 +73,24 @@ function registerNode(context) {
     // Most of my music looks like random noise below this range
     node.minDecibels = -60;
 
-    requestAnimationFrame(visualizer.frame);
+    // Launch the visualizer
+    requestAnimationFrame(visualizer.setup);
+
     return node;
 }
 
-// This is not final
+
+// Methods
+
+/** Runs the usefulRange of data through a filter and saves to filteredData */
 function filterData() { 
     for (let i = 0; i < usefulRange; i++) {
-        // pulled from Sinusoid modifier in AaronOS Music
+        // Originally from Sinusoid modifier in AaronOS Music
         // Pulls peaks closer to the top
         // Pulls valleys closer to the bottom
         // Results in greater contrast between data values
-        filteredData[i] = -127.5 * Math.cos(2 * Math.PI * data[i] / 510) + 127.5;
+        // Data value ceiling is 255; 255 * 2 = 510; 255 / 2 = 127.5
+        filteredData[i] = -127.5 * Math.cos(Tau * data[i] / 510) + 127.5;
     }
 }
 

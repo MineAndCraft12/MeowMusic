@@ -4,13 +4,25 @@
 
 import * as canvas from "../ui/canvas.js";
 
-export { ctx }
+export { ctx, registerRenderingContext }
 
 
 // Variables
 
 /**
  * The standard canvas rendering context.
- * @type {CanvasRenderingContext2D}
+ * If undefined it hasn't been registered yet.
+ * @type {CanvasRenderingContext2D|undefined}
  */
-const ctx = canvas.getContext();
+let ctx;
+
+
+// Registration
+
+/**
+ * Sets up the rendering context.
+ * This is called by visualizer.js
+ */
+function registerRenderingContext() {
+    ctx = canvas.getContext();
+}

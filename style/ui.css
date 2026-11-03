@@ -1,1 +1,50 @@
 /* Re-usable GUI constructs from ui.js */
+
+
+
+/* Helper classes */
+
+.absolute {
+       display: block;
+      position: absolute;
+    box-sizing: border-box;
+}
+
+.padded {
+    padding: 8px;
+}
+
+.hidden {
+    display: none;
+}
+
+.immersive-button {
+    background: inherit;
+         color: inherit;
+        border: none;
+}
+
+.immersive-button:focus,
+.immersive-button:hover {
+    opacity: 0.9;
+}
+
+.immersive-button:active {
+    opacity: 0.75;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.cursor-default {
+    cursor: default;
+}
+
+.float-left {
+    float: left;
+}
+
+.float-right {
+    float: right;
+}
