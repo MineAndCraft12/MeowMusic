@@ -96,8 +96,14 @@ function getData(filtered) {
     if (recentFrame !== visualizer.frameCount) {
         node.getByteFrequencyData(data);
         recentFrame = visualizer.frameCount;
-        filterData();
+        if (filtered) {
+            filterData();
+        }
     }
 
-    return filteredData;
+    if (filtered) {
+        return filteredData;
+    } else {
+        return data;
+    }
 }

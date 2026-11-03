@@ -15,7 +15,7 @@ let frameCount = 0;
 function frame() {
     frameCount++;
 
-    let data = analyser.getData();
+    let data = analyser.getData(true);
 
     draw.ctx.clearRect(0, 0, canvas.width, canvas.height);
     for (let i = 0; i < analyser.usefulRange; i++) {
