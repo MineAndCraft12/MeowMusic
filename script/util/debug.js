@@ -9,7 +9,6 @@ import * as dom from "./dom.js";
 import * as view from "../ui/view.js";
 import * as controls from "../ui/controls.js";
 import * as config from "../ui/config.js";
-import * as menus from "../ui/menus.js";
 import * as catalog from "../ui/catalog.js";
 import * as canvas from "../ui/canvas.js";
 import * as modal from "../ui/modal.js";
@@ -28,6 +27,11 @@ import * as color from "../graphics/color.js";
 import * as draw from "../graphics/draw.js";
 import * as visualizer from "../graphics/visualizer.js";
 
+// Content
+import * as menus from "../content/menus.js";
+import * as themes from "../content/themes.js";
+import * as scenes from "../content/scenes.js";
+
 
 // Enable debugging from the console
 
@@ -40,7 +44,6 @@ window.dom = dom;
 window.view = view;
 window.controls = controls;
 window.config = config;
-window.menus = menus;
 window.catalog = catalog;
 window.canvas = canvas;
 window.modal = modal;
@@ -58,3 +61,8 @@ window.transport = transport;
 window.color = color;
 window.draw = draw;
 window.visualizer = visualizer;
+
+// Content
+window.menus = menus;
+window.themes = themes;
+window.scenes = scenes;

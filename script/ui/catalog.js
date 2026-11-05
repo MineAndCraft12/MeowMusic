@@ -95,7 +95,8 @@ function buildDirectoryUI(parent, obj, item) {
         // Create a collapsible "folder"
         let directoryNode = ui.createDetails(
             item, "", 
-            ["library-item", "library-directory-button"]
+            ["library-item", "library-directory-button"],
+            undefined, true
         );
         // Move one layer deeper and recurse to populate the collapsible
         for (var subItem in obj[item]) {
@@ -103,8 +104,6 @@ function buildDirectoryUI(parent, obj, item) {
         }
         // Add the collapsible to the flow
         parent.appendChild(directoryNode);
-        // These should be uncollapsed by default for smooth UX
-        directoryNode.open = true;
     }
 }
 

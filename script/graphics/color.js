@@ -1,17 +1,20 @@
 /** Contains utils to help with colors */
 
 import * as error from "../util/error.js";
+import * as analyser from "../audio/analyser.js";
+import * as visualizer from "./visualizer.js";
 
 export {
     getValidColorspaces, getColorspace,
-    create, parse, createCache
+    create, parse,
+    gradient
 }
 
 
 // Variables
 
 /**
- * Represents each colorspace.
+ * Represents each colorspace. Eventually this will facilitate a 2D color editor.
  * 
  * graphHint represents the best plotting of values in a 2D color-picking interface:
  * - x, y for a square graph's axes
@@ -98,7 +101,7 @@ function getValidColorspaces() {
 }
 
 /**
- * Get information about a colorspace.
+ * Get information about a colorspace. Eventually this will facilitate a 2D color editor.
  * 
  * @example
  * let info = getColorspace("hsl");
@@ -150,10 +153,6 @@ function getColorspace(name) {
 /**
  * Constructs a CSS color from a set of values.
  * 
- * This function is designed to be as fast as possible.
- * 
- * It is up to you to constrain your values to the correct range for your colorspace.
- * 
  * @example
  * color.create("oklch", [0.4, 0.4, 0, 1]);
  * // => "oklch(0.4 0.4 0 / 1)" (white)
@@ -197,23 +196,61 @@ function parse(string) {
 }
 
 /**
- * Creates an array of all possible colors in the current theme from integer points, ignoring frequency.
+ * Calculates a value from a given point in a gradient with any number of stops.
  * 
- * Useful for visualizers which use lookup tables for performance gains over recalculating colors every frame.
+ * A gradient is an array of arrays representing color stops.
  * 
- * Drawback is that the matrix only contains values for integer pairs; limited to 256 total colors.
+ * The first index of the sub-array is the stop position. The second index is the stop value.
  * 
- * WARNING: NOT YET IMPLEMENTED.
  * 
  * @example
- * let cache = color.createCache()
- * // => string[256]
- * // Get a prebuilt color string using the amplitude...
- * cache[amplitude] // => "rgba(r,g,b,a)" for example
+ * color.gradient(
+ *     [[0, 0], [255, 10]],
+ *     127
+ * ); // => 5
  * 
- * @returns {Array.<string>}
+ * 
+ * @param {Array.<[number,number]>} map - A gradient map as described above.
+ * @param {number} amount - How far into the gradient is your value?
+ * @returns {number} The value at your amount on the gradient
  */
-function createCache() {
-    // TODO: Implement
-    return;
+function gradient(map, amount) {
+    // for each stop on the map...
+    for (var pointer = 0; pointer < map.length; pointer++) {
+
+        // if the stop is equal to the amount, we're done.
+        if (map[pointer][0] === amount) {
+            return map[pointer][1];
+
+        // if the stop is lower than the amount...
+        } else if (map[pointer][0] < amount) {
+            // if this is the last stop, we're done.
+            if (pointer === map.length - 1) {
+                return map[pointer][1];
+            }
+            // otherwise, loop to the next stop
+
+        // if the stop is higher than the amount...
+        } else {
+            // if this is the first stop, we're done.
+            if (pointer === 0) {
+                return map[pointer][1];
+            // otherwise, we must calculate the gradient...
+            } else {
+                // Grab our stop points.
+                let stopA = map[pointer - 1];
+                let stopB = map[pointer];
+                // How far between A and B are we?
+                let weight = (  amount - stopA[0]) /
+                             (stopB[0] - stopA[0]);
+                // Weigh the stops based on how close we are to them.
+                return stopA[1] * (1 - weight) +
+                       stopB[1] *      weight;
+            }
+        }
+    }
+
+    // If by some crazy circumstances the loop failed, I probably earned this.
+    console.warn({map, amount});
+    throw error.custom("color.gradient", "That gradient map is leaking colors! Failed to calculate the gradient.");
 }

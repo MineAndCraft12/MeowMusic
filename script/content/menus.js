@@ -1,8 +1,8 @@
 /** Represents menus in the config screen */
 
 import * as library from "../tracks/library.js";
-import * as view from "./view.js";
-import * as config from "./config.js";
+import * as view from "../ui/view.js";
+import * as config from "../ui/config.js";
 
 export { landing, musiclibrary }
 

@@ -3,7 +3,7 @@
 import * as error from "../util/error.js";
 import * as dom from "../util/dom.js";
 import * as ui from "./ui.js";
-import * as menus from "./menus.js";
+import * as menus from "../content/menus.js";
 
 export { show }
 
@@ -113,8 +113,11 @@ function show(menu) {
                 node.appendChild(
                     ui.createParagraphContainer(["config-container", "config-directory-input"], [
                         ui.createDetails(
-                            menu[item].title, menu[item].details, ["config-details"],
-                            ui.createDirectoryInput(menu[item].onchange)
+                            menu[item].title,
+                            menu[item].details,
+                            ["config-details"],
+                            ui.createDirectoryInput(menu[item].onchange),
+                            true
                         )
                     ])
                 )

@@ -3,6 +3,7 @@
 import * as analyser from "./analyser.js";
 import * as effects from "./effects.js";
 import * as transport from "../tracks/transport.js";
+import * as visualizer from "../graphics/visualizer.js";
 
 export {
     setSrc,
@@ -118,6 +119,7 @@ function getPlaying() {
 function play() {
     checkSuspension();
     element.play();
+    visualizer.play();
     navigator.mediaSession.playbackState = "playing";
     firstPlay = false;
 }
@@ -127,6 +129,7 @@ function play() {
  */
 function pause() {
     element.pause();
+    visualizer.pause();
     context.suspend();
     navigator.mediaSession.playbackState = "paused";
 }

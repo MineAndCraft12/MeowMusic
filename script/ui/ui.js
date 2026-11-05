@@ -52,16 +52,18 @@ function createParagraphContainer(classList, children) {
  * 
  * Can optionally place a child node beside the summary.
  * 
- * @param {*} title - Primary text for the Summary node
- * @param {*} details - Collapsible description text
- * @param {*} classList - Class list for the Details node
- * @param {*} child - Child node for the Summary node
+ * @param {string} title - Primary text for the Summary node
+ * @param {string} details - Collapsible description text
+ * @param {Array.<string>} classList - Class list for the Details node
+ * @param {HTMLElement} child - Child node for the Summary node
+ * @param {boolean} open - Whether the details element spawns open
  * @returns 
  */
-function createDetails(title, details, classList, child) {
+function createDetails(title, details, classList, child, open) {
     return dom.create("details", util.scrubObject({
         text: details,
         classList: classList,
+        attributes: util.scrubObject({open: open}), // TODO: Find a more graceful way to handle this
         // Summary is prepended because it must come before the text content
         prependChildren: [
             dom.create("summary", util.scrubObject({
