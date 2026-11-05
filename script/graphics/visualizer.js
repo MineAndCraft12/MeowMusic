@@ -12,8 +12,8 @@ export {
     frame,
     frameCount,
     theme, scene,
-    setTheme,
-    setScene
+    setTheme, setScene,
+    toggleDebug
 }
 
 
@@ -61,7 +61,7 @@ let playing = false;
  * Whether to display debug metrics on the visualizer and inside scenes
  * @type {boolean}
  */
-let debug = true;
+let debug = false;
 
 /**
  * References the current theme.

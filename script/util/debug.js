@@ -66,3 +66,6 @@ window.visualizer = visualizer;
 window.menus = menus;
 window.themes = themes;
 window.scenes = scenes;
+
+// Enable visualizer debugging
+visualizer.toggleDebug();
