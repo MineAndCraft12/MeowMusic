@@ -1,8 +1,6 @@
 /** Overall framework for visualizer logic */
 
-import * as canvas from "../ui/canvas.js";
 import * as draw from "./draw.js";
-import * as analyser from "../audio/analyser.js";
 import * as themes from "../content/themes.js";
 import * as scenes from "../content/scenes.js";
 
@@ -95,7 +93,7 @@ let scene; // TODO: do this when scenes are ready
 function setup() {
     draw.registerRenderingContext();
     setTheme("legacy");
-    //chooseScene("bars");
+    setScene("bars");
     requestAnimationFrame(frame);
 }
 
@@ -154,13 +152,14 @@ function frame(animationFrame) {
     if (playing || !animationFrame) {
         frameCount++;
 
-        draw.clear(); // TODO: Implement scenes - these two calls are a temporary scene
-        draw.fillBars(
-            [canvas.width * 0.1, canvas.height * 0.75],
-            [canvas.width * 0.8, canvas.height * -0.5],
-            -1, 2 / 3,
-            analyser.getData(true)
-        );
+        draw.clear();
+        try {
+            scene.frame();
+        } catch (error) {
+            draw.setFill("#F00");
+            draw.ctx.fillText('!', 10, 30);
+            throw error;
+        }
 
         if (debug) {
             framesThisSecond++;

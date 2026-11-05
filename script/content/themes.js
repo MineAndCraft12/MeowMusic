@@ -18,8 +18,8 @@ const legacy = {
         },
         alpha: {
             title: "Fade to Black",
-              value: true,
-            default: true
+              value: false,
+            default: false
         }
     },
     maps: {
