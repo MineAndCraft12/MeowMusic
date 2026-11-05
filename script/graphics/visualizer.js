@@ -5,10 +5,9 @@ import * as themes from "../content/themes.js";
 import * as scenes from "../content/scenes.js";
 
 export {
-    setup,
+    setup, setupContent,
     play, pause,
-    frame,
-    frameCount,
+    frame, frameCount, delta,
     theme, scene,
     setTheme, setScene,
     toggleDebug
@@ -48,6 +47,24 @@ let framesThisSecond = 0;
  * @type {number}
  */
 let fps = 0;
+
+/**
+ * Most recent frame's time in microseconds.
+ * @type {number}
+ */
+let timing = 0;
+
+/**
+ * Target frame time for 60fps.
+ * @type {number}
+ */
+const idealFrameTime = 1000 / 60;
+
+/**
+ * Delta Time value used to account for frame rate.
+ * @type {number}
+ */
+let delta = 1;
 
 /**
  * Whether `visualizer.frame()` is allowed to run when called by `requestAnimationFrame`
@@ -94,13 +111,19 @@ function setup() {
     draw.registerRenderingContext();
     setTheme("legacy");
     setScene("bars");
+    setupContent();
     requestAnimationFrame(frame);
+}
+
+function setupContent() {
+    theme.setup();
+    scene.setup();
+    frame();
 }
 
 /** Select a new color theme and initialize it. */
 function setTheme(newTheme) {
     theme = themes[newTheme];
-    theme.setup();
 }
 
 /**
@@ -110,7 +133,6 @@ function setTheme(newTheme) {
  */
 function setScene(newScene) {
     scene = scenes[newScene];
-    scene.setup();
 }
 
 
@@ -118,6 +140,7 @@ function setScene(newScene) {
 
 /** Allows the visualizer to render automatically */
 function play() {
+    timing = performance.now();
     playing = true;
 }
 
@@ -149,29 +172,40 @@ function frame(animationFrame) {
         requestAnimationFrame(frame);
     }
 
+    // Only runs if playing or not in an animationFrame
     if (playing || !animationFrame) {
         frameCount++;
 
+        // Calculate delta time
+        let newTiming = performance.now();
+        delta = (newTiming - timing) / idealFrameTime;
+
+        timing = newTiming;
+
+        // Draw the scene
         draw.clear();
         try {
             scene.frame();
         } catch (error) {
+            console.warn("Error in scene " + scene.title + " with theme " + theme.title);
             draw.setFill("#F00");
             draw.ctx.fillText('!', 10, 30);
             throw error;
         }
 
-        if (debug) {
-            framesThisSecond++;
-            let newSecond = Math.floor(Date.now() / 1000);
-            if (newSecond !== second) {
-                fps = framesThisSecond;
-                framesThisSecond = 0;
-                second = newSecond;
-            }
+        // Framerate counter
+        framesThisSecond++;
+        let newSecond = Math.floor(Date.now() / 1000);
+        if (newSecond !== second) {
+            fps = framesThisSecond;
+            framesThisSecond = 0;
+            second = newSecond;
+        }
 
+        // Debug overlay
+        if (debug) {
             draw.setFill("#FFF");
-            draw.ctx.fillText(`${fps}  ${frameCount}`, 20, 30);
+            draw.ctx.fillText(`${frameCount}  ${fps}  ${delta}`, 20, 30);
         }
     }
 }

@@ -2,6 +2,7 @@
 
 import * as dom from "../util/dom.js";
 import * as controls from "./controls.js";
+import * as visualizer from "../graphics/visualizer.js";
 
 export { getContext, width, height, resize }
 
@@ -59,6 +60,10 @@ function resize() {
     node.setAttribute("height", height);
     node.style.width = width + "px";
     node.style.height = height + "px";
+
+    if (visualizer.frameCount > 0) {
+        visualizer.setupContent();
+    }
 }
 window.addEventListener("resize", resize);
 resize();
