@@ -24,7 +24,7 @@ const element = new Audio();
  * The AudioContext.
  * @type {AudioContext}
  */
-const context = new AudioContext();
+const context = new AudioContext({latencyHint: "interactive"});
 
 /**
  * Routes the output of audio.element through the analyser and effect layers.

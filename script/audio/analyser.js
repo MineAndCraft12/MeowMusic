@@ -27,7 +27,7 @@ const bufferLength = 1024;
  * Based on my music, most frequencies useful to the visualizer are below this index
  * @type {number}
  */
-const usefulRange = 128;
+const usefulRange = bufferLength / 8;
 
 /**
  * Raw data pulled from the AnalyserNode
@@ -68,7 +68,7 @@ function registerNode(context) {
     node = context.createAnalyser();
 
     // This gives us about 64 or 128 useful values
-    node.fftSize = 2048;
+    node.fftSize = bufferLength * 2;
     // Most of my music peaks around this range
     node.maxDecibels = -20;
     // Most of my music looks like random noise below this range

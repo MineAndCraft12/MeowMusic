@@ -205,7 +205,7 @@ function frame(animationFrame) {
         // Debug overlay
         if (debug) {
             draw.setFill("#FFF");
-            draw.ctx.fillText(`${frameCount}  ${fps}  ${delta}`, 20, 30);
+            draw.ctx.fillText(`${fps}`, 20, 30);
         }
     }
 }
