@@ -7,7 +7,7 @@ import * as transport from "../tracks/transport.js";
 import * as visualizer from "../graphics/visualizer.js";
 
 export {
-    setSrc,
+    setSrc, allowPlayback,
     getPlaying, play, pause,
     getTime, setTime, getDuration
 }
@@ -88,7 +88,7 @@ element.addEventListener("ended", transport.next);
  * @param {string} newSrc - ObjectURL for the desired audio file.
  */
 function setSrc(newSrc) {
-    element.pause();
+    console.warn("New Source");
     element.src = newSrc;
     element.load();
 }
@@ -102,8 +102,24 @@ function checkSuspension() {
     }
 }
 
+/** Suspends the AudioContext, easing CPU strain and pausing the fftData. */
+function suspendContext() {
+    if (!getPlaying()) {
+        context.suspend();
+        // Pause the visualizer AFTER the fft data freezes.
+        requestAnimationFrame(visualizer.pause);
+    }
+}
+
 
 // Playback Controls
+
+/**
+ * Allow audio to auto-play.
+ */
+function allowPlayback() {
+    firstPlay = false;
+}
 
 /**
  * Use a variety of heuristics to determine whether the audio is currently playing.
@@ -137,10 +153,15 @@ function play() {
  */
 function pause() {
     element.pause();
-    visualizer.pause();
-    context.suspend();
     main.classList.remove("playing");
     navigator.mediaSession.playbackState = "paused";
+
+    /*
+     * Wait for the buffer to clear before suspending the context.
+     * Prevents crackling if the context is resumed to switch tracks later.
+     * The buffer seems to always be clear by 27ms, so pause at 28 for leeway.
+     */
+    setTimeout(suspendContext, 28);
 }
 
 /**

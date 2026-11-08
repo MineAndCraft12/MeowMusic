@@ -5,7 +5,46 @@ import * as canvas from "../ui/canvas.js";
 import * as draw from "../graphics/draw.js";
 import * as visualizer from "../graphics/visualizer.js";
 
-export { bars }
+export { theme, bars }
+
+const theme = {
+    title: "View Theme",
+    options: {
+        fullSize: {
+              title: "Fill Entire Screen",
+              value: false,
+            default: false
+        }
+    },
+    setup: function() {
+        let left = 0;
+        let top = 0;
+        let size = 256;
+
+        if (this.options.fullSize.value) {
+            if (canvas.width > canvas.height) {
+                size = canvas.height;
+                left = Math.round((canvas.width - canvas.height) / 2);
+            } else {
+                size = canvas.width;
+                top = Math.round((canvas.height - canvas.width) / 2);
+            }
+        } else {
+            left = Math.round(canvas.width / 2) - 128;
+            top = Math.round(canvas.height / 2) - 128;
+        }
+
+        let bottom = canvas.height - top;
+
+        for (var frequency = 0; frequency < size; frequency++) {
+            for (var amplitude = 0; amplitude < size; amplitude++) {
+                draw.setFill(visualizer.theme.mix(amplitude, frequency / size));
+                draw.ctx.fillRect(left + frequency, bottom - amplitude, 1, 1);
+            }
+        }
+    },
+    frame: function() { }
+};
 
 const bars = {
     title: "Bars",
@@ -23,6 +62,7 @@ const bars = {
         this.peakFrames = new Array(analyser.usefulRange);
     },
     frame: function() {
+        draw.clear();
         let data = analyser.getData(true);
 
         let left = canvas.width * 0.1;
@@ -68,4 +108,4 @@ const bars = {
             );
         }
     }
-}
+};

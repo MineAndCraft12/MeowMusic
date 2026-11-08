@@ -2,6 +2,7 @@
 
 import * as dom from "../util/dom.js";
 import * as ui from "../ui/ui.js";
+import * as audio from "../audio/audio.js";
 import * as library from "../tracks/library.js";
 
 export {
@@ -32,9 +33,9 @@ let highlightedTrack = 0;
  * @param {Event} event 
  */
 function handleClick(event) {
+    audio.allowPlayback();
     let trackIndex = parseInt(event.target.id.substring(6));
     transport.loadTrack(trackIndex);
-    transport.play();
 }
 
 /**

@@ -98,6 +98,11 @@ let theme;
  */
 let scene; // TODO: do this when scenes are ready
 
+/**
+ * Signals to frame() that it needs to setup the content after a change.
+ */
+let contentDirty = true;
+
 
 // Setup
 
@@ -109,21 +114,25 @@ let scene; // TODO: do this when scenes are ready
  */
 function setup() {
     draw.registerRenderingContext();
-    setTheme("legacy");
-    setScene("bars");
-    setupContent();
+    setTheme("meowmusic"); // Default Theme
+    setScene("bars"); // Default Scene
     requestAnimationFrame(frame);
 }
 
-function setupContent() {
+function setupContent(doNotFrame) {
+    draw.clear();
     theme.setup();
     scene.setup();
-    frame();
+    contentDirty = false;
+    if (!playing || doNotFrame) {
+        frame();
+    }
 }
 
 /** Select a new color theme and initialize it. */
 function setTheme(newTheme) {
     theme = themes[newTheme];
+    contentDirty = true;
 }
 
 /**
@@ -133,6 +142,7 @@ function setTheme(newTheme) {
  */
 function setScene(newScene) {
     scene = scenes[newScene];
+    contentDirty = true;
 }
 
 
@@ -172,6 +182,10 @@ function frame(animationFrame) {
         requestAnimationFrame(frame);
     }
 
+    if (contentDirty) {
+        setupContent(true);
+    }
+
     // Only runs if playing or not in an animationFrame
     if (playing || !animationFrame) {
         frameCount++;
@@ -183,7 +197,6 @@ function frame(animationFrame) {
         timing = newTiming;
 
         // Draw the scene
-        draw.clear();
         try {
             scene.frame();
         } catch (error) {
