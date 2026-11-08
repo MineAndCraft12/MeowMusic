@@ -59,16 +59,20 @@
             background-image: url("../image/ui/library.svg");
         }
 
-        > #controls-visualizer {
+        > #controls-visualizer { /* rotated in portrait mode */
             background-image: url("../image/ui/visualizer.svg");
         }
     }
 }
 
 #main.playing {
-    > #controls {
-        #controls-play {
-            background-image: url("../image/ui/pause.svg");
-        }
+    #controls-play {
+        background-image: url("../image/ui/pause.svg");
+    }
+}
+
+@media (orientation: portrait) {
+    #controls-visualizer {
+        transform: rotate(90deg);
     }
 }
