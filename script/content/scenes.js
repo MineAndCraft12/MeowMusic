@@ -12,8 +12,8 @@ const bars = {
     options: {
         bobbers: {
               title: "Bobbers",
-              value: true,
-            default: true
+              value: false,
+            default: false
         }
     },
     peaks: null,

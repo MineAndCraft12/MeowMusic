@@ -1,0 +1,74 @@
+#main {
+      --controls-size: 32px;
+    --controls-margin: 16px;
+
+    > #controls {
+               height: calc(var(--controls-margin) * 2 + var(--controls-size));
+           text-align: center;
+        align-content: center;
+           background: linear-gradient( oklch(0% 0% 0deg / 0%), oklch(0% 0% 0deg / 50%) );
+           transition: 0.25s opacity;
+
+        > button {
+                       width: var(--controls-size);
+                      height: var(--controls-size);
+                      margin: 0 var(--controls-margin);
+             background-size:contain;
+            background-color: transparent;
+                      border: none;
+                      filter: invert(1);
+                  transition: 0.1s filter;
+                      cursor: pointer;
+        }
+
+        > button:hover {
+            filter: invert(0.8);
+        }
+
+        > button:active {
+            filter: invert(0.675);
+        }
+
+        /* Left Side */
+
+        > #controls-fullscreen {
+            background-image: url("../image/ui/fullscreen.svg");
+        }
+
+        /* Center */
+
+        > #controls-prev {
+            background-image: url("../image/ui/prev.svg");
+        }
+
+        > #controls-play { /* overridden by #main.playing */
+            background-image: url("../image/ui/play.svg");
+        }
+
+        > #controls-next {
+            background-image: url("../image/ui/next.svg");
+        }
+
+        /* Right Side */
+
+        > #controls-config {
+            background-image: url("../image/ui/config.svg");
+        }
+
+        > #controls-library {
+            background-image: url("../image/ui/library.svg");
+        }
+
+        > #controls-visualizer {
+            background-image: url("../image/ui/visualizer.svg");
+        }
+    }
+}
+
+#main.playing {
+    > #controls {
+        #controls-play {
+            background-image: url("../image/ui/pause.svg");
+        }
+    }
+}

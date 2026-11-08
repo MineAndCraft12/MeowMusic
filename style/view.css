@@ -2,34 +2,18 @@
 
 /* Top-level parent of all context except for the modal dialog */
 #main {
-    /* Height of the container for play, pause, etc buttons */
-    --controls-height: 4rem;
     /* Size of the library and config UI */
-         --view-split: 30vw;
+    --view-split: 30vw;
 
     /* Container for play, pause, etc buttons */
     > #controls {
-               bottom: 0;
-                width: calc( 100vw - var(--view-split) );
-               height: var(--controls-height);
-            font-size: calc( var(--controls-height) / 2 );
-           text-align: center;
-        align-content: center;
-           background: linear-gradient( oklch(0% 0% 0deg / 0%), oklch(0% 0% 0deg / 50%) );
-        
-        /* Play button, pause button, etc */
-        button {
-             font-size: 1em;
-                margin: 0 0.25em;
-            background: none;
-                border: none;
-                 color: oklch(100% 0% 0deg);
-        }
+        bottom: 0;
+         width: calc( 100vw - var(--view-split) );
     }
 
     /* Primary content container, i.e. #visualizer, #library, #config */
     > section {
-        width: initial;
+         width: initial;
         height: 100vh;
     }
 
@@ -48,10 +32,10 @@
 
     > #library,
     > #config {
-        bottom: initial;
-        right: 0;
-        width: var(--view-split);
-        height: 100vh;
+            bottom: initial;
+             right: 0;
+             width: var(--view-split);
+            height: 100vh;
         overflow-y: auto;
     }
 }
@@ -61,7 +45,11 @@
 #main.view-visualizer {
     > #visualizer,
     > #controls {
-         width: 100vw;
+        width: 100vw;
+
+        > #controls-visualizer {
+            display: none;
+        }
     }
 
     > #library,
@@ -71,12 +59,20 @@
 }
 
 #main.view-library {
+    > #controls > #controls-library {
+        display: none;
+    }
+
     > #config {
         display: none;
     }
 }
 
 #main.view-config {
+    > #controls > #controls-config {
+        display: none;
+    }
+
     > #library {
         display: none;
     }
@@ -93,25 +89,25 @@
         --view-split: 40vh;
 
         > #controls {
-            width: 100vw;
+             width: 100vw;
             bottom: var(--view-split);
         }
 
         > section {
-            width: 100vw;
+             width: 100vw;
             height: initial;
         }
 
         > #visualizer {
-            width: 100vw;
+             width: 100vw;
             height: calc(100vh - var(--view-split));
         }
 
         > #library,
         > #config {
             bottom: 0;
-            right: initial;
-            width: 100vw;
+             right: initial;
+             width: 100vw;
             height: var(--view-split);
         }
     }

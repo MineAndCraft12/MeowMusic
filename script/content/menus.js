@@ -7,7 +7,7 @@ import * as config from "../ui/config.js";
 export { landing, musiclibrary }
 
 const musiclibrary = {
-    title: "Load your Music Library",
+    title: "Music Library",
     welcome: {
         title: "Welcome",
         details: "<b>Please add your music to get started.</b>",
@@ -15,7 +15,8 @@ const musiclibrary = {
     },
     select: {
         title: "Music Library Folder",
-        details: "Select a folder on your local drive to use as the Music Library.",
+        details: "Select a folder on your device which contains audio files.\n" +
+            "Your files will not be uploaded to the Internet.",
         type: "directory",
         onchange: function(event) {
             library.loadDirectory(event.target.files);
@@ -25,10 +26,27 @@ const musiclibrary = {
     }
 };
 
+const visualizerScene = {
+    title: "Visualizer"
+};
+
+const visualizerTheme = {
+    title: "Color Theme"
+}
+
+// This must stay at the end!
 const landing = {
     title: "Settings",
-    library: {
+    musicLibrary: {
         type: "link",
         target: musiclibrary
+    },
+    visualizerScene: {
+        type: "link",
+        target: visualizerScene,
+    },
+    visualizerTheme: {
+        type: "link",
+        target: visualizerTheme
     }
 };

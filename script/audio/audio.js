@@ -1,5 +1,6 @@
 /** represents the audio system */
 
+import * as dom from "../util/dom.js";
 import * as analyser from "./analyser.js";
 import * as effects from "./effects.js";
 import * as transport from "../tracks/transport.js";
@@ -13,6 +14,12 @@ export {
 
 
 // Variables
+
+/**
+ * The main content container.
+ * @type {HTMLElement}
+ */
+const main = dom.get("#main");
 
 /**
  * The actual audio track element.
@@ -121,6 +128,7 @@ function play() {
     element.play();
     visualizer.play();
     navigator.mediaSession.playbackState = "playing";
+    main.classList.add("playing");
     firstPlay = false;
 }
 
@@ -131,6 +139,7 @@ function pause() {
     element.pause();
     visualizer.pause();
     context.suspend();
+    main.classList.remove("playing");
     navigator.mediaSession.playbackState = "paused";
 }
 

@@ -166,16 +166,33 @@ function storeTrack(list, path, file) {
 }
 
 /**
+ * Pass to Array.sort() for alphabetical sort based on full filepath.
+ * 
+ * @param {File} fileA - First file to compare
+ * @param {File} fileB - Second file to compare
+ * @returns {number} Information for Array.sort()
+ */
+function sortFiles(fileA, fileB) {
+    return fileA.webkitRelativePath.localeCompare(fileB.webkitRelativePath, undefined, {
+        sensitivity: "base",
+        numeric: true
+    });
+}
+
+/**
  * Loads the user's uploaded directory into the music library.
  * 
  * Also invokes library.buildPlaylist().
  * If the playlist is not empty. the library is ready for action.
  * 
- * @param {FileList} files - The user's uploaded FileList.
+ * @param {FileList} uploadedFiles - The user's uploaded FileList.
  */
-function loadDirectory(files) {
+function loadDirectory(uploadedFiles) {
     clearTracklist();
     transport.reset();
+
+    let files = Array.from(uploadedFiles);
+    files.sort(sortFiles);
 
     for (let i = 0; i < files.length; i++) {
         if (files[i].type.startsWith("audio/")) {

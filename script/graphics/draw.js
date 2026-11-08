@@ -102,23 +102,34 @@ function drawBar(calculated, heightDimension, totalIndices, index, amount, bobbe
     let offset = index * (calculated.width + calculated.space);
     let height = Math.round(amount / 255 * heightDimension);
 
-    ctx.fillStyle = visualizer.theme.mix(amount, index / (totalIndices - 1));
-    ctx.fillRect(
-        calculated.left + offset,
-        calculated.top,
-        calculated.width,
-        calculated.footHeight + height
-    );
-
     if (bobber != null) {
         let bobberTop = Math.round(bobber / 255 * heightDimension);
 
+        // Draw the bobber
         ctx.fillStyle = visualizer.theme.mix(bobber, index / (totalIndices - 1));
         ctx.fillRect(
             calculated.left + offset,
             calculated.top + bobberTop,
             calculated.width,
             calculated.footHeight
+        );
+
+        // Draw the bar (minus foot because bobber is the foot)
+        ctx.fillStyle = visualizer.theme.mix(amount, index / (totalIndices - 1));
+        ctx.fillRect(
+            calculated.left + offset,
+            calculated.top,
+            calculated.width,
+            height
+        );
+    } else {
+        // Draw the bar
+        ctx.fillStyle = visualizer.theme.mix(amount, index / (totalIndices - 1));
+        ctx.fillRect(
+            calculated.left + offset,
+            calculated.top,
+            calculated.width,
+            calculated.footHeight + height
         );
     }
 }

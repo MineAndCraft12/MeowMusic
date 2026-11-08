@@ -20,60 +20,66 @@ const node = dom.get("#controls");
 
 /** Show or hide the controls row */
 function toggle() {
-    node.classList.toggle("hidden");
+    node.classList.toggle("invisible");
+    node.toggleAttribute("inert");
 }
 
 
 // Event Handlers
 
-// Debug Event Handlers
+/** Set the view to Visualizer */
 function setVisualizer() {
     view.set("view-visualizer");
 }
+
+/** Set the view to Library */
 function setLibrary() {
     view.set("view-library");
 }
+
+/** Set the view to Config */
 function setConfig() {
     view.set("view-config");
 }
 
 
-// Actions
+// DOM Manipulation
 
-// Debug fullscreen button
-node.appendChild(dom.create("button", {
-    textContent: "F",
-    eventListeners: {click: view.toggleFullscreen},
-    classList: ["float-left"]
-}));
+/**
+ * Create a button in the DOM.
+ * 
+ * @param {string} id - HTML ID for the button.
+ * @param {Function} eventListener - EventListener for the click event.
+ * @param {string|undefined} float - Optional "left" or "right"
+ */
+function createButton(id, eventListener, float) {
+    if (float) {
+        node.appendChild(dom.create("button", {
+            id: "controls-" + id,
+            classList: ["float-" + float],
+            eventListeners: {click: eventListener}
+        }));
+    } else {
+        node.appendChild(dom.create("button", {
+            id: "controls-" + id,
+            eventListeners: {click: eventListener}
+        }));
+    }
+    
+}
 
-// Debug transport controls
-node.appendChild(dom.create("button", {
-    textContent: "|<",
-    eventListeners: {click: transport.prev}
-}));
-node.appendChild(dom.create("button", {
-    textContent: ">",
-    eventListeners: {click: transport.togglePlaying}
-}));
-node.appendChild(dom.create("button", {
-    textContent: ">|",
-    eventListeners: {click: transport.next}
-}));
 
-// Debug view buttons
-node.appendChild(dom.create("button", {
-    textContent: "V",
-    eventListeners: {click: setVisualizer},
-    classList: ["float-right"]
-}));
-node.appendChild(dom.create("button", {
-    textContent: "L",
-    eventListeners: {click: setLibrary},
-    classList: ["float-right"]
-}));
-node.appendChild(dom.create("button", {
-    textContent: "C",
-    eventListeners: {click: setConfig},
-    classList: ["float-right"]
-}));
+// Build UI
+
+// Left Float
+createButton("fullscreen", view.toggleFullscreen, "left");
+
+// Center
+createButton("prev",       transport.prev         );
+createButton("play", transport.togglePlaying);
+createButton("next", transport.next         );
+
+// Right Float (displayed in reverse order)
+createButton("visualizer", setVisualizer, "right");
+createButton("library",    setLibrary,    "right");
+createButton("config",     setConfig,     "right");
