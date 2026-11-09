@@ -66,8 +66,10 @@
 }
 
 #main.playing {
-    #controls-play {
-        background-image: url("../image/ui/pause.svg");
+    > #controls {
+        > #controls-play {
+            background-image: url("../image/ui/pause.svg");
+        }
     }
 }
 

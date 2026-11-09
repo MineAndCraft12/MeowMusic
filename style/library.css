@@ -21,6 +21,10 @@
                   cursor: default;
     }
 
+    .library-directory-button {
+        padding-bottom: 12px;
+    }
+
     /* Get rid of the top-level border.
      * Ideally the remaining borders will look like the physical bounds of the folders' contents,
      * rather than the bounds of the folders themselves.
@@ -28,6 +32,7 @@
     > .library-item {
         padding-left: 8px;
         padding-right: 8px;
+        padding-bottom: 0;
         border-left: none;
     }
 
