@@ -167,7 +167,7 @@ function show(menuName) {
                     } else {
                         current = scenes;
                     }
-                    
+
                     for (let option in current) {
                         fieldset.appendChild(
                             ui.createParagraphContainer(
@@ -180,7 +180,7 @@ function show(menuName) {
                                         menu[item].onchange
                                     ),
                                     ui.createLabel(
-                                        current[option].title,
+                                        `<img src="image/${menu[item].target}/${option}.png"> ${current[option].title}`,
                                         `select-${menu[item].target}-${option}`
                                     )
                                 ]

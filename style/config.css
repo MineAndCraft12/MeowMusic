@@ -40,6 +40,22 @@
     font-size: 1.5em;
 }
 
+.config-radio {
+        display: flex;
+    align-items: center;
+
+    > label {
+            display: inherit;
+        align-items: inherit;
+
+        > img {
+                  height: 32px;
+            margin-right: 8px;
+                 outline: 2px solid #000;
+        }
+    }
+}
+
 .config-fieldset {
     background-color: oklch(28% 0% 0deg);
               border: none;
