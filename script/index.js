@@ -13,4 +13,4 @@ import "./util/debug.js";
 view.set("view-config");
 
 // Ask the user to select their music
-config.show(menus.musiclibrary);
+config.show("musiclibrary");

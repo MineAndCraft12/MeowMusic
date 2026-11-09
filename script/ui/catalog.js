@@ -62,7 +62,7 @@ function resetHighlight() {
  * Clear the library interface except its title
  */
 function clearUI() {
-    node.replaceChildren(ui.createParagraph("Music Library", ["library-title"]));
+    node.replaceChildren(ui.createParagraph("MeowMusic", ["library-title"]));
 }
 
 /**

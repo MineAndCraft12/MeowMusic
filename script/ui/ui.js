@@ -7,15 +7,21 @@ export {
     createParagraph,
     createParagraphContainer,
     createDetails,
+    createFieldset,
+    createLabel,
+    createCheckboxInput,
+    createRadioInput,
     createDirectoryInput
 }
 
 /*
-    This module does not contain most input fields because they are too varied in implementation.
-    In most cases, using this module to create inputs and buttons results in code of similar complexity
+    This module does not contain button input fields because they are too varied in implementation.
+    In most cases, using this module to create buttons results in code of similar complexity
         and significantly worse readability compared to simply using dom.create()
-    One outlier is the directory input which looks pretty much identical on the DOM no matter how you slice it.
 */
+
+
+// Content UI
 
 /**
  * Create a basic paragraph node with an optional class list.
@@ -30,6 +36,25 @@ function createParagraph(text, classList) {
         classList: classList
     }));
 }
+
+/**
+ * Create a label node connected to an input's ID.
+ * 
+ * @param {string} title - Text for the label node
+ * @param {string} id - ID of the input element this label belongs to
+ * @returns {HTMLLabelElement}
+ */
+function createLabel(title, id) {
+    return dom.create("label", {
+        text: title,
+        attributes: {
+            for: "input-" + id
+        }
+    });
+}
+
+
+// Container UI
 
 /**
  * Creates a paragraph node with an optional class list.
@@ -72,6 +97,74 @@ function createDetails(title, details, classList, child, open) {
             }))
         ]
     }));
+}
+
+/**
+ * Creates a Fieldset node with optional class list containing a legend and specified children.
+ * 
+ * @param {*} title - Text for the fieldset's legend
+ * @param {*} classList - Class list for the Fieldset node
+ * @param {*} children - Children nodes for the Fieldset node
+ * @returns {HTMLFieldSetElement}
+ */
+function createFieldset(title, classList, children) {
+    return dom.create("fieldset", {
+        classList: classList,
+        prependChildren: [
+            dom.create("legend", {
+                text: title
+            })
+        ],
+        children: children
+    });
+}
+
+
+// Input UI
+
+/**
+ * Creates a checked or unchecked Checkbox Input node with a change event listener.
+ * 
+ * @param {string} id - An ID for the element, appended to the default input ID.
+ * @param {boolean} checked - Whether the node spawns checked.
+ * @param {Function} eventListener - Event listener for the change event.
+ * @returns {HtmlInputElement}
+ */
+function createCheckboxInput(id, checked, eventListener) {
+    return dom.create("input", {
+        id: "input-" + id,
+        attributes: util.scrubObject({
+            type: "checkbox",
+            name: id,
+            checked: (checked || null)
+        }),
+        eventListeners: {
+            change: eventListener
+        }
+    });
+}
+
+/**
+ * Creates a checked or unchecked Radio Input node with a change event listener.
+ * 
+ * @param {string} id - An ID for the element, appended to the default input ID.
+ * @param {boolean} checked - Whether the node spawns checked.
+ * @param {string} group - A name for the radio group
+ * @param {Function} eventListener - Event listener for the change event.
+ * @returns {HTMLInputElement}
+ */
+function createRadioInput(id, checked, group, eventListener) {
+    return dom.create("input", {
+        id: "input-" + id,
+        attributes: util.scrubObject({
+            type: "radio",
+            name: group,
+            checked: (checked || null)
+        }),
+        eventListeners: {
+            change: eventListener
+        }
+    });
 }
 
 /**

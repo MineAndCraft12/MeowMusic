@@ -24,7 +24,7 @@ const node = dom.get("#config");
  * @param {Event} event 
  */
 function handleMenuLink(event) {
-    show(event.target.parentNode.linkedMenu);
+    show(event.target.id.split("-")[2]);
 }
 
 
@@ -32,30 +32,30 @@ function handleMenuLink(event) {
 
 /**
  * Creates a link to a menu
- * @param {Object} menu 
+ * @param {string} menuName
  * @returns {HTMLParagraphElement}
  */
-function createMenuLink(menu) {
+function createMenuLink(menuName) {
+    let menu;
     let linkType;
 
     // Determine if this is a back button or regular link
-    if (menu == null) {
+    if (menuName == null) {
         menu = menus.landing;
         linkType = "config-return";
     } else {
+        menu = menus[menuName];
         linkType = "config-link";
     }
 
     let node = ui.createParagraphContainer(["config-container", linkType], [
-        // TODO: I don't like that this solution is practically invisible unless you know where to look... fix it.
-        document.createComment(" The target menu is stored in the linkedMenu property of this .config-container's JS node "),
         dom.create("button", {
+            id: "config-linkto-" + (menuName || "landing"),
             textContent: menu.title,
             classList: ["config-link-button", "immersive-button"],
             eventListeners: {click: handleMenuLink}
         })
     ]);
-    node.linkedMenu = menu;
 
     return node;
 }
@@ -71,14 +71,17 @@ function clearContent() {
 /**
  * Shows a menu from menus module, by default menus.landing
  * 
- * @param {Object?} menu - A menu from menus module
+ * @param {string?} menuName - A menu from menus module
  */
-function show(menu) {
+function show(menuName) {
+    let menu;
     // Handle parameter
-    if (menu === undefined) {
+    if (menuName == null) {
         menu = menus.landing;
-    } else if (typeof menu !== "object"){
-        throw error.type("config.show", "menu", ["object", "undefined"], typeof menu);
+    } else if (typeof menuName !== "string"){
+        throw error.type("config.show", "menuName", ["string", "undefined"], typeof menuName);
+    } else {
+        menu = menus[menuName];
     }
 
     clearContent();
@@ -94,33 +97,125 @@ function show(menu) {
     for (let item in menu) {
         // The menu title is not an entry...
         if (item !== "title") {
-            // Ideally "simple" is just a display of basic information
-            if (menu[item].type === "simple") {
-                node.appendChild(
-                    ui.createParagraphContainer(["config-container", "config-simple"], [
-                        ui.createParagraph(menu[item].details)
-                    ])
-                );
-            }
+            let current;
+            let fieldset;
+            
+            switch (menu[item].type) {
+                // Link to another menu
+                case "link":
+                    node.appendChild(createMenuLink(menu[item].target));
+                    break;
 
-            // Link to another menu
-            if (menu[item].type === "link") {
-                node.appendChild(createMenuLink(menu[item].target));
-            }
-
-            // Directory File Input for the tracklist
-            if (menu[item].type === "directory") {
-                node.appendChild(
-                    ui.createParagraphContainer(["config-container", "config-directory-input"], [
-                        ui.createDetails(
-                            menu[item].title,
-                            menu[item].details,
-                            ["config-details"],
-                            ui.createDirectoryInput(menu[item].onchange),
-                            true
+                // Display basic information
+                case "simple":
+                    node.appendChild(
+                        ui.createParagraphContainer(
+                            ["config-container", "config-simple"],
+                            [ui.createParagraph(menu[item].details)]
                         )
-                    ])
-                )
+                    );
+                    break;
+
+                // Show options for a theme or scene
+                case "options":
+                    current = visualizer[menu[item].target];
+                    fieldset = ui.createFieldset(
+                        `${menu[item].title}: <i>${current.title}</i>`,
+                        ["config-fieldset"],
+                        []
+                    );
+                    for (let option in current.options) {
+                        // Boolean option
+                        if (typeof current.options[option].default === "boolean") {
+                            fieldset.appendChild(
+                                ui.createParagraphContainer(
+                                    ["config-container", "config-checkbox"],
+                                    [
+                                        ui.createCheckboxInput( // Implement checkbox input
+                                            `${menu[item].target}-${option}`,
+                                            current.options[option].value,
+                                            menu[item].onchange
+                                        ),
+                                        ui.createLabel(
+                                            current.options[option].title,
+                                            `${menu[item].target}-${option}`
+                                        )
+                                    ]
+                                )
+                            );
+
+                        // Unrecognized option
+                        } else {
+                            ui.createParagraphContainer(["config-container", "config-simple"], [
+                                ui.createParagraph(`Unknown option configuration for "${option}"`)
+                            ]);
+                        }
+                    }
+                    node.appendChild(fieldset);
+                    break;
+
+                // List all themes or scenes
+                case "list":
+                    fieldset = ui.createFieldset(
+                        `${menu[item].title}`,
+                        ["config-fieldset"],
+                        []
+                    );
+
+                    if (menu[item].target === "theme") {
+                        current = themes;
+                    } else {
+                        current = scenes;
+                    }
+                    
+                    for (let option in current) {
+                        fieldset.appendChild(
+                            ui.createParagraphContainer(
+                                ["config-container", "config-radio"],
+                                [
+                                    ui.createRadioInput(
+                                        `select-${menu[item].target}-${option}`,
+                                        (current[option] === visualizer[menu[item].target]),
+                                        `select-${menu[item].target}`,
+                                        menu[item].onchange
+                                    ),
+                                    ui.createLabel(
+                                        current[option].title,
+                                        `select-${menu[item].target}-${option}`
+                                    )
+                                ]
+                            )
+                        );
+                        
+                        node.appendChild(fieldset);
+                    }
+                    break;
+
+                // Directory File Input for the tracklist
+                case "directory":
+                    node.appendChild(
+                        ui.createFieldset(
+                            menu[item].title,
+                            ["config-fieldset"],
+                            [
+                                ui.createParagraphContainer(
+                                    ["config-container", "config-directory-input"],
+                                    [ui.createDirectoryInput(menu[item].onchange)]
+                                ),
+                                ui.createParagraphContainer(
+                                    ["config-container", "config-simple"],
+                                    [ui.createParagraph(menu[item].details)]
+                                )
+                            ]
+                        )
+                    );
+                    break;
+
+                // Menu type not recognized
+                default:
+                    ui.createParagraphContainer(["config-container", "config-simple"], [
+                        ui.createParagraph(`Unknown menu option "${menu[item].type}"`)
+                    ]);
             }
         }
     }

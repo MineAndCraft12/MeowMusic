@@ -17,7 +17,7 @@
 }
 
 .config-directory-input input {
-    margin-left: 16px;
+    margin-left: 1.5em;
 }
 
 /* Link back to previous menu */
@@ -38,4 +38,24 @@
 
 .config-link-button {
     font-size: 1.5em;
+}
+
+.config-fieldset {
+    background-color: oklch(28% 0% 0deg);
+              border: none;
+       border-radius: 0.75em;
+          box-shadow: 0 2px 3px rgba(0 0 0 / 0.25);
+       margin-bottom: 1em;
+
+    > legend {
+           background: inherit;
+        border-radius: 0.75em;
+              padding: 0.5em 0.75em;
+        margin-bottom: -0.8em;
+            font-size: 1.1em;
+    }
+
+    label {
+        margin-left: 6px;
+    }
 }

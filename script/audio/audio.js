@@ -88,7 +88,6 @@ element.addEventListener("ended", transport.next);
  * @param {string} newSrc - ObjectURL for the desired audio file.
  */
 function setSrc(newSrc) {
-    console.warn("New Source");
     element.src = newSrc;
     element.load();
 }

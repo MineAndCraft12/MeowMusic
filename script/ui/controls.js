@@ -2,6 +2,7 @@
 
 import * as dom from "../util/dom.js";
 import * as view from "./view.js";
+import * as library from "../tracks/library.js";
 import * as transport from "../tracks/transport.js";
 
 export { toggle }
@@ -34,7 +35,12 @@ function setVisualizer() {
 
 /** Set the view to Library */
 function setLibrary() {
-    view.set("view-library");
+    if (library.ready) {
+        view.set("view-library");
+    } else {
+        view.set("view-config");
+        config.show("musiclibrary");
+    }
 }
 
 /** Set the view to Config */

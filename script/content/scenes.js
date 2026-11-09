@@ -38,7 +38,7 @@ const theme = {
 
         for (var frequency = 0; frequency < size; frequency++) {
             for (var amplitude = 0; amplitude < size; amplitude++) {
-                draw.setFill(visualizer.theme.mix(amplitude, frequency / size));
+                draw.setFill(visualizer.theme.mix(amplitude / size * 255, frequency / size));
                 draw.ctx.fillRect(left + frequency, bottom - amplitude, 1, 1);
             }
         }
@@ -50,7 +50,7 @@ const bars = {
     title: "Bars",
     options: {
         bobbers: {
-              title: "Bobbers",
+              title: "Use Bobbers",
               value: false,
             default: false
         }

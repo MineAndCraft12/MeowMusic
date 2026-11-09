@@ -8,13 +8,9 @@ const legacy = {
     title: "AaronOS Legacy",
     options: {
         style: {
-              title: "Peak Style",
-              value: "redPeak",
-            default: "redPeak",
-            choices: [
-                ["redPeak", "Red Peak"],
-                ["noPeak", "No Peak"]
-            ]
+              title: "Turn Red at Peak",
+              value: true,
+            default: true
         },
         alpha: {
             title: "Fade to Black",
@@ -38,15 +34,18 @@ const legacy = {
     },
     currentMap: undefined,
     setup: function() {
-        // For options.style
-        this.currentMap = this.maps[this.options.style.value];
+        if (this.options.style.value) {
+            this.currentMap = this.maps.redPeak;
+        } else {
+            this.currentMap = this.maps.noPeak;
+        }
     },
     mix: function(amplitude) { // this theme does not use frequency
         let red;
         let alpha;
 
         // Does this style use red?
-        if (this.options.style.value === "redPeak") {
+        if (this.options.style.value) {
             red = color.gradient(this.currentMap.r, amplitude);
         } else {
             red = 0;
@@ -72,13 +71,9 @@ const meowmusic = {
     title: "MeowMusic",
     options: {
         style: {
-              title: "Peak Style",
-              value: "redPeak",
-            default: "redPeak",
-            choices: [
-                ["redPeak", "Red Peak"],
-                ["noPeak", "No Peak"]
-            ]
+              title: "Turn Red at Peak",
+              value: true,
+            default: true
         },
         alpha: {
             title: "Fade to Black",
@@ -103,8 +98,11 @@ const meowmusic = {
     },
     currentMap: undefined,
     setup: function() {
-        // For options.style
-        this.currentMap = this.maps[this.options.style.value];
+        if (this.options.style.value) {
+            this.currentMap = this.maps.redPeak;
+        } else {
+            this.currentMap = this.maps.noPeak;
+        }
     },
     mix: function(amplitude) { // this theme does not use frequency
         let alpha;
