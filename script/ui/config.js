@@ -38,20 +38,23 @@ function handleMenuLink(event) {
 function createMenuLink(menuName) {
     let menu;
     let linkType;
+    let title;
 
     // Determine if this is a back button or regular link
     if (menuName == null) {
         menu = menus.landing;
         linkType = "config-return";
+        title = "Back"
     } else {
         menu = menus[menuName];
         linkType = "config-link";
+        title = menu.title;
     }
 
     let node = ui.createParagraphContainer(["config-container", linkType], [
         dom.create("button", {
             id: "config-linkto-" + (menuName || "landing"),
-            textContent: menu.title,
+            textContent: title,
             classList: ["config-link-button", "immersive-button"],
             eventListeners: {click: handleMenuLink}
         })

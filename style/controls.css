@@ -1,6 +1,7 @@
 #main {
-      --controls-size: 32px;
-    --controls-margin: 16px;
+    /* 32px and 16px on desktop */
+      --controls-size: 2.4em;
+    --controls-margin: 1.2em;
 
     > #controls {
                height: calc(var(--controls-margin) * 2 + var(--controls-size));
@@ -10,15 +11,16 @@
            transition: 0.25s opacity;
 
         > button {
-                       width: var(--controls-size);
-                      height: var(--controls-size);
-                      margin: 0 var(--controls-margin);
-             background-size:contain;
-            background-color: transparent;
-                      border: none;
-                      filter: invert(1);
-                  transition: 0.1s filter;
-                      cursor: pointer;
+                        width: var(--controls-size);
+                       height: var(--controls-size);
+                       margin: 0 var(--controls-margin);
+              background-size: contain;
+            background-repeat: no-repeat;
+             background-color: transparent;
+                       border: none;
+                       filter: invert(1);
+                   transition: 0.1s filter;
+                       cursor: pointer;
         }
 
         > button:hover {

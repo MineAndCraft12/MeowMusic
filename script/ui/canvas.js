@@ -54,12 +54,12 @@ function getContext() {
  * Clears the contents of the canvas.
  */
 function resize() {
-    width = container.offsetWidth
-    height = container.offsetHeight;
+    width = container.offsetWidth * devicePixelRatio;
+    height = container.offsetHeight * devicePixelRatio;
     node.setAttribute("width", width);
     node.setAttribute("height", height);
-    node.style.width = width + "px";
-    node.style.height = height + "px";
+    node.style.width = container.offsetWidth + "px";
+    node.style.height = container.offsetHeight + "px";
 
     if (visualizer.frameCount > 0) {
         visualizer.setupContent();
