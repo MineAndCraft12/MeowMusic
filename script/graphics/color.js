@@ -216,7 +216,7 @@ function parse(string) {
  */
 function gradient(map, amount) {
     // for each stop on the map...
-    for (var pointer = 0; pointer < map.length; pointer++) {
+    for (let pointer = 0; pointer < map.length; pointer++) {
 
         // if the stop is equal to the amount, we're done.
         if (map[pointer][0] === amount) {

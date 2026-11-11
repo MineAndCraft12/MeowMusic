@@ -30,6 +30,12 @@ const bufferLength = 1024;
 const usefulRange = bufferLength / 8;
 
 /**
+ * Range of values outside of usefulRange
+ * @type {number}
+ */
+const trebleRange = bufferLength - usefulRange;
+
+/**
  * Raw data pulled from the AnalyserNode
  * @type {Uint8Array}
  */
@@ -64,6 +70,18 @@ let filteredFrame = 0;
  * @type {number}
  */
 let trebleFrame = 0;
+
+/**
+ * Raises low values in the treble data bucket.
+ * @type {number}
+ */
+const trebleDataExponent = 1 / 3;
+
+/**
+ * Brings value ceiling back to baseline after trebleDataExponent is applied.
+ * @type {number}
+ */
+const trebleDataMultiplier = Math.pow(255, 1 - trebleDataExponent);
 
 
 // Registration
@@ -103,13 +121,16 @@ function filterData() {
     }
 }
 
-/** Calculates the avarage of frequencies above usefulRange and saves to trebleData */
+/**
+ * Calculates the avarage of frequencies above usefulRange and saves to trebleData.
+ * Prioritizes wide sweeps of weak frequencies over sharp peaks of strong frequencies.
+ */
 function calculateTreble() {
     trebleData = 0;
     for (let i = usefulRange; i < bufferLength; i++) {
-        trebleData += data[i];
+        trebleData += Math.pow(data[i], trebleDataExponent) * trebleDataMultiplier;
     }
-    trebleData = Math.sqrt(trebleData / (bufferLength - usefulRange)) * Math.sqrt(255);
+    trebleData = trebleData / trebleRange;
 }
 
 /**
