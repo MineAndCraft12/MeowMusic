@@ -19,6 +19,7 @@
 
 .config-directory-input input {
     margin-left: 1.5em;
+        padding: 0.5em 0;
 }
 
 /* Link back to previous menu */

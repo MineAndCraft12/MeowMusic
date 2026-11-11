@@ -218,13 +218,26 @@ function loadDirectory(uploadedFiles) {
  */
 function buildPlaylist() {
     playlist = [];
+
+    for (let item in tracklist) {
+        playlist.push(item);
+    }
+
     if (shuffleMode) {
-        // TODO: implement
-    } else {
-        for (let i in tracklist) {
-            playlist.push(i);
+        // Fisher-Yates algo from javascript.info
+        for (let item = playlist.length - 1; item > 0; item--) {
+            let pointer = Math.floor(Math.random() * (item + 1));
+            [
+                playlist[item],
+                playlist[pointer]
+            ] = [
+                playlist[pointer],
+                playlist[item]
+            ];
         }
     }
+    
+    catalog.clearUI();
     catalog.buildUI();
 }
 

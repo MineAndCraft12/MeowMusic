@@ -62,7 +62,13 @@ function resetHighlight() {
  * Clear the library interface except its title
  */
 function clearUI() {
-    node.replaceChildren(ui.createParagraph("Music Library", ["library-title"]));
+    node.replaceChildren(
+        ui.createParagraph("Music Library", ["library-title"]),
+        dom.create("button", {
+            classList: ["library-shuffle", "immersive-button"],
+            eventListeners: {click: library.toggleShuffle}
+        })
+    );
 }
 
 /**
@@ -117,9 +123,15 @@ function buildUI() {
     if (library.playlist.length === 0) {
         node.appendChild(ui.createParagraph("No tracks loaded.\nVisit Settings to load your tracks."));
     } else if (library.getShuffle()) {
+        let directoryNode = ui.createDetails(
+            "Shuffle", "", 
+            ["library-item", "library-directory-button"],
+            undefined, true
+        );
         for (let item in library.playlist) {
-            buildTrackUI(node, item);
+            buildTrackUI(directoryNode, item);
         }
+        node.appendChild(directoryNode);
     } else {
         for (let item in library.directory) {
             buildDirectoryUI(node, library.directory, item);
