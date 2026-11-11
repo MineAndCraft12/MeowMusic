@@ -4,6 +4,7 @@ import * as dom from "../util/dom.js";
 import * as ui from "../ui/ui.js";
 import * as audio from "../audio/audio.js";
 import * as library from "../tracks/library.js";
+import * as transport from "../tracks/transport.js";
 
 export {
     buildUI, clearUI,

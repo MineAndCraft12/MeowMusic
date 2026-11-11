@@ -2,7 +2,10 @@
 
 import * as color from "../graphics/color.js";
 
-export { legacy, meowmusic }
+export {
+    legacy, meowmusic,
+    rainbow,
+}
 
 const legacy = {
     title: "AaronOS Legacy",
@@ -119,6 +122,39 @@ const meowmusic = {
             color.gradient(this.currentMap.c, amplitude),
             color.gradient(this.currentMap.h, amplitude),
             alpha
+        ]);
+    }
+};
+
+const rainbow = {
+    title: "Rainbow",
+    options: {
+        alpha: {
+            title: "Fade to Black",
+              value: false,
+            default: false
+        }
+    },
+    map: {
+        h: [[0, 0], [1, 360]],
+
+        a1: [[0, 0.2], [127, 0.52], [255,   1]],
+        a2: [[0, 0  ], [127, 0.4 ], [255,   1]]
+    },
+    currentAlpha: undefined,
+    setup: function() {
+        if (this.options.alpha.value) {
+            this.currentAlpha = this.map.a2;
+        } else {
+            this.currentAlpha = this.map.a1;
+        }
+    },
+    mix: function(amplitude, frequency) {
+        return color.create("hsl", [
+            color.gradient(this.map.h, frequency),
+            "100%",
+            "50%",
+            color.gradient(this.currentAlpha, amplitude)
         ]);
     }
 };

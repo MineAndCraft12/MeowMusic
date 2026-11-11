@@ -91,7 +91,12 @@ function getShuffle() {
  */
 function toggleShuffle() {
     shuffleMode = !shuffleMode;
+    let nowPlaying = playlist[transport.getPlayingIndex()];
+    
     buildPlaylist();
+
+    transport.setPlayingIndex(playlistIndexFromPath(nowPlaying));
+    catalog.highlightTrack(playlistIndexFromPath(nowPlaying));
 }
 
 
@@ -108,7 +113,7 @@ function clearTracklist() {
 
     // Release our lock on the user's files
     for (let i in tracklist) {
-        URL.revokeObjectURL(trackList[i]);
+        URL.revokeObjectURL(tracklist[i]);
     }
 
     catalog.resetHighlight();
@@ -236,7 +241,7 @@ function buildPlaylist() {
             ];
         }
     }
-    
+
     catalog.clearUI();
     catalog.buildUI();
 }

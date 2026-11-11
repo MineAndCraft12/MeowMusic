@@ -2,12 +2,13 @@
 
 import * as view from "./ui/view.js";     // REQUIRED: Loads most of the application
 import * as config from "./ui/config.js"; // REQUIRED: Loads the config screens
-import * as modal from "./ui/modal.js";   // REQUIRED: Loads the modal dialogs
-import * as menus from "./content/menus.js";
+import * as modal from "./ui/modal.js";   // REQUIRED: Loads the modal dialog
 
-// Enables console debugging
-// Comment this line for release
-import "./util/debug.js";
+/* Enables console debugging. Comment this line for release.
+ * USE WITH CAUTION; places all modules into the global scope.
+ * You may forget to import modules, causing crashes in production.
+ */
+// import "./util/debug.js";
 
 // Show the config screen
 view.set("view-config");

@@ -39,7 +39,7 @@ const data = new Uint8Array(bufferLength);
  * Filtered data based on data pulled from the AnalyserNode
  * @type {Uint8Array}
  */
-const filteredData = new Uint8Array(usefulRange);
+const filteredData = new Array(usefulRange);
 
 /**
  * The most recent frame data was pulled on.

@@ -4,6 +4,9 @@ import * as error from "../util/error.js";
 import * as dom from "../util/dom.js";
 import * as ui from "./ui.js";
 import * as menus from "../content/menus.js";
+import * as themes from "../content/themes.js";
+import * as scenes from "../content/scenes.js";
+import * as visualizer from "../graphics/visualizer.js";
 
 export { show }
 
@@ -122,12 +125,17 @@ function show(menuName) {
                 // Show options for a theme or scene
                 case "options":
                     current = visualizer[menu[item].target];
+
                     fieldset = ui.createFieldset(
                         `${menu[item].title}: <i>${current.title}</i>`,
                         ["config-fieldset"],
                         []
                     );
+
+                    let optionCount = 0;
                     for (let option in current.options) {
+                        optionCount++;
+
                         // Boolean option
                         if (typeof current.options[option].default === "boolean") {
                             fieldset.appendChild(
@@ -149,11 +157,22 @@ function show(menuName) {
 
                         // Unrecognized option
                         } else {
-                            ui.createParagraphContainer(["config-container", "config-simple"], [
-                                ui.createParagraph(`Unknown option configuration for "${option}"`)
-                            ]);
+                            fieldset.appendChild(
+                                ui.createParagraphContainer(["config-container", "config-simple"], [
+                                    ui.createParagraph(`Unknown option configuration for "${option}"`)
+                                ])
+                            );
                         }
                     }
+
+                    if (optionCount === 0) {
+                        fieldset.appendChild(
+                            ui.createParagraphContainer(["config-container", "config-simple"], [
+                                ui.createParagraph(`This ${menu[item].target} has no options.`)
+                            ])
+                        );
+                    }
+
                     node.appendChild(fieldset);
                     break;
 

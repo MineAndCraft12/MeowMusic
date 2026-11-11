@@ -2,6 +2,7 @@
 
 import * as dom from "../util/dom.js";
 import * as view from "./view.js";
+import * as config from "./config.js";
 import * as library from "../tracks/library.js";
 import * as transport from "../tracks/transport.js";
 

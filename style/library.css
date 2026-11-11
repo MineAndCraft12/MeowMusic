@@ -13,8 +13,8 @@
     }
     
     > .library-shuffle {
-                 position:absolute;
-                     left: calc(var(--controls-margin) + 10px);
+                 position: absolute;
+                    right: calc(var(--controls-margin) + 10px);
                       top: calc(var(--controls-margin) + 10px);
                     width: var(--controls-size);
                    height: var(--controls-size);

@@ -7,6 +7,7 @@ import * as audio from "../audio/audio.js";
 export {
     currentTrack,
     loadTrack, reset,
+    getPlayingIndex, setPlayingIndex,
     prev, next,
     getPlaying, togglePlaying,
     getTime, setTime,
@@ -56,6 +57,22 @@ function unload(){
 function reset(){
     unload();
     currentTrack = 0;
+}
+
+/**
+ * Get the currently playing playlist index.
+ */
+function getPlayingIndex() {
+    return currentTrack;
+}
+
+/**
+ * Set the currently playing playlist index without making any functional changes.
+ * 
+ * @param {number} newIndex 
+ */
+function setPlayingIndex(newIndex) {
+    currentTrack = newIndex;
 }
 
 /**

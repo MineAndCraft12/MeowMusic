@@ -2,10 +2,13 @@
 
 import * as analyser from "../audio/analyser.js";
 import * as canvas from "../ui/canvas.js";
-import * as draw from "../graphics/draw.js";
 import * as visualizer from "../graphics/visualizer.js";
+import * as draw from "../graphics/draw.js";
 
-export { theme, bars }
+export {
+    theme, debugData,
+    bars
+}
 
 const theme = {
     title: "View Theme",
@@ -46,6 +49,62 @@ const theme = {
     frame: function() { }
 };
 
+const debugData = {
+    title: "View Data",
+    options: { },
+    padding: 32,
+    setup: function() { },
+    frame: function() {
+        draw.clear();
+        let data = analyser.getData();
+        let filteredData = analyser.getData(true);
+
+        // Filtered data
+        draw.setFill("oklch(0.5 0 0 / 1)");
+        draw.ctx.fillText(
+            `Filtered Data  ( ${analyser.usefulRange} )`,
+            this.padding, this.padding - 6
+        );
+        
+        draw.setFill("oklch(0.25 0 0 / 1)");
+        draw.ctx.fillRect(
+            this.padding, this.padding,
+            analyser.usefulRange, -1
+        );
+
+        draw.fillBars(
+            [this.padding, this.padding + 256],
+            [analyser.usefulRange, -256],
+            -1, 1,
+            filteredData
+        );
+
+        // Raw data
+        draw.setFill("oklch(0.5 0 0 / 1)");
+        draw.ctx.fillText(
+            `Raw Audio Data  ( ${analyser.bufferLength} )`,
+            this.padding * 2 + analyser.usefulRange, this.padding - 6
+        );
+
+        draw.setFill("oklch(0.25 0 0 / 1)");
+        draw.ctx.fillRect(
+            this.padding * 2 + analyser.usefulRange, this.padding,
+            analyser.bufferLength, -1
+        );
+        draw.ctx.fillRect(
+            this.padding * 2 + analyser.usefulRange * 2, this.padding,
+            1, 256
+        );
+
+        draw.fillBars(
+            [this.padding * 2 + analyser.usefulRange, this.padding + 256],
+            [analyser.bufferLength, -256],
+            -1, 1,
+            data
+        );
+    }
+}
+
 const bars = {
     title: "Bars",
     options: {
@@ -57,6 +116,8 @@ const bars = {
     },
     peaks: null,
     peakFrames: null,
+    foot: -1 / 5,
+    ratio: 5 / 6,
     setup: function() {
         this.peaks = new Uint8Array(analyser.usefulRange);
         this.peakFrames = new Array(analyser.usefulRange);
@@ -69,8 +130,6 @@ const bars = {
         let base = canvas.height * 0.75;
         let width = canvas.width * 0.8;
         let height = canvas.height * -0.5;
-        let foot = -1 / 5;
-        let ratio = 5 / 6;
 
         if (this.options.bobbers.value) {
             // Bobber frames at 60fps
@@ -96,14 +155,14 @@ const bars = {
             draw.fillBars(
                 [left, base],
                 [width, height],
-                foot, ratio,
+                this.foot, this.ratio,
                 data, this.peaks
             );
         } else {
             draw.fillBars(
                 [left, base],
                 [width, height],
-                foot, ratio,
+                this.foot, this.ratio,
                 data
             );
         }
