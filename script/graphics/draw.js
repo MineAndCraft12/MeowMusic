@@ -148,12 +148,17 @@ function drawBar(calculated, heightDimension, totalIndices, index, amount, bobbe
  * @param {number} index - Index of this bar in the set.
  * @param {number} amount - Value of this bar in the set.
  * @param {number|undefined} bobber - An optional bobber on top of the bar.
+ * @returns {Object} Calculations used for the bars - width, space, footHeight, left, top
  */
 function fillBar(position, dimensions, foot, ratio, totalIndices, index, amount, bobber) {
+    let calculated = calculateBars(position, dimensions, foot, ratio, totalIndices);
+
     drawBar(
-        calculateBars(position, dimensions, foot, ratio, totalIndices),
+        calculated,
         dimensions[1], totalIndices, index, amount, bobber
     );
+
+    return calculated;
 }
 
 /**
@@ -166,6 +171,7 @@ function fillBar(position, dimensions, foot, ratio, totalIndices, index, amount,
  * @param {number} foot - Extra length at the beginning of each bar.
  * @param {number} ratio - Ratio of bar width to empty space.
  * @param {Array.<number>} values - A set of values to render into bars.
+ * @returns {Object} Calculations used for the bars - width, space, footHeight, left, top
  */
 function fillBars(position, dimensions, foot, ratio, values, bobbers) {
     let totalIndices = values.length;
@@ -181,4 +187,6 @@ function fillBars(position, dimensions, foot, ratio, values, bobbers) {
             drawBar(calculated, dimensions[1], totalIndices, index, values[index]);
         }
     }
+
+    return calculated;
 }

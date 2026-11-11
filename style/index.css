@@ -1,5 +1,9 @@
 /* Present the application at full viewport size */
 
+:root {
+    color-scheme: dark;
+}
+
 body {
          margin: 0;
     font-family: sans-serif;

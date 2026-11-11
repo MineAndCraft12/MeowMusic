@@ -42,6 +42,12 @@ const data = new Uint8Array(bufferLength);
 const filteredData = new Array(usefulRange);
 
 /**
+ * Average of frequencies above usefulRange
+ * @type {number}
+ */
+let trebleData = 0;
+
+/**
  * The most recent frame data was pulled on.
  * @type {number}
  */
@@ -52,6 +58,12 @@ let recentFrame = 0;
  * @type {number}
  */
 let filteredFrame = 0;
+
+/**
+ * The most recent frame treble was calculated on.
+ * @type {number}
+ */
+let trebleFrame = 0;
 
 
 // Registration
@@ -87,12 +99,17 @@ function registerNode(context) {
 function filterData() { 
     for (let i = 0; i < usefulRange; i++) {
         // Originally from Sinusoid modifier in AaronOS Music
-        // Pulls peaks closer to the top
-        // Pulls valleys closer to the bottom
-        // Results in greater contrast between data values
-        // Data value ceiling is 255; 255 * 2 = 510; 255 / 2 = 127.5
         filteredData[i] = -127.5 * Math.cos(util.Tau * data[i] / 510) + 127.5;
     }
+}
+
+/** Calculates the avarage of frequencies above usefulRange and saves to trebleData */
+function calculateTreble() {
+    trebleData = 0;
+    for (let i = usefulRange; i < bufferLength; i++) {
+        trebleData += data[i];
+    }
+    trebleData = Math.sqrt(trebleData / (bufferLength - usefulRange)) * Math.sqrt(255);
 }
 
 /**
@@ -105,14 +122,14 @@ function filterData() {
  * @param {boolean} filtered - Whether to apply a Sinusoid filter to the data.
  * @returns {Uint8Array}
  */
-function getData(filtered) {
+function getData(mode) {
     // Do not pull new data multiple times in the same frame
     if (recentFrame !== visualizer.frameCount) {
         node.getByteFrequencyData(data);
         recentFrame = visualizer.frameCount;
     }
 
-    if (filtered) {
+    if (mode === "filter") {
         // Do not filter data that we've already filtered
         if (filteredFrame !== visualizer.frameCount) {
             filterData();
@@ -120,6 +137,14 @@ function getData(filtered) {
         }
 
         return filteredData;
+    } else if (mode === "treble") {
+        // Do not calculate treble that we've already calculated
+        if (trebleFrame !== visualizer.frameCount) {
+            calculateTreble();
+            trebleFrame = visualizer.frameCount;
+        }
+
+        return trebleData;
     } else {
         return data;
     }
