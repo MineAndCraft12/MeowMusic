@@ -3,11 +3,13 @@
 import * as draw from "./draw.js";
 import * as themes from "../content/themes.js";
 import * as scenes from "../content/scenes.js";
+import * as preferences from "../content/preferences.js";
 
 export {
     setup, setupContent,
     play, pause,
     frame, frameCount, delta,
+    themeStr, sceneStr,
     theme, scene,
     setTheme, setScene,
     toggleDebug
@@ -79,6 +81,14 @@ let playing = false;
 let debug = false;
 
 /**
+ * Export name of the current theme.
+ * 
+ * If undefined, the visualizer is not set up yet.
+ * @type {string|undefined}
+ */
+let themeStr;
+
+/**
  * References the current theme.
  * 
  * Use `theme.mix(amplitude, frequency)` to get a color.
@@ -89,7 +99,15 @@ let debug = false;
 let theme;
 
 /**
- * The current scene.
+ * Export name of the current scene.
+ * 
+ * If undefined, the visualizer is not set up yet.
+ * @type {string|undefined}
+ */
+let sceneStr;
+
+/**
+ * References the current scene.
  * 
  * If undefined, the visualizer is not set up yet.
  * 
@@ -114,8 +132,8 @@ let contentDirty = true;
  */
 function setup() {
     draw.registerRenderingContext();
-    setTheme("meowmusic"); // Default Theme
-    setScene("bars"); // Default Scene
+    setTheme(preferences.load("visualizer.theme") || "meowmusic");
+    setScene(preferences.load("visualizer.scene") || "bars");
     requestAnimationFrame(frame);
 }
 
@@ -132,6 +150,7 @@ function setupContent(doNotFrame) {
 /** Select a new color theme and initialize it. */
 function setTheme(newTheme) {
     theme = themes[newTheme];
+    themeStr = newTheme;
     contentDirty = true;
 }
 
@@ -142,6 +161,7 @@ function setTheme(newTheme) {
  */
 function setScene(newScene) {
     scene = scenes[newScene];
+    sceneStr = newScene;
     contentDirty = true;
 }
 

@@ -1,8 +1,7 @@
 /** Top-level script which launches the application */
 
-import * as view from "./ui/view.js";     // REQUIRED: Loads most of the application
-import * as config from "./ui/config.js"; // REQUIRED: Loads the config screens
-import * as modal from "./ui/modal.js";   // REQUIRED: Loads the modal dialog
+import * as view from "./ui/view.js";                    // REQUIRED: Loads most of the application
+import * as config from "./ui/config.js";                // REQUIRED: Loads the config screens
 
 /* Enables console debugging. Comment this line for release.
  * USE WITH CAUTION; places all modules into the global scope.

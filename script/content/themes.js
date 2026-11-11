@@ -1,6 +1,7 @@
 /** Represents visualizer color themes */
 
 import * as color from "../graphics/color.js";
+import * as preferences from "./preferences.js";
 
 export {
     legacy, meowmusic,
@@ -12,12 +13,12 @@ const legacy = {
     options: {
         style: {
               title: "Turn Red at Peak",
-              value: true,
+              value: preferences.load("themes.legacy.style", true),
             default: true
         },
         alpha: {
             title: "Fade to Black",
-              value: false,
+              value: preferences.load("themes.legacy.alpha", false),
             default: false
         }
     },
@@ -75,12 +76,12 @@ const meowmusic = {
     options: {
         style: {
               title: "Turn Red at Peak",
-              value: true,
+              value: preferences.load("themes.meowmusic.style", true),
             default: true
         },
         alpha: {
             title: "Fade to Black",
-              value: false,
+              value: preferences.load("themes.meowmusic.alpha", false),
             default: false
         }
     },
@@ -131,7 +132,7 @@ const rainbow = {
     options: {
         alpha: {
             title: "Fade to Black",
-              value: false,
+              value: preferences.load("themes.rainbow.alpha", false),
             default: false
         }
     },

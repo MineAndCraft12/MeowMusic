@@ -31,6 +31,7 @@ import * as visualizer from "../graphics/visualizer.js";
 import * as menus from "../content/menus.js";
 import * as themes from "../content/themes.js";
 import * as scenes from "../content/scenes.js";
+import * as preferences from "../content/preferences.js";
 
 
 // Enable debugging from the console
@@ -66,6 +67,7 @@ window.visualizer = visualizer;
 window.menus = menus;
 window.themes = themes;
 window.scenes = scenes;
+window.preferences = preferences;
 
 // Enable visualizer debugging
 visualizer.toggleDebug();

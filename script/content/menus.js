@@ -4,6 +4,7 @@ import * as library from "../tracks/library.js";
 import * as visualizer from "../graphics/visualizer.js";
 import * as view from "../ui/view.js";
 import * as config from "../ui/config.js";
+import * as preferences from "./preferences.js";
 
 export {
     landing, musiclibrary,
@@ -33,9 +34,13 @@ const musiclibrary = {
  */
 function handleContentOption(event) {
     let target = event.target.name.split("-");
+    let currentContent = visualizer[`${target[0]}Str`];
+
     if (event.target.type === "checkbox") {
         visualizer[target[0]].options[target[1]].value = event.target.checked;
+        preferences.save(`${target[0]}s.${currentContent}.${target[1]}`, event.target.checked);
     }
+
     visualizer.setupContent();
 }
 
@@ -46,12 +51,16 @@ function handleContentOption(event) {
  */
 function handleContentSelect(event) {
     let target = event.target.id.split("-");
+
     if (target[2] === "theme") {
         visualizer.setTheme(target[3]);
         config.show("visualizerTheme");
+        preferences.save("visualizer.theme", target[3]);
+
     } else if (target[2] === "scene") {
         visualizer.setScene(target[3]);
         config.show("visualizerScene");
+        preferences.save("visualizer.scene", target[3]);
     }
 }
 

@@ -4,6 +4,7 @@ import * as analyser from "../audio/analyser.js";
 import * as canvas from "../ui/canvas.js";
 import * as visualizer from "../graphics/visualizer.js";
 import * as draw from "../graphics/draw.js";
+import * as preferences from "./preferences.js";
 
 export {
     theme, debugData,
@@ -18,7 +19,7 @@ const theme = {
     options: {
         fullSize: {
               title: "Fill Entire Screen",
-              value: false,
+              value: preferences.load("scenes.theme.fullSize", false),
             default: false
         }
     },
@@ -166,12 +167,12 @@ const bars = {
     options: {
         bobbers: {
               title: "Use Bobbers",
-              value: false,
+              value: preferences.load("scenes.bars.bobbers", false),
             default: false
         },
         treble: {
               title: "Treble Line",
-              value: true,
+              value: preferences.load("scenes.bars.treble", true),
             default: true
         }
     },
