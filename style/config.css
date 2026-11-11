@@ -2,6 +2,7 @@
 
 .config-title {
      font-size: 2em;
+        margin: 1rem 0;
         cursor: default;
     text-align: center;
 }
@@ -28,12 +29,12 @@
 
 /* Looks like leaving a directory */
 .config-return .config-link-button::before {
-    content: "\219A  ";
+    content: "\2039  ";
 }
 
 /* Looks like entering a directory */
 .config-link .config-link-button::before {
-    content: "\219B  ";
+    content: "\203A  ";
 }
 
 .config-link-button {

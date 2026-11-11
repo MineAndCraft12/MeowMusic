@@ -15,25 +15,42 @@
     /* .library-directory-button and .library-track-button are always .library-item */
     .library-item {
             padding-left: 1rem;
-             border-left: 1px solid oklch(100% 0% 0deg);
+             padding-top: 0.2em;
+          padding-bottom: 0.2em;
+             line-height: 1.15em;
         background-color: oklch(100% 0% 0deg / 0%);
               transition: background-color 0.1s;
                   cursor: default;
     }
 
     .library-directory-button {
-        padding-bottom: 12px;
+        padding-bottom: 0.5em;
+
+        > summary {
+              opacity: 0.5;
+            font-size: 0.95em;
+        }
+
+        > summary::marker {
+            content: "\25B8  ";
+        }
     }
 
-    /* Get rid of the top-level border.
-     * Ideally the remaining borders will look like the physical bounds of the folders' contents,
-     * rather than the bounds of the folders themselves.
-     */
+    .library-directory-button[open] {
+        > summary::marker {
+            content: "\25BE  ";
+        }
+    }
+
+    /* Style the first item like a fieldset card */
     > .library-item {
-        padding-left: 8px;
-        padding-right: 8px;
-        padding-bottom: 0;
-        border-left: none;
+             padding-top: 1em;
+            padding-left: 8px;
+           padding-right: 8px;
+          padding-bottom: 0;
+        background-color: oklch(28% 0% 0deg);
+           border-radius: 0.75em;
+              box-shadow: 0 2px 3px rgba(0 0 0 / 0.25);
     }
 
     /* If we select the <details> itself then all of its children look hovered too, not good */

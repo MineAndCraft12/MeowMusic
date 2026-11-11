@@ -14,13 +14,13 @@
     /* Primary content container, i.e. #visualizer, #library, #config */
     > section {
          width: initial;
-        height: 100vh;
+        height: 100svh;
     }
 
     > #visualizer {
         background: oklch(0% 0% 0deg);
              width: calc(100vw - var(--view-split));
-            height: 100vh;
+            height: 100svh;
 
         > canvas {
             background: inherit;
@@ -35,7 +35,7 @@
             bottom: initial;
              right: 0;
              width: var(--view-split);
-            height: 100vh;
+            height: 100svh;
         overflow-y: auto;
     }
 }
@@ -86,7 +86,7 @@
 
 @media (orientation: portrait) {
     #main {
-        --view-split: 40vh;
+        --view-split: 40svh;
 
         > #controls {
              width: 100vw;
@@ -100,7 +100,7 @@
 
         > #visualizer {
              width: 100vw;
-            height: calc(100vh - var(--view-split));
+            height: calc(100svh - var(--view-split));
         }
 
         > #library,
@@ -114,7 +114,7 @@
 
     #main.view-visualizer {
         > #visualizer {
-            height: 100vh;
+            height: 100svh;
         }
 
         > #controls {
