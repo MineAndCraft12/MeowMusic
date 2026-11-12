@@ -63,12 +63,13 @@ function createButton(id, eventListener, float) {
     if (float) {
         node.appendChild(dom.create("button", {
             id: "controls-" + id,
-            classList: ["float-" + float],
+            classList: ["icon-button", "float-" + float],
             eventListeners: {click: eventListener}
         }));
     } else {
         node.appendChild(dom.create("button", {
             id: "controls-" + id,
+            classList: ["icon-button"],
             eventListeners: {click: eventListener}
         }));
     }

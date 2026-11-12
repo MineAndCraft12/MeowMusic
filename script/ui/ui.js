@@ -6,6 +6,7 @@ import * as dom from "../util/dom.js";
 export {
     createParagraph,
     createParagraphContainer,
+    createAppLogo,
     createDetails,
     createFieldset,
     createLabel,
@@ -50,6 +51,17 @@ function createLabel(title, id) {
         attributes: {
             for: "input-" + id
         }
+    });
+}
+
+/**
+ * Returns the app logo styled like the interface buttons
+ * 
+ * @returns {HTMLButtonElement}
+ */
+function createAppLogo() {
+    return dom.create("button", {
+        classList: ["icon-button", "header-icon", "app-logo"]
     });
 }
 

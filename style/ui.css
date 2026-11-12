@@ -19,6 +19,38 @@
 .invisible {
     opacity: 0;
 }
+    
+.icon-button {
+                width: var(--controls-size);
+               height: var(--controls-size);
+     background-color: transparent;
+      background-size: contain;
+    background-repeat: no-repeat;
+               border: none;
+               filter: invert(1);
+           transition: 0.1s filter;
+               cursor: pointer;
+}
+
+.icon-button:hover {
+    filter: invert(0.8);
+}
+
+.icon-button:active {
+    filter: invert(0.675);
+}
+
+.header-icon {
+    position: absolute;
+         top: calc(var(--controls-margin) + 10px);
+}
+
+.app-logo {
+               right: calc(var(--controls-margin) + 10px);
+    background-image: url(../image/brand/logo-gui.png);
+              filter: none !important;
+              cursor: initial;
+}
 
 .immersive-button {
     background: inherit;

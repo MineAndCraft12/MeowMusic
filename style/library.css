@@ -11,17 +11,10 @@
              cursor: default;
          text-align:center;
     }
-    
+
     > .library-shuffle {
-                 position: absolute;
-                    right: calc(var(--controls-margin) + 10px);
-                      top: calc(var(--controls-margin) + 10px);
-                    width: var(--controls-size);
-                   height: var(--controls-size);
-          background-size: contain;
-        background-repeat: no-repeat;
+                     left: calc(var(--controls-margin) + 10px);
          background-image: url(../image/ui/shuffle.svg);
-                   filter: invert(1);
     }
 
     /* .library-directory-button and .library-track-button are always .library-item */

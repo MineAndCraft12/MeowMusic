@@ -64,9 +64,10 @@ function resetHighlight() {
  */
 function clearUI() {
     node.replaceChildren(
+        ui.createAppLogo(),
         ui.createParagraph("Music Library", ["library-title"]),
         dom.create("button", {
-            classList: ["library-shuffle", "immersive-button"],
+            classList: ["library-shuffle", "icon-button", "header-icon"],
             eventListeners: {click: library.toggleShuffle}
         })
     );

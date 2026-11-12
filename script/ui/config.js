@@ -42,26 +42,28 @@ function createMenuLink(menuName) {
     let menu;
     let linkType;
     let title;
+    let node;
 
     // Determine if this is a back button or regular link
     if (menuName == null) {
         menu = menus.landing;
         linkType = "config-return";
         title = "Back"
-    } else {
-        menu = menus[menuName];
-        linkType = "config-link";
-        title = menu.title;
-    }
-
-    let node = ui.createParagraphContainer(["config-container", linkType], [
-        dom.create("button", {
-            id: "config-linkto-" + (menuName || "landing"),
-            textContent: title,
-            classList: ["config-link-button", "immersive-button"],
+        node = dom.create("button", {
+            id: "config-linkto-landing",
+            classList: ["config-return", "icon-button", "header-icon"],
             eventListeners: {click: handleMenuLink}
         })
-    ]);
+    } else {
+        node = ui.createParagraphContainer(["config-container", "config-link"], [
+            dom.create("button", {
+                id: "config-linkto-" + menuName,
+                textContent: menus[menuName].title,
+                classList: ["config-link-button", "immersive-button"],
+                eventListeners: {click: handleMenuLink}
+            })
+        ]);
+    }
 
     return node;
 }
@@ -91,6 +93,9 @@ function show(menuName) {
     }
 
     clearContent();
+
+    // Create the app logo
+    node.appendChild(ui.createAppLogo());
 
     // Create a back button if we're not at home
     if (menu !== menus.landing) {

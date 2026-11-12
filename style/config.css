@@ -24,13 +24,9 @@
 
 /* Link back to previous menu */
 .config-return {
-       margin-top: 0;
-    margin-bottom: -30px;
-}
-
-/* Looks like leaving a directory */
-.config-return .config-link-button::before {
-    content: "\2039  ";
+                left: calc(var(--controls-margin) + 10px);
+    background-image: url(../image/ui/visualizer.svg);
+           transform: rotate(180deg);
 }
 
 /* Looks like entering a directory */
