@@ -72,10 +72,11 @@ let filteredFrame = 0;
 let trebleFrame = 0;
 
 /**
- * Raises low values in the treble data bucket.
+ * Emphasises quiet sounds in the treble data bucket.
+ * A smaller fraction (larger denominator) amplifies the effect.
  * @type {number}
  */
-const trebleDataExponent = 1 / 3;
+const trebleDataExponent = 1 / 4;
 
 /**
  * Brings value ceiling back to baseline after trebleDataExponent is applied.

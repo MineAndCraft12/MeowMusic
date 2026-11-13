@@ -233,10 +233,10 @@ const bars = {
 
         if (this.options.treble.value) {
             let trebleData = analyser.getData("treble");
+            let trebleDec = trebleData / 255;
 
             let trebleTop = trebleHints.space * 2;
-            let trebleDec = trebleData / 255;
-            let trebleFactor = height / -10 * (trebleHints.space + 1);
+            let trebleFactor = height * -0.1 * (trebleHints.space + 1);
             let treblePush = trebleDec * trebleFactor;
             let trebleWidth = analyser.usefulRange * (trebleHints.width + trebleHints.space) - trebleHints.space;
             let trebleHeight = Math.max(trebleHints.space, 1);
