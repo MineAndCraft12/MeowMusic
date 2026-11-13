@@ -1,5 +1,11 @@
 /* Music Library interface */
 
+:root {
+    --library-item-normal: light-dark(oklch(0% 0% 0deg / 0%), oklch(100% 0% 0deg / 0%));
+    --library-item-hover : light-dark(oklch(0% 0% 0deg / 10%), oklch(100% 0% 0deg / 10%));
+    --library-item-active: light-dark(oklch(0% 0% 0deg / 17.5%), oklch(100% 0% 0deg / 17.5%));
+}
+
 #library {
     line-height: 1.5;
     user-select: none;
@@ -9,7 +15,7 @@
           font-size: 2rem;
              margin: 1rem 0;
              cursor: default;
-         text-align:center;
+         text-align: center;
     }
 
     > .library-shuffle {
@@ -19,11 +25,11 @@
 
     /* .library-directory-button and .library-track-button are always .library-item */
     .library-item {
-            padding-left: 1rem;
-             padding-top: 0.2em;
+          padding-left  : 1rem;
+          padding-top   : 0.2em;
           padding-bottom: 0.2em;
              line-height: 1.15em;
-        background-color: oklch(100% 0% 0deg / 0%);
+        background-color: var(--library-item-normal);
               transition: background-color 0.1s;
                   cursor: default;
     }
@@ -49,10 +55,10 @@
 
     /* Style the first item like a fieldset card */
     > .library-item {
-             padding-top: 1em;
-            padding-left: 8px;
+           padding-top  : 1em;
+           padding-left : 8px;
            padding-right: 8px;
-        background-color: oklch(28% 0% 0deg);
+        background-color: var(--card-color);
            border-radius: 0.75em;
               box-shadow: 0 2px 3px rgba(0 0 0 / 0.25);
     }
@@ -60,11 +66,16 @@
     /* If we select the <details> itself then all of its children look hovered too, not good */
     .library-directory-button > summary:hover,
     .library-track-button:hover {
-        background-color: oklch(100% 0% 0deg / 10%);
+        background-color: var(--library-item-hover);
+    }
+
+    .library-directory-button > summary:active,
+    .library-track-button:active {
+        background-color: var(--library-item-active);
     }
 
     /* The currently playing track is highlighted, but intentionally overridden by :hover */
     .highlighted {
-        background-color: oklch(100% 0% 0deg / 17.5%);
+        background-color: var(--library-item-active);
     }
 }

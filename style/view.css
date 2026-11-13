@@ -1,9 +1,12 @@
 /* Primary content containers */
 
-/* Top-level parent of all context except for the modal dialog */
-#main {
+:root {
     /* Size of the library and config UI */
     --view-split: 30vw;
+}
+
+/* Top-level parent of all context except for the modal dialog */
+#main {
 
     /* Container for play, pause, etc buttons */
     > #controls {

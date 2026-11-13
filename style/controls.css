@@ -1,17 +1,15 @@
-#main {
-    /* 32px and 16px on desktop */
-      --controls-size: 2.4em;
-    --controls-margin: 1.2em;
+/* Main controls bar */
 
+#main {
     > #controls {
                height: calc(var(--controls-margin) * 2 + var(--controls-size));
            text-align: center;
         align-content: center;
            background: linear-gradient( oklch(0% 0% 0deg / 0%), oklch(0% 0% 0deg / 50%) );
-           transition: 0.25s opacity;
 
         > button {
             margin: 0 var(--controls-margin);
+            filter: invert(1);
         }
 
         /* Left Side */

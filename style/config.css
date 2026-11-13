@@ -12,7 +12,7 @@
     margin: 16px;
 
     > summary {
-          margin-left: -8px;
+        margin-left  : -8px;
         margin-bottom: 8px;
     }
 }
@@ -55,7 +55,7 @@
 }
 
 .config-fieldset {
-    background-color: oklch(28% 0% 0deg);
+    background-color: var(--card-color);
               border: none;
        border-radius: 0.75em;
           box-shadow: 0 2px 3px rgba(0 0 0 / 0.25);

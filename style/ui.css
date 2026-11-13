@@ -1,5 +1,69 @@
 /* Re-usable GUI constructs from ui.js */
 
+:root {
+    /* 32px and 16px on desktop */
+    --controls-size  : 2.4em;
+    --controls-margin: 1.2em;
+
+    --logo-url: light-dark(url(../image/brand/logo.png), url(../image/brand/logo-tuxedo.png));
+}
+
+/* UI Constructs */
+    
+.icon-button {
+                width: var(--controls-size);
+               height: var(--controls-size);
+     background-color: transparent;
+      background-size: contain;
+    background-repeat: no-repeat;
+               border: none;
+              opacity: 1;
+           transition: 0.1s opacity;
+               cursor: pointer;
+}
+
+@media (prefers-color-scheme: dark) {
+    .icon-button {
+        filter: invert(1);
+    }
+}
+
+.icon-button:hover {
+    opacity: 0.8;
+}
+
+.icon-button:active {
+    opacity: 0.675;
+}
+
+.header-icon {
+    position: absolute;
+         top: calc(var(--controls-margin) + 10px);
+}
+
+.app-logo {
+               right: calc(var(--controls-margin) + 10px);
+    background-image: var(--logo-url);
+              filter: none !important;
+             opacity: 1 !important;
+              cursor: initial;
+}
+
+.immersive-button {
+    background: inherit;
+         color: inherit;
+        border: none;
+}
+
+.immersive-button:focus,
+.immersive-button:hover {
+    opacity: 0.9;
+}
+
+.immersive-button:active {
+    opacity: 0.75;
+}
+
 /* Helper classes */
 
 .absolute {
@@ -18,53 +82,6 @@
 
 .invisible {
     opacity: 0;
-}
-    
-.icon-button {
-                width: var(--controls-size);
-               height: var(--controls-size);
-     background-color: transparent;
-      background-size: contain;
-    background-repeat: no-repeat;
-               border: none;
-               filter: invert(1);
-           transition: 0.1s filter;
-               cursor: pointer;
-}
-
-.icon-button:hover {
-    filter: invert(0.8);
-}
-
-.icon-button:active {
-    filter: invert(0.675);
-}
-
-.header-icon {
-    position: absolute;
-         top: calc(var(--controls-margin) + 10px);
-}
-
-.app-logo {
-               right: calc(var(--controls-margin) + 10px);
-    background-image: url(../image/brand/logo-gui.png);
-              filter: none !important;
-              cursor: initial;
-}
-
-.immersive-button {
-    background: inherit;
-         color: inherit;
-        border: none;
-}
-
-.immersive-button:focus,
-.immersive-button:hover {
-    opacity: 0.9;
-}
-
-.immersive-button:active {
-    opacity: 0.75;
 }
 
 .cursor-pointer {
