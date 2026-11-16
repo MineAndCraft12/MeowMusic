@@ -8,7 +8,8 @@ import * as preferences from "./preferences.js";
 
 export {
     landing, musiclibrary,
-    visualizerScene, visualizerTheme
+    visualizerScene, visualizerTheme,
+    about
 }
 
 /** Options for the Music Library */
@@ -98,6 +99,41 @@ const visualizerTheme = {
     }
 }
 
+const about = {
+    title: "About MeowMusic",
+    blurb: {
+        title: "Summary",
+        type: "paragraphs",
+        details: [
+            "MeowMusic is a music visualizer for audio files from your device.",
+            "This project started small as an exercise in writing higher quality software, " +
+                "but eventually gained a true identity of its own, becoming the spiritual " +
+                "successor of my previous work, the AaronOS Music Player.",
+            "Check out AaronOS Music below to see what types of visualizers may come " +
+                "to MeowMusic in the future."
+        ]
+    },
+    links: {
+        title: "Links",
+        type: "paragraphs",
+        details: [
+            'Visit the community: <a href="https://discord.gg/MhSEbKkyuJ">AaronOS & MeowMusic on Discord</a>',
+            'View the source code: <a href="https://github.com/MineAndCraft12/MeowMusic" target="_blank">MeowMusic on GitHub</a>',
+            'See the old project: <a href="https://aaronos.dev/AaronOS_Music/" target="_blank">AaronOS Music</a>',
+            'Check out my other work: <a href="https://aaronos.dev/AaronOS/" target="_blank">AaronOS</a>'
+        ]
+    },
+    legal: {
+        title: "Legal",
+        type: "paragraphs",
+        details: [
+            'Copyright © 2026 Aaron Adams. Free & Open Source at ' +
+            '<a href="https://github.com/MineAndCraft12/MeowMusic" target="_blank">https://github.com/MineAndCraft12/MeowMusic/</a>',
+            'Licensed under AGPLv3'
+        ]
+    }
+}
+
 // This must stay at the end!
 /** Links to config menus */
 const landing = {
@@ -113,5 +149,9 @@ const landing = {
     visualizerTheme: {
         type: "link",
         target: "visualizerTheme"
+    },
+    about: {
+        type: "link",
+        target: "about"
     }
 };

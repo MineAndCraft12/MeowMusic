@@ -117,14 +117,22 @@ function show(menuName) {
                     node.appendChild(createMenuLink(menu[item].target));
                     break;
 
-                // Display basic information
-                case "simple":
-                    node.appendChild(
-                        ui.createParagraphContainer(
-                            ["config-container", "config-simple"],
-                            [ui.createParagraph(menu[item].details)]
-                        )
+                // Display a set of paragraphs
+                case "paragraphs":
+                    fieldset = ui.createFieldset(
+                        menu[item].title,
+                        ["config-fieldset"],
+                        []
                     );
+
+                    for (let text in menu[item].details) {
+                        fieldset.appendChild(ui.createParagraph(
+                            menu[item].details[text],
+                            ["config-paragraph"]
+                        ));
+                    }
+
+                    node.appendChild(fieldset);
                     break;
 
                 // Show options for a theme or scene
