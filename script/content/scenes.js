@@ -66,27 +66,29 @@ const debugData = {
         let data = analyser.getData();
         let filteredData = analyser.getData("filter");
         let trebleData = analyser.getData("treble");
+        let leftNudge = this.padding;
+        let topNudge = this.padding;
 
         // Filtered data
         draw.setFill("oklch(0.5 0 0 / 1)");
         draw.ctx.fillText(
             `Filtered Data  ( ${analyser.usefulRange} )`,
-            this.padding,
-            this.padding - 6
+            leftNudge,
+            topNudge - 6
         );
         
         draw.setFill("oklch(0.25 0 0 / 1)");
         draw.ctx.fillRect(
-            this.padding,
-            this.padding,
+            leftNudge,
+            topNudge,
             analyser.usefulRange,
             -1
         );
 
         draw.fillBars(
             [
-                this.padding,
-                this.padding + 256
+                leftNudge,
+                topNudge + 256
             ],
             [
                 analyser.usefulRange,
@@ -96,32 +98,61 @@ const debugData = {
             filteredData
         );
 
-        // Raw data
+        leftNudge += analyser.usefulRange + this.padding;
+
+        // Treble data
+        
         draw.setFill("oklch(0.5 0 0 / 1)");
         draw.ctx.fillText(
-            `Raw Audio Data  ( ${analyser.bufferLength} )`,
-            this.padding * 2 + analyser.usefulRange,
-            this.padding - 6
+            `Treble`,
+            leftNudge,
+            topNudge - 6
         );
 
         draw.setFill("oklch(0.25 0 0 / 1)");
         draw.ctx.fillRect(
-            this.padding * 2 + analyser.usefulRange,
+            leftNudge,
+            topNudge,
             this.padding,
+            -1
+        );
+
+        draw.setFill(visualizer.theme.mix(trebleData));
+        draw.ctx.fillRect(
+            leftNudge,
+            topNudge + 256,
+            this.padding,
+            trebleData * -1 - 1
+        );
+
+        leftNudge += this.padding * 2;
+
+        // Raw data
+        draw.setFill("oklch(0.5 0 0 / 1)");
+        draw.ctx.fillText(
+            `Raw Audio Data  ( ${analyser.bufferLength} )`,
+            leftNudge,
+            topNudge - 6
+        );
+
+        draw.setFill("oklch(0.25 0 0 / 1)");
+        draw.ctx.fillRect(
+            leftNudge,
+            topNudge,
             analyser.bufferLength,
             -1
         );
         draw.ctx.fillRect(
-            this.padding * 2 + analyser.usefulRange * 2,
-            this.padding,
+            leftNudge + analyser.usefulRange,
+            topNudge,
             1,
             256
         );
 
         draw.fillBars(
             [
-                this.padding * 2 + analyser.usefulRange,
-                this.padding + 256
+                leftNudge,
+                topNudge + 256
             ],
             [
                 analyser.bufferLength,
@@ -131,30 +162,8 @@ const debugData = {
             data
         );
 
-        // Treble data
-        // Raw data
-        draw.setFill("oklch(0.5 0 0 / 1)");
-        draw.ctx.fillText(
-            `Treble`,
-            this.padding * 3 + analyser.usefulRange + analyser.bufferLength,
-            this.padding - 6
-        );
-
-        draw.setFill("oklch(0.25 0 0 / 1)");
-        draw.ctx.fillRect(
-            this.padding * 3 + analyser.usefulRange + analyser.bufferLength,
-            this.padding,
-            this.padding,
-            -1
-        );
-
-        draw.setFill(visualizer.theme.mix(trebleData));
-        draw.ctx.fillRect(
-            this.padding * 3 + analyser.usefulRange + analyser.bufferLength,
-            this.padding + 256,
-            this.padding,
-            trebleData * -1 - 1
-        );
+        leftNudge = this.padding;
+        topNudge += 256 + this.padding;
 
     }
 }
