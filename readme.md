@@ -7,7 +7,9 @@
     MeowMusic
 </h1>
 
-MeowMusic is a music visualizer for audio files from your device.
+MeowMusic is a web-based music visualizer for audio files from your device.
+
+A public release of MeowMusic is coming soon, but in the meantime you can host MeowMusic from a webserver to use it.
 
 This project started small as an exercise in writing higher quality software, but eventually gained a true identity of its own, becoming the spiritual successor of my previous work, the AaronOS Music Player.
 
