@@ -6,6 +6,7 @@
         text-align   : center;
         align-content: center;
         background   : linear-gradient( oklch(0% 0% 0deg / 0%), oklch(0% 0% 0deg / 50%) );
+        transition   : opacity 0.25s;
 
         > button {
             margin: 0 var(--controls-margin);
