@@ -131,19 +131,47 @@ const about = {
             "This project started small as an exercise in writing higher quality software, " +
                 "but eventually gained a true identity of its own, becoming the spiritual " +
                 "successor of my previous work, the AaronOS Music Player.",
-            "Check out AaronOS Music below to see what types of visualizers may come " +
+            "Check out the AaronOS Music Player below to see what types of visualizers may come " +
                 "to MeowMusic in the future."
         ]
     },
 
     links: {
         title: "Links",
+        type: "imagelinks",
+        details: [
+            {
+                alt: "Visit the Discord community",
+                href: "https://discord.gg/MhSEbKkyuJ",
+                image: "image/thirdparty/discord.svg",
+                responsive: true
+            },
+            {
+                alt: "View the source on GitHub",
+                href: "https://github.com/MineAndCraft12/MeowMusic",
+                image: "image/thirdparty/github.svg",
+                responsive: true
+            },
+            {
+                alt: "Check out AaronOS",
+                href: "https://aaronos.dev/AaronOS/",
+                image: "image/brand/aaronos.png",
+                smarticon: true
+            },
+            {
+                alt: "Check out the AaronOS Music Player",
+                href: "https://aaronos.dev/AaronOS_Music/",
+                image: "image/brand/aaronos-music.png",
+                smarticon: true
+            }
+        ]
+    },
+
+    attribution: {
+        title: "Attribution",
         type: "paragraphs",
         details: [
-            'Visit the community: <a href="https://discord.gg/MhSEbKkyuJ">AaronOS & MeowMusic on Discord</a>',
-            'View the source code: <a href="https://github.com/MineAndCraft12/MeowMusic" target="_blank">MeowMusic on GitHub</a>',
-            'See the old project: <a href="https://aaronos.dev/AaronOS_Music/" target="_blank">AaronOS Music</a>',
-            'Check out my other work: <a href="https://aaronos.dev/AaronOS/" target="_blank">AaronOS</a>'
+            'Button icons from Uicons by <a href="https://www.flaticon.com/uicons" target="_blank">Flaticon</a>'
         ]
     },
 
@@ -153,7 +181,7 @@ const about = {
         details: [
             'Copyright © 2026 Aaron Adams. Free & Open Source at ' +
             '<a href="https://github.com/MineAndCraft12/MeowMusic" target="_blank">https://github.com/MineAndCraft12/MeowMusic/</a>',
-            'Licensed under AGPLv3'
+            'Licensed under GNU AGPLv3'
         ]
     }
 }

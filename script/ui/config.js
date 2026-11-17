@@ -136,6 +136,44 @@ function show(menuName) {
                     node.appendChild(fieldset);
                     break;
 
+                // Display a set of image links
+                case "imagelinks":
+                    fieldset = ui.createFieldset(
+                        menu[item].title,
+                        ["config-fieldset"],
+                        []
+                    );
+
+                    for (let entry in menu[item].details) {
+                        let classList = ["config-image-link"];
+
+                        if (menu[item].details[entry].responsive) {
+                            classList.push("config-responsive-image-link");
+                        } else if (menu[item].details[entry].smarticon) {
+                            classList.push("config-smarticon-image-link");
+                        }
+
+                        fieldset.appendChild(dom.create("a", {
+                            attributes: {
+                                title: menu[item].details[entry].alt,
+                                href: menu[item].details[entry].href,
+                                target: "_blank"
+                            },
+                            children: [
+                                dom.create("img", {
+                                    classList: classList,
+                                    attributes: {
+                                        src: menu[item].details[entry].image,
+                                        alt: menu[item].details[entry].alt
+                                    }
+                                })
+                            ]
+                        }));
+                    }
+
+                    node.appendChild(fieldset);
+                    break;
+
                 // Show options for a theme or scene
                 case "options":
                     current = visualizer[menu[item].target];
