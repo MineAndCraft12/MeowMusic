@@ -1,8 +1,6 @@
 /** Contains utils to help with colors */
 
 import * as error from "../util/error.js";
-import * as analyser from "../audio/analyser.js";
-import * as visualizer from "./visualizer.js";
 
 export {
     getValidColorspaces, getColorspace,
@@ -34,6 +32,7 @@ const colorspaces = {
         valueMax: [255, 255, 255, 1],
         valueDef: [255,   0,   0, 1] // sRGB Red
     },
+
     hsl: { // Should this be the default...? But how does the color mix?
         name: "sRGB HSL",
         valueNames: ["Hue", "Saturation", "Lightness", "Alpha"],
@@ -42,6 +41,7 @@ const colorspaces = {
         valueDef: [  0, 100,  50, 1], // sRGB Red
         graphHint: {x: 0, y: 1, z: 2, a: 3}
     },
+
     hwb: {
         name: "sRGB HWB",
         valueNames: ["Hue", "Whiteness", "Blackness", "Alpha"],
@@ -50,6 +50,7 @@ const colorspaces = {
         valueDef: [  0,   0,   0, 1], // sRGB Red
         graphHint: {x: 0, y: 2, z: 1, a: 3}
     },
+
     lab: {
         name: "CIELab",
         valueNames: ["Lightness", "a", "b", "Alpha"],
@@ -58,6 +59,7 @@ const colorspaces = {
         valueDef: [54.291, 80.805, 69.891, 1], // sRGB Red
         graphHint: {x: 1, y: 2, z: 0, a: 3}
     },
+
     lch: {
         name: "CIELab LCH",
         valueNames: ["Lightness", "Chroma", "Hue", "Alpha"],
@@ -66,6 +68,7 @@ const colorspaces = {
         valueDef: [ 54.291, 106.84,  40.858, 1], // sRGB Red
         graphHint: {x: 2, y: 1, z: 0, a: 3}
     },
+
     oklab: {
         name: "Oklab",
         valueNames: ["Lightness", "a", "b", "Alpha"],
@@ -74,6 +77,7 @@ const colorspaces = {
         valueDef: [0.62796,  0.22486,  0.12585, 1], // sRGB Red
         graphHint: {x: 1, y: 2, z: 0, a: 3}
     },
+
     oklch: { // This color mixes great... but how user-friendly?
         name: "Oklab LCH",
         valueNames: ["Lightness", "Chroma", "Hue", "Alpha"],
@@ -94,9 +98,11 @@ const colorspaces = {
  */
 function getValidColorspaces() {
     let list = [];
+
     for (var item in colorspaces) {
         list.push(item);
     }
+
     return list;
 }
 
@@ -133,22 +139,6 @@ function getColorspace(name) {
 
 
 // Utilities
-
-/*
-    Regarding color.create()...
-    I unit-tested many different methods here and found this to be the fastest by 2x over the next fastest option.
-
-    - Fastest when 'values' is passed as an array, NOT as individual parameters
-        (Is the compiler caching the array and somehow optimizing repeated fetches??)
-    - Fastest when 'colorspace' is passed individually, NOT as a member of 'values'
-        (Is the compiler somehow optimizing the array if it only contains numbers??)
-    - Fastest when using + operator, NOT backtick literals or especially array join
-        (Seems the brute force is just fastest??)
-    - No discernable difference compared to using += on a temp variable
-        (Perhaps they both compile to the same code)
-
-    Tested via https://jsperf.app/ with Chrome 145.0.0 on Steam Deck.
-*/
 
 /**
  * Constructs a CSS color from a set of values.
@@ -235,6 +225,7 @@ function gradient(map, amount) {
             // if this is the first stop, we're done.
             if (pointer === 0) {
                 return map[pointer][1];
+
             // otherwise, we must calculate the gradient...
             } else {
                 // Grab our stop points.
@@ -243,6 +234,7 @@ function gradient(map, amount) {
                 // How far between A and B are we?
                 let weight = (  amount - stopA[0]) /
                              (stopB[0] - stopA[0]);
+
                 // Weigh the stops based on how close we are to them.
                 return stopA[1] * (1 - weight) +
                        stopB[1] *      weight;

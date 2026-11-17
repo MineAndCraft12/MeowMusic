@@ -1,8 +1,8 @@
 /** Represents the view modes of the primary content */
 
-import * as error from "../util/error.js";
-import * as dom from "../util/dom.js";
-import * as canvas from "./canvas.js";
+import * as error  from "../util/error.js";
+import * as dom    from "../util/dom.js";
+import * as canvas from  "./canvas.js";
 
 export {
     options,
@@ -32,6 +32,7 @@ const options = ["view-visualizer", "view-library", "view-config"];
  */
 function get() {
     let classes = node.classList;
+
     for (let i = 0; i < classes.length; i++) {
         if (classes[i].indexOf("view-") === 0) {
             return classes[i];
@@ -45,7 +46,7 @@ function get() {
  * @param {string} mode - See view.options for list of acceptable view modes
  */
 function set(mode) {
-    // Error handling
+    // Handle parameter mode
     if (typeof mode !== "string") {
         throw error.type("view.set", "mode", "string", typeof mode);
     }
@@ -58,7 +59,7 @@ function set(mode) {
     canvas.resize();
 }
 
-/** Requests or removes fullscreen for the document. */
+/** Requests or exits fullscreen for `document`. */
 function toggleFullscreen() {
     // If we are not fullscreen
     if (document.fullscreenElement === null) {

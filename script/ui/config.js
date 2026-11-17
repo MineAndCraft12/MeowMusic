@@ -1,11 +1,11 @@
 /** Represents the config menu */
 
-import * as error from "../util/error.js";
-import * as dom from "../util/dom.js";
-import * as ui from "./ui.js";
-import * as menus from "../content/menus.js";
-import * as themes from "../content/themes.js";
-import * as scenes from "../content/scenes.js";
+import * as error      from "../util/error.js";
+import * as dom        from "../util/dom.js";
+import * as ui         from  "./ui.js";
+import * as menus      from "../content/menus.js";
+import * as themes     from "../content/themes.js";
+import * as scenes     from "../content/scenes.js";
 import * as visualizer from "../graphics/visualizer.js";
 
 export { show }
@@ -83,6 +83,7 @@ function clearContent() {
  */
 function show(menuName) {
     let menu;
+    
     // Handle parameter
     if (menuName == null) {
         menu = menus.landing;

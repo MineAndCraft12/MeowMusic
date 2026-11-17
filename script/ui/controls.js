@@ -1,9 +1,9 @@
 /** Represents the primary controls row */
 
-import * as dom from "../util/dom.js";
-import * as view from "./view.js";
-import * as config from "./config.js";
-import * as library from "../tracks/library.js";
+import * as dom       from "../util/dom.js";
+import * as view      from  "./view.js";
+import * as config    from  "./config.js";
+import * as library   from "../tracks/library.js";
 import * as transport from "../tracks/transport.js";
 
 export { toggle }
@@ -60,12 +60,15 @@ function setConfig() {
  * @param {string|undefined} float - Optional "left" or "right"
  */
 function createButton(id, eventListener, float) {
+    // Button floats left or right
     if (float) {
         node.appendChild(dom.create("button", {
             id: "controls-" + id,
             classList: ["icon-button", "float-" + float],
             eventListeners: {click: eventListener}
         }));
+
+    // Button does not float
     } else {
         node.appendChild(dom.create("button", {
             id: "controls-" + id,

@@ -1,9 +1,9 @@
 /* Music Library interface */
 
 :root {
-    --library-item-normal: light-dark(oklch(0% 0% 0deg / 0%), oklch(100% 0% 0deg / 0%));
-    --library-item-hover : light-dark(oklch(0% 0% 0deg / 10%), oklch(100% 0% 0deg / 10%));
-    --library-item-active: light-dark(oklch(0% 0% 0deg / 17.5%), oklch(100% 0% 0deg / 17.5%));
+    --library-item-normal: light-dark( oklch(0% 0% 0deg /  0%  ),   oklch(100% 0% 0deg /  0%  ) );
+    --library-item-hover : light-dark( oklch(0% 0% 0deg / 10%  ),   oklch(100% 0% 0deg / 10%  ) );
+    --library-item-active: light-dark( oklch(0% 0% 0deg / 17.5%),   oklch(100% 0% 0deg / 17.5%) );
 }
 
 #library {
@@ -11,35 +11,35 @@
     user-select: none;
 
     > .library-title {
+        margin     : 1rem 0;
+        font-size  : 2rem;
         line-height: initial;
-          font-size: 2rem;
-             margin: 1rem 0;
-             cursor: default;
-         text-align: center;
+        text-align : center;
+        cursor     : default;
     }
 
     > .library-shuffle {
-                     left: calc(var(--controls-margin) + 10px);
-         background-image: url(../image/ui/shuffle.svg);
+        left            : calc( var(--controls-margin) + 10px );
+        background-image: url(../image/ui/shuffle.svg);
     }
 
     /* .library-directory-button and .library-track-button are always .library-item */
     .library-item {
-          padding-left  : 1rem;
-          padding-top   : 0.2em;
-          padding-bottom: 0.2em;
-             line-height: 1.15em;
+        padding-left    : 1rem;
+        padding-top     : 0.2em;
+        padding-bottom  : 0.2em;
+        line-height     : 1.15em;
         background-color: var(--library-item-normal);
-              transition: background-color 0.1s;
-                  cursor: default;
+        cursor          : default;
+        transition      : background-color 0.1s;
     }
 
     .library-directory-button {
         padding-bottom: 0.5em;
 
         > summary {
-              opacity: 0.5;
             font-size: 0.95em;
+            opacity  : 0.5;
         }
 
         > summary::marker {
@@ -55,12 +55,12 @@
 
     /* Style the first item like a fieldset card */
     > .library-item {
-           padding-top  : 1em;
-           padding-left : 8px;
-           padding-right: 8px;
+        padding-top     : 1em;
+        padding-left    : 8px;
+        padding-right   : 8px;
         background-color: var(--card-color);
-           border-radius: 0.75em;
-              box-shadow: 0 2px 3px rgba(0 0 0 / 0.25);
+        border-radius   : 0.75em;
+        box-shadow      : 0 2px 3px rgba(0 0 0 / 0.25);
     }
 
     /* If we select the <details> itself then all of its children look hovered too, not good */

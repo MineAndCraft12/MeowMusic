@@ -2,35 +2,35 @@
 
 // Utilities
 import * as error from "./error.js";
-import * as util from "./util.js";
-import * as dom from "./dom.js";
+import * as util  from "./util.js";
+import * as dom   from "./dom.js";
 
 // User Interface
-import * as view from "../ui/view.js";
+import * as view     from "../ui/view.js";
 import * as controls from "../ui/controls.js";
-import * as config from "../ui/config.js";
-import * as catalog from "../ui/catalog.js";
-import * as canvas from "../ui/canvas.js";
-import * as modal from "../ui/modal.js";
+import * as config   from "../ui/config.js";
+import * as catalog  from "../ui/catalog.js";
+import * as canvas   from "../ui/canvas.js";
+import * as modal    from "../ui/modal.js";
 
 // Audio
-import * as audio from "../audio/audio.js";
-import * as effects from "../audio/effects.js";
+import * as audio    from "../audio/audio.js";
+import * as effects  from "../audio/effects.js";
 import * as analyser from "../audio/analyser.js";
 
 // Tracks
-import * as library from "../tracks/library.js";
+import * as library   from "../tracks/library.js";
 import * as transport from "../tracks/transport.js";
 
 // Graphics
-import * as color from "../graphics/color.js";
-import * as draw from "../graphics/draw.js";
+import * as color      from "../graphics/color.js";
+import * as draw       from "../graphics/draw.js";
 import * as visualizer from "../graphics/visualizer.js";
 
 // Content
-import * as menus from "../content/menus.js";
-import * as themes from "../content/themes.js";
-import * as scenes from "../content/scenes.js";
+import * as menus       from "../content/menus.js";
+import * as themes      from "../content/themes.js";
+import * as scenes      from "../content/scenes.js";
 import * as preferences from "../content/preferences.js";
 
 
@@ -38,35 +38,35 @@ import * as preferences from "../content/preferences.js";
 
 // Utilities
 window.error = error;
-window.util = util;
-window.dom = dom;
+window.util  = util;
+window.dom   = dom;
 
 // User Interface
-window.view = view;
+window.view     = view;
 window.controls = controls;
-window.config = config;
-window.catalog = catalog;
-window.canvas = canvas;
-window.modal = modal;
+window.config   = config;
+window.catalog  = catalog;
+window.canvas   = canvas;
+window.modal    = modal;
 
 // Audio
-window.audio = audio;
-window.effects = effects;
+window.audio    = audio;
+window.effects  = effects;
 window.analyser = analyser;
 
 // Tracks
-window.library = library;
+window.library   = library;
 window.transport = transport;
 
 // Graphics
-window.color = color;
-window.draw = draw;
+window.color      = color;
+window.draw       = draw;
 window.visualizer = visualizer;
 
 // Content
-window.menus = menus;
-window.themes = themes;
-window.scenes = scenes;
+window.menus       = menus;
+window.themes      = themes;
+window.scenes      = scenes;
 window.preferences = preferences;
 
 // Enable visualizer debugging

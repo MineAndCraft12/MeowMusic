@@ -2,10 +2,10 @@
 
 #main {
     > #controls {
-               height: calc(var(--controls-margin) * 2 + var(--controls-size));
-           text-align: center;
+        height       : calc( var(--controls-margin) * 2 + var(--controls-size) );
+        text-align   : center;
         align-content: center;
-           background: linear-gradient( oklch(0% 0% 0deg / 0%), oklch(0% 0% 0deg / 50%) );
+        background   : linear-gradient( oklch(0% 0% 0deg / 0%), oklch(0% 0% 0deg / 50%) );
 
         > button {
             margin: 0 var(--controls-margin);
@@ -48,12 +48,8 @@
     }
 }
 
-#main.playing {
-    > #controls {
-        > #controls-play {
-            background-image: url("../image/ui/pause.svg");
-        }
-    }
+#main.playing > #controls > #controls-play {
+    background-image: url("../image/ui/pause.svg");
 }
 
 @media (orientation: portrait) {

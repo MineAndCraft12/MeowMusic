@@ -21,23 +21,28 @@ export { type, range, empty, custom }
  * @returns {TypeError}
  */
 function type(trace, parameter, expected, actual) {
-    // Handle parameters
+    // Handle parameter trace
     if (typeof trace !== "string") {
         throw type("error.type", "trace", "string", typeof trace);
     }
+
+    // Handle parameter parameter
     if (typeof parameter !== "string") {
         throw type("error.type", "parameter", "string", typeof parameter);
     }
+
+    // Handle parameter expected
     if (typeof expected === "object") {
         expected = expected.join(" or ");
     } else if (typeof expected !== "string") {
         throw type("error.type", "expected", ["string", "string[]"], typeof expected);
     }
+
+    // Handle parameter actual
     if (typeof actual !== "string") {
         throw type("error.type", "actual", "string", typeof actual);
     }
     
-    // Contruct error
     return new TypeError(`Failed to execute '${trace}': Parameter '${parameter}' expects ${expected}, instead got ${actual}`);
 }
 
@@ -59,18 +64,21 @@ function type(trace, parameter, expected, actual) {
  * @returns {RangeError}
  */
 function range(trace, parameter, message) {
-    // Handle parameters
+    // Handle parameter trace
     if (typeof trace !== "string") {
         throw type("error.range", "trace", "string", typeof trace);
     }
+
+    // Handle parameter parameter
     if (typeof parameter !== "string") {
         throw type("error.range", "parameter", "string", typeof parameter);
     }
+
+    // Handle parameter message
     if (typeof message !== "string") {
         throw type("error.range", "message", "string", typeof message);
     }
 
-    // Construct error
     return new RangeError(`Failed to execute '${trace}': Parameter '${parameter}' ${message}`);
 }
 
@@ -92,15 +100,16 @@ function range(trace, parameter, message) {
  * @returns {RangeError}
  */
 function empty(trace, parameter) {
-    // Handle parameters
+    // Handle parameter trace
     if (typeof trace !== "string") {
         throw type("error.empty", "trace", "string", typeof trace);
     }
+
+    // Handle parameter parameter
     if (typeof parameter !== "string") {
         throw type("error.empty", "parameter", "string", typeof parameter);
     }
 
-    // Construct error
     return new RangeError(`Failed to execute '${trace}': Parameter '${parameter}' must not be empty`);
 }
 
@@ -120,14 +129,15 @@ function empty(trace, parameter) {
  * @returns {RangeError}
  */
 function custom(trace, message) {
-    // Handle parameters
+    // Handle parameter trace
     if (typeof trace !== "string") {
         throw type("error.custom", "trace", "string", typeof trace);
     }
+
+    // Handle parameter message
     if (typeof message !== "string") {
         throw type("error.custom", "message", "string", typeof message);
     }
 
-    // Construct error
     return new Error(`Failed to execute '${trace}': ${message}`);
 }

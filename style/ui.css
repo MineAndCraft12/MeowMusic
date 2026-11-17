@@ -8,18 +8,19 @@
     --logo-url: light-dark(url(../image/brand/logo.png), url(../image/brand/logo-tuxedo.png));
 }
 
+
 /* UI Constructs */
-    
+
 .icon-button {
-                width: var(--controls-size);
-               height: var(--controls-size);
-     background-color: transparent;
-      background-size: contain;
+    width            : var(--controls-size);
+    height           : var(--controls-size);
+    border           : none;
+    background-color : transparent;
+    background-size  : contain;
     background-repeat: no-repeat;
-               border: none;
-              opacity: 1;
-           transition: 0.1s opacity;
-               cursor: pointer;
+    opacity          : 1;
+    transition       : 0.1s opacity;
+    cursor           : pointer;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -38,21 +39,22 @@
 
 .header-icon {
     position: absolute;
-         top: calc(var(--controls-margin) + 10px);
+    top     : calc( var(--controls-margin) + 10px );
 }
 
+/* I know we shouldn't use !important but I swear it's important this time */
 .app-logo {
-               right: calc(var(--controls-margin) + 10px);
+    right           : calc( var(--controls-margin) + 10px );
     background-image: var(--logo-url);
-              filter: none !important;
-             opacity: 1 !important;
-              cursor: initial;
+    filter          : none !important;
+    opacity         : 1    !important;
+    cursor          : initial;
 }
 
 .immersive-button {
+    border    : none;
     background: inherit;
-         color: inherit;
-        border: none;
+    color     : inherit;
 }
 
 .immersive-button:focus,
@@ -64,11 +66,12 @@
     opacity: 0.75;
 }
 
+
 /* Helper classes */
 
 .absolute {
-       display: block;
-      position: absolute;
+    display   : block;
+    position  : absolute;
     box-sizing: border-box;
 }
 

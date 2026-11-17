@@ -1,7 +1,7 @@
 /** Represents the visualizer's virtual screen and presentation */
 
-import * as dom from "../util/dom.js";
-import * as controls from "./controls.js";
+import * as dom        from "../util/dom.js";
+import * as controls   from  "./controls.js";
 import * as visualizer from "../graphics/visualizer.js";
 
 export { getContext, width, height, resize }
@@ -68,7 +68,5 @@ function resize() {
 window.addEventListener("resize", resize);
 resize();
 
-
-// Actions
-
+// Show or hide controls when clicked
 container.addEventListener("click", controls.toggle);

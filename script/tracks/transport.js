@@ -1,8 +1,8 @@
 /** represents the loaded track and its controls */
 
-import * as library from "./library.js";
+import * as library from  "./library.js";
 import * as catalog from "../ui/catalog.js";
-import * as audio from "../audio/audio.js";
+import * as audio   from "../audio/audio.js";
 
 export {
     currentTrack,

@@ -1,6 +1,6 @@
 /** represents the audio frequency analyser */
 
-import * as util from "../util/util.js";
+import * as util       from "../util/util.js";
 import * as visualizer from "../graphics/visualizer.js";
 
 export {
@@ -128,9 +128,11 @@ function filterData() {
  */
 function calculateTreble() {
     trebleData = 0;
+
     for (let i = usefulRange; i < bufferLength; i++) {
         trebleData += Math.pow(data[i], trebleDataExponent) * trebleDataMultiplier;
     }
+
     trebleData = trebleData / trebleRange;
 }
 

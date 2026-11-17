@@ -1,15 +1,19 @@
 /** Represents visualizer color themes */
 
-import * as color from "../graphics/color.js";
-import * as preferences from "./preferences.js";
+import * as color       from "../graphics/color.js";
+import * as preferences from  "./preferences.js";
 
 export {
     legacy, meowmusic,
     rainbow,
 }
 
+
+// AaronOS Legacy
+
 const legacy = {
     title: "AaronOS Legacy",
+
     options: {
         style: {
               title: "Turn Red at Peak",
@@ -22,6 +26,7 @@ const legacy = {
             default: false
         }
     },
+
     maps: {
         redPeak: { // Pulled from AaronOS Music
             r: [                    [200, 0],             [255, 255]],
@@ -36,7 +41,9 @@ const legacy = {
             a: [[0, 0],                       [255,   1]]
         },
     },
+
     currentMap: undefined,
+
     setup: function() {
         if (this.options.style.value) {
             this.currentMap = this.maps.redPeak;
@@ -44,6 +51,7 @@ const legacy = {
             this.currentMap = this.maps.noPeak;
         }
     },
+
     mix: function(amplitude) { // this theme does not use frequency
         let red;
         let alpha;
@@ -71,8 +79,12 @@ const legacy = {
     }
 };
 
+
+// MeowMusic
+
 const meowmusic = {
     title: "MeowMusic",
+
     options: {
         style: {
               title: "Turn Red at Peak",
@@ -85,6 +97,7 @@ const meowmusic = {
             default: false
         }
     },
+
     maps: {
         redPeak: { // Values @32 and @112 are weighted between Blue and Green by these percentages...
             //   RGB Blue       (12.5%L 25%C 12.5%H)(62.5%L 50%C 87.5%H)   RGB Green          RGB Red
@@ -100,7 +113,9 @@ const meowmusic = {
             a: [[ 0,   0       ],                                         [255,   1       ]]
         },
     },
+
     currentMap: undefined,
+    
     setup: function() {
         if (this.options.style.value) {
             this.currentMap = this.maps.redPeak;
@@ -108,6 +123,7 @@ const meowmusic = {
             this.currentMap = this.maps.noPeak;
         }
     },
+
     mix: function(amplitude) { // this theme does not use frequency
         let alpha;
 
@@ -127,8 +143,12 @@ const meowmusic = {
     }
 };
 
+
+// Rainbow
+
 const rainbow = {
     title: "Rainbow",
+
     options: {
         alpha: {
             title: "Fade to Black",
@@ -136,13 +156,17 @@ const rainbow = {
             default: false
         }
     },
-    map: {
-        h: [[0, 0], [1, 360]],
 
-        a1: [[0, 0.2], [255,   1]],
-        a2: [[0, 0  ], [255,   1]]
+    map: {
+        // Amplitude
+        a1: [[0, 0.2], [255, 1]],
+        a2: [[0, 0  ], [255, 1]],
+        // Frequency
+        h: [[0, 0], [1, 360]]
     },
+
     currentAlpha: undefined,
+
     setup: function() {
         if (this.options.alpha.value) {
             this.currentAlpha = this.map.a2;
@@ -150,6 +174,7 @@ const rainbow = {
             this.currentAlpha = this.map.a1;
         }
     },
+
     mix: function(amplitude, frequency) {
         return color.create("hsl", [
             color.gradient(this.map.h, frequency),

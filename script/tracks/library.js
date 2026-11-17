@@ -1,7 +1,7 @@
 /** Represents the music library and playlist */
 
-import * as transport from "./transport.js";
-import * as catalog from "../ui/catalog.js";
+import * as transport from  "./transport.js";
+import * as catalog   from "../ui/catalog.js";
 
 export {
     ready,
@@ -141,6 +141,7 @@ function storeTrack(list, path, file) {
         }
         // Move one depth deeper and try again
         storeTrack(list[newList], path, file);
+
     // If we're looking at a file, create its entry
     } else {
         let fileMetaHints = file.webkitRelativePath.split("/");

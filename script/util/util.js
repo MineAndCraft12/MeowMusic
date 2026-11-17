@@ -1,13 +1,11 @@
 /** Contains general-purpose JS utilities */
 
-export {
-    Tau,
-    scrubObject
-}
+export { Tau, scrubObject }
 
 
 // Mathematical Constants
 
+/** Equal to Pi * 2 */
 const Tau = Math.PI * 2;
 
 

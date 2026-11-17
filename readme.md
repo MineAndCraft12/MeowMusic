@@ -13,8 +13,6 @@ A public release of MeowMusic is coming soon, but in the meantime you can host M
 
 This project started small as an exercise in writing higher quality software, but eventually gained a true identity of its own, becoming the spiritual successor of my previous work, the AaronOS Music Player.
 
-Check out its predecessor, AaronOS Music, to see what kinds of visualizers may be coming in the future.
-
 ## License
 
 Licensed under **GNU APGLv3**; see [LICENSE](LICENSE) and [NOTICE](NOTICE)

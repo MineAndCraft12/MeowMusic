@@ -26,7 +26,7 @@ export {
 function get(target, parent) {
     let prefix;
 
-    // Handle parameter 'target'
+    // Handle parameter target
     if (typeof target === "string") {
         if (target.length !== 0) {
             // Select search type
@@ -38,7 +38,7 @@ function get(target, parent) {
         throw error.type("dom.get", "target", "string", typeof target);
     }
 
-    // Handle parameter 'parent'
+    // Handle parameter parent
     if (parent instanceof HTMLElement) {
         // Avoid searching a parent node for an ID
         if (prefix === "#") {
@@ -82,7 +82,9 @@ function get(target, parent) {
  * @returns {HTMLElement}
  */
 function create(tagName, options) {
-    // Handle parameter 'tag'
+    let node = document.createElement(tagName);
+
+    // Handle parameter tag
     if (typeof tagName === "string") {
         if (tagName.length === 0) {
             throw error.empty("dom.create", "tagName");
@@ -91,39 +93,30 @@ function create(tagName, options) {
         throw error.type("dom.create", "tagName", "string", typeof tagName);
     }
 
-    // Create the node
-    let node = document.createElement(tagName);
-
-    // Handle parameter 'options'
+    // Handle parameter options
     if (typeof options !== "object" && options !== undefined) {
         throw error.type("dom.create", "options", ["object", "undefined"], typeof options);
     } else if (options !== undefined) {
         // Check for ID
         if (Object.hasOwn(options, "id")) {
-            // Handle errors
             if (typeof options.id !== "string") {
                 throw error.type("dom.create", "options.id", ["string", "undefined"], typeof options.id);
             }
 
-            // Set ID
             node.id = options.id;
         }
 
         // Check for classes
         if (Object.hasOwn(options, "classList")) {
-            // Handle errors
             if (typeof options.classList !== "object") {
                 throw error.type("dom.create", "options.classList", ["string[]", "undefined"], typeof options.classList);
             }
 
-            // Iterate classes
             for (let item in options.classList){
-                // Handle errors
                 if (typeof options.classList[item] !== "string") {
                     throw error.type("dom.create", "options.classList[" + item + "]", "string", typeof options.classList[item]);
                 }
 
-                // Add class
                 node.classList.add(options.classList[item]);
             }
         }
@@ -143,9 +136,11 @@ function create(tagName, options) {
         if (Object.hasOwn(options, "text")) {
             if (typeof options.text === "string"){
                 node[checkTextType(options.text)] = options.text;
+
             }else if (Array.isArray(options.text)) {
                 let joined = options.text.join(", ");
                 node[checkTextType(joined)] = joined;
+
             } else {
                 let stringed = String(options.text);
                 node[checkTextType(stringed)] = stringed;
@@ -156,8 +151,10 @@ function create(tagName, options) {
         if (Object.hasOwn(options, "textContent")) {
             if (typeof options.textContent === "string") {
                 node.textContent = options.textContent;
+
             } else if (Array.isArray(options.textContent)) {
                 node.textContent = options.textContent.join(", ");
+
             } else {
                 node.textContent = String(options.textContent);
             }
@@ -167,8 +164,10 @@ function create(tagName, options) {
         if (Object.hasOwn(options, "innerText")) {
             if (typeof options.innerText === "string") {
                 node.innerText = options.innerText;
+
             } else if (Array.isArray(options.innerText)) {
                 node.innerText = options.innerText.join(", ");
+
             } else {
                 node.innerText = String(options.innerText);
             }
@@ -178,8 +177,10 @@ function create(tagName, options) {
         if (Object.hasOwn(options, "innerHTML")) {
             if (typeof options.innerHTML === "string") {
                 node.innerHTML = options.innerHTML;
+
             } else if (Array.isArray(options.innerHTML)) {
                 node.innerHTML = options.innerHTML.join(", ");
+
             } else {
                 node.innerHTML = String(options.innerHTML);
             }
@@ -187,40 +188,34 @@ function create(tagName, options) {
 
         // Check for attributes
         if (Object.hasOwn(options, "attributes")) {
-            // Handle errors
             if (typeof options.attributes !== "object") {
                 throw error.type("dom.create", "options.attributes", "object", typeof options.attributes);
             }
 
-            // Iterate attributes
             for (let item in options.attributes) {
-                // If attribute value is not one of these types...
+                // If attribute value is not one of these types, error out
                 if (["string", "boolean", "number"].indexOf(typeof options.attributes[item]) === -1) {
                     throw error.type("dom.create", "options.attributes." + item, ["string", "boolean", "number"], typeof options.attributes[item]);
                 }
 
-                // Add attribute
                 node.setAttribute(item, options.attributes[item]);
             }
         }
 
         // Check for style declarations
         if (Object.hasOwn(options, "styles")) {
-            // Handle errors
             if (typeof options.styles !== "object") {
                 throw error.type("dom.create", "options.styles", "object", typeof options.styles);
             }
 
-            // Iterate attributes
             for (let item in options.styles) {
-                // If property value is not one of these types...
+                // If property value is not one of these types, error out
                 if (["string", "number"].indexOf(typeof options.styles[item]) === -1) {
                     throw error.type("dom.create", "options.styles." + item, ["string", "number"], typeof options.styles[item]);
                 }
 
-                // If style declaration exists...
+                // Add the parameter only if it's a valid CSS property
                 if (Object.hasOwn(node.style, item)) {
-                    // Add style declaration
                     node.style[item] = options.styles[item];
                 } else {
                     console.warn("Parameter 'options.styles." + item + "' in 'dom.create': " +
@@ -231,33 +226,27 @@ function create(tagName, options) {
 
         // Check for event listeners
         if (Object.hasOwn(options, "eventListeners")) {
-            // Handle errors
             if (typeof options.eventListeners !== "object") {
                 throw error.type("dom.create", "options.eventListeners", "object", typeof options.eventListeners);
             }
 
-            // Iterate event listeners
             for (let item in options.eventListeners) {
-                // Handle errors
                 if (typeof options.eventListeners[item] !== "function") {
                     throw error.type("dom.create", "options.styles." + item, "Function", typeof options.eventListeners[item]);
                 }
 
-                // Add event listener
                 node.addEventListener(item, options.eventListeners[item]);
             }
         }
         
         // Check for child elements
         if (Object.hasOwn(options, "prependChildren")) {
-            // Handle errors
             if (typeof options.prependChildren !== "object") {
                 throw error.type("dom.create", "options.prependChildren", "object", typeof options.prependChildren);
             }
 
-            // Iterate children
             for (let item in options.prependChildren) {
-                // Handle errors
+                // If this isn't an element, error out
                 if (!(options.prependChildren[item] instanceof HTMLElement) && !(options.prependChildren[item] instanceof Comment)) {
                     throw error.type("dom.create", "options.prependChildren[" + item + "]", "HTMLElement || Comment", typeof options.prependChildren[item]);
                 }
@@ -268,14 +257,12 @@ function create(tagName, options) {
 
         // Check for child elements
         if (Object.hasOwn(options, "children")) {
-            // Handle errors
             if (typeof options.children !== "object") {
                 throw error.type("dom.create", "options.children", "object", typeof options.children);
             }
 
-            // Iterate children
             for (let item in options.children) {
-                // Handle errors
+                // If this isn't an element, error out
                 if (!(options.children[item] instanceof HTMLElement) && !(options.children[item] instanceof Comment)) {
                     throw error.type("dom.create", "options.children[" + item + "]", "HTMLElement || Comment", typeof options.children[item]);
                 }
@@ -300,10 +287,15 @@ function create(tagName, options) {
  * @returns {string}
  */
 function checkTextType(text) {
-    if (text.includes("<")) {
+    // If the text includes tags or entities...
+    if (text.includes("<") || text.includes("&")) {
         return "innerHTML";
+    
+    // If the text includes newlines...
     } else if (text.includes("\n")) {
         return "innerText";
+    
+    // If the text is plain...
     } else {
         return "textContent";
     }

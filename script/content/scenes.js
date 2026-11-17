@@ -1,10 +1,10 @@
 /** Represents visualizer scenes */
 
-import * as analyser from "../audio/analyser.js";
-import * as canvas from "../ui/canvas.js";
-import * as visualizer from "../graphics/visualizer.js";
-import * as draw from "../graphics/draw.js";
-import * as preferences from "./preferences.js";
+import * as analyser    from "../audio/analyser.js";
+import * as canvas      from "../ui/canvas.js";
+import * as visualizer  from "../graphics/visualizer.js";
+import * as draw        from "../graphics/draw.js";
+import * as preferences from  "./preferences.js";
 
 export {
     theme, debugData,
@@ -12,10 +12,12 @@ export {
 }
 
 
-// View Theme
+// Scenes
 
+/** Displays a graph of possible colors from the theme */
 const theme = {
     title: "View Theme",
+
     options: {
         fullSize: {
               title: "Fill Entire Screen",
@@ -23,6 +25,7 @@ const theme = {
             default: false
         }
     },
+
     setup: function() {
         let left = 0;
         let top = 0;
@@ -50,17 +53,21 @@ const theme = {
             }
         }
     },
+
     frame: function() { }
 };
 
 
-// View Data
-
+/** Displays various graphs of audio data values */
 const debugData = {
     title: "View Data",
+
     options: { },
+
     padding: 32,
+
     setup: function() { },
+
     frame: function() {
         draw.clear();
         let data = analyser.getData();
@@ -164,15 +171,14 @@ const debugData = {
 
         leftNudge = this.padding;
         topNudge += 256 + this.padding;
-
     }
 }
 
 
-// Bars
-
+/** A series of bars with bobbers and a treble bar */
 const bars = {
     title: "Bars",
+
     options: {
         bobbers: {
               title: "Use Bobbers",
@@ -185,14 +191,17 @@ const bars = {
             default: true
         }
     },
+
     peaks: null,
     peakFrames: null,
     foot: -1 / 5,
     ratio: 5 / 6,
+
     setup: function() {
         this.peaks = new Uint8Array(analyser.usefulRange);
         this.peakFrames = new Array(analyser.usefulRange);
     },
+
     frame: function() {
         draw.clear();
         let data = analyser.getData("filter");

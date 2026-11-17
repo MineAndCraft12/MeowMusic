@@ -7,38 +7,37 @@
 
 /* Top-level parent of all context except for the modal dialog */
 #main {
-
     /* Container for play, pause, etc buttons */
     > #controls {
         bottom: 0;
-         width: calc( 100vw - var(--view-split) );
+        width : calc( 100vw - var(--view-split) );
     }
 
     /* Primary content container, i.e. #visualizer, #library, #config */
     > section {
-         width: initial;
+        width : initial;
         height: 100svh;
     }
 
     > #visualizer {
+        width     : calc(100vw - var(--view-split));
+        height    : 100svh;
         background: oklch(0% 0% 0deg);
-             width: calc(100vw - var(--view-split));
-            height: 100svh;
 
         > canvas {
+            display   : block;
+            width     : 100%;
+            height    : 100%;
             background: inherit;
-                 width: 100%;
-                height: 100%;
-               display: block;
         }
     }
 
     > #library,
     > #config {
-            bottom: initial;
-             right: 0;
-             width: var(--view-split);
-            height: 100svh;
+        bottom    : initial;
+        right     : 0;
+        width     : var(--view-split);
+        height    : 100svh;
         overflow-y: scroll;
     }
 }

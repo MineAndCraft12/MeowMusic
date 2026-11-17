@@ -1,8 +1,8 @@
 /** Overall framework for visualizer logic */
 
-import * as draw from "./draw.js";
-import * as themes from "../content/themes.js";
-import * as scenes from "../content/scenes.js";
+import * as draw        from  "./draw.js";
+import * as themes      from "../content/themes.js";
+import * as scenes      from "../content/scenes.js";
 import * as preferences from "../content/preferences.js";
 
 export {
@@ -168,13 +168,13 @@ function setScene(newScene) {
 
 // Operation
 
-/** Allows the visualizer to render automatically */
+/** Allows the visualizer to render on requestAnimationFrame */
 function play() {
     timing = performance.now();
     playing = true;
 }
 
-/** Stops the visualizer from rendering automatically */
+/** Stops the visualizer from rendering on requestAnimationFrame */
 function pause() {
     playing = false;
 }

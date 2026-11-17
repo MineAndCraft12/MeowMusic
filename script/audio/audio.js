@@ -1,9 +1,9 @@
 /** represents the audio system */
 
-import * as dom from "../util/dom.js";
-import * as analyser from "./analyser.js";
-import * as effects from "./effects.js";
-import * as transport from "../tracks/transport.js";
+import * as dom        from "../util/dom.js";
+import * as analyser   from  "./analyser.js";
+import * as effects    from  "./effects.js";
+import * as transport  from "../tracks/transport.js";
 import * as visualizer from "../graphics/visualizer.js";
 
 export {
@@ -65,9 +65,7 @@ track.connect(analyser.registerNode(context))
 
 // Event Handlers
 
-/**
- * When a new audio track is loaded, automatically play it, except when this would break popup etiquette.
- */
+/** When a new audio track is loaded, automatically play it, except when this would break popup etiquette. */
 function canplaythrough() {
     if (!firstPlay) {
         play();
@@ -75,8 +73,7 @@ function canplaythrough() {
 }
 element.addEventListener("canplaythrough", canplaythrough);
 
-// I'm not sure I like keeping this here...
-// It's better than exporting the element, at least
+// When the track ends, skip to the next one
 element.addEventListener("ended", transport.next);
 
 
@@ -92,9 +89,7 @@ function setSrc(newSrc) {
     element.load();
 }
 
-/**
- * Check whether the AudioContext has been suspended and attempts to resume it.
- */
+/** Check whether the AudioContext has been suspended and attempts to resume it. */
 function checkSuspension() {
     if (context.state === "suspended") {
         context.resume();
@@ -113,9 +108,7 @@ function suspendContext() {
 
 // Playback Controls
 
-/**
- * Allow audio to auto-play.
- */
+/** Allow audio to auto-play. */
 function allowPlayback() {
     firstPlay = false;
 }
@@ -135,9 +128,7 @@ function getPlaying() {
     );
 }
 
-/**
- * Resume the AudioContext and play the audio.
- */
+/** Resume the AudioContext and play the audio. */
 function play() {
     checkSuspension();
     element.play();
@@ -147,9 +138,7 @@ function play() {
     firstPlay = false;
 }
 
-/**
- * Suspend the AudioContext and pause the audio.
- */
+/** Suspend the AudioContext and pause the audio. */
 function pause() {
     element.pause();
     main.classList.remove("playing");

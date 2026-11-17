@@ -1,9 +1,9 @@
 /** Represents the music library UI */
 
-import * as dom from "../util/dom.js";
-import * as ui from "../ui/ui.js";
-import * as audio from "../audio/audio.js";
-import * as library from "../tracks/library.js";
+import * as dom       from "../util/dom.js";
+import * as ui        from "../ui/ui.js";
+import * as audio     from "../audio/audio.js";
+import * as library   from "../tracks/library.js";
 import * as transport from "../tracks/transport.js";
 
 export {
@@ -76,6 +76,8 @@ function clearUI() {
 /**
  * Create a button for a playlist track on the DOM.
  * 
+ * TODO: If a duplicate title exists, specify more details
+ * 
  * @param {HTMLElement} parent - DOM node to be appended to
  * @param {number} index - Playlist track index for click handler
  */
@@ -83,7 +85,7 @@ function buildTrackUI(parent, index) {
     parent.appendChild(dom.create("div", {
         id: "track_" + index,
         classList: ["library-item", "library-track-button"],
-        textContent: library.trackInfoFromPlaylist(index).title, // TODO: If duplicate title exists, specify filetype and path
+        textContent: library.trackInfoFromPlaylist(index).title,
         eventListeners: {click: handleClick}
     }));
 }
@@ -99,6 +101,7 @@ function buildDirectoryUI(parent, obj, item) {
     // If this is a track, create a button for it
     if (typeof obj[item] === "string") {
         buildTrackUI(parent, library.playlistIndexFromPath(obj[item]));
+
     // If this is a directory...
     } else {
         // Create a collapsible "folder"
@@ -107,10 +110,12 @@ function buildDirectoryUI(parent, obj, item) {
             ["library-item", "library-directory-button"],
             undefined, true
         );
+
         // Move one layer deeper and recurse to populate the collapsible
         for (var subItem in obj[item]) {
             buildDirectoryUI(directoryNode, obj[item], subItem);
         }
+
         // Add the collapsible to the flow
         parent.appendChild(directoryNode);
     }
@@ -122,18 +127,25 @@ function buildDirectoryUI(parent, obj, item) {
  * Uses the playlist if shuffle is on, otherwise directory tree.
  */
 function buildUI() {
+    // No tracks loaded
     if (library.playlist.length === 0) {
         node.appendChild(ui.createParagraph("No tracks loaded.\nVisit Settings to load your tracks."));
+
+    // Shuffle mode
     } else if (library.getShuffle()) {
         let directoryNode = ui.createDetails(
             "Shuffle", "", 
             ["library-item", "library-directory-button"],
             undefined, true
         );
+
         for (let item in library.playlist) {
             buildTrackUI(directoryNode, item);
         }
+
         node.appendChild(directoryNode);
+
+    // No shuffle mode
     } else {
         for (let item in library.directory) {
             buildDirectoryUI(node, library.directory, item);

@@ -1,13 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
+        <!-- Meta -->
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width">
 
+        <!-- Brand -->
         <title>MeowMusic</title>
         <link rel="icon" type="image/png" href="image/brand/logo.png" media="(prefers-color-scheme: light)">
         <link rel="icon" type="image/png" href="image/brand/logo-tuxedo.png" media="(prefers-color-scheme: dark)">
 
+        <!-- Style -->
         <link rel="stylesheet" href="style/index.css">
         <link rel="stylesheet" href="style/ui.css">
         <link rel="stylesheet" href="style/view.css">
@@ -16,24 +19,31 @@
         <link rel="stylesheet" href="style/library.css">
         <link rel="stylesheet" href="style/modal.css">
 
+        <!-- Script -->
         <script type="module" src="script/index.js"></script>
     </head>
     <body>
         
+        <!-- Contains all application content -->
         <main id="main" class="absolute view-config">
 
+            <!-- Graphical visualizer screen -->
             <section id="visualizer" class="absolute">
                 <canvas id="canvas"></canvas>
             </section>
 
+            <!-- Music library playlist / catalog of tracks -->
             <section id="library" class="absolute padded"></section>
 
+            <!-- Configuration menus -->
             <section id="config" class="absolute padded"></section>
 
+            <!-- Music player transport controls -->
             <nav id="controls" class="absolute"></nav>
 
         </main>
 
+        <!-- Overlays application content -->
         <dialog id="modal" closedby="any"></dialog>
 
     </body>

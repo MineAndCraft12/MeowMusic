@@ -1,7 +1,5 @@
 /** represents audio effects */
 
-import * as audio from "./audio.js";
-
 export { delay, gain, registerDelayNode, registerGainNode }
 
 

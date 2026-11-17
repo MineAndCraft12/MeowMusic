@@ -1,10 +1,10 @@
 /** Represents menus in the config screen */
 
-import * as library from "../tracks/library.js";
-import * as visualizer from "../graphics/visualizer.js";
-import * as view from "../ui/view.js";
-import * as config from "../ui/config.js";
-import * as preferences from "./preferences.js";
+import * as library     from "../tracks/library.js";
+import * as visualizer  from "../graphics/visualizer.js";
+import * as view        from "../ui/view.js";
+import * as config      from "../ui/config.js";
+import * as preferences from  "./preferences.js";
 
 export {
     landing, musiclibrary,
@@ -12,21 +12,19 @@ export {
     about
 }
 
-/** Options for the Music Library */
-const musiclibrary = {
-    title: "Music Library",
-    select: {
-        title: "Library Folder",
-        details: "Select a folder of audio files from your device.<br><br>" +
-            "<i>Your files will not be uploaded to the Internet.</i>",
-        type: "directory",
-        onchange: function(event) {
-            library.loadDirectory(event.target.files);
-            config.show();
-            view.set("view-library");
-        }
-    }
-};
+
+// Event Handlers
+
+/**
+ * Event handler for switching library folders
+ * 
+ * @param {Event} event 
+ */
+function handleLibraryChange(event) {
+    library.loadDirectory(event.target.files);
+    config.show();
+    view.set("view-library");
+}
 
 /**
  * Event handler for configuring a content item
@@ -65,15 +63,34 @@ function handleContentSelect(event) {
     }
 }
 
+
+// Menus
+
+/** Options for the Music Library */
+const musiclibrary = {
+    title: "Music Library",
+
+    select: {
+        title: "Library Folder",
+        type: "directory",
+        details: "Select a folder of audio files from your device.<br><br>" +
+            "<i>Your files will not be uploaded to the Internet.</i>",
+        onchange: handleLibraryChange
+    }
+};
+
+
 /** Options for the scene */
 const visualizerScene = {
     title: "Visualizer",
+
     options: {
         title: "Scene Options",
         type: "options",
         target: "scene",
         onchange: handleContentOption
     },
+
     list: {
         title: "Select a Scene",
         type: "list",
@@ -82,15 +99,18 @@ const visualizerScene = {
     }
 };
 
+
 /** Options for the theme */
 const visualizerTheme = {
     title: "Color Theme",
+
     options: {
         title: "Theme Options",
         type: "options",
         target: "theme",
         onchange: handleContentOption
     },
+
     list: {
         title: "Select a Theme",
         type: "list",
@@ -99,8 +119,10 @@ const visualizerTheme = {
     }
 }
 
+/** Information about the application */
 const about = {
     title: "About MeowMusic",
+
     blurb: {
         title: "Summary",
         type: "paragraphs",
@@ -113,6 +135,7 @@ const about = {
                 "to MeowMusic in the future."
         ]
     },
+
     links: {
         title: "Links",
         type: "paragraphs",
@@ -123,6 +146,7 @@ const about = {
             'Check out my other work: <a href="https://aaronos.dev/AaronOS/" target="_blank">AaronOS</a>'
         ]
     },
+
     legal: {
         title: "Legal",
         type: "paragraphs",
@@ -134,22 +158,29 @@ const about = {
     }
 }
 
-// This must stay at the end!
-/** Links to config menus */
+
+/**
+ * Links to config menus.
+ * This must stay at the bottom of the file!
+ */
 const landing = {
     title: "Settings",
+
     musicLibrary: {
         type: "link",
         target: "musiclibrary"
     },
+
     visualizerScene: {
         type: "link",
         target: "visualizerScene",
     },
+    
     visualizerTheme: {
         type: "link",
         target: "visualizerTheme"
     },
+    
     about: {
         type: "link",
         target: "about"

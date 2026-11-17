@@ -1,8 +1,8 @@
 /** Represents the modal popup */
 
 import * as error from "../util/error.js";
-import * as dom from "../util/dom.js";
-import * as ui from "./ui.js";
+import * as dom   from "../util/dom.js";
+import * as ui    from  "./ui.js";
 import * as color from "../graphics/color.js";
 
 export {
@@ -95,6 +95,7 @@ function onclose() {
         currentCallback(getValue());
         currentCallback = undefined;
     }
+
     clearValue();
     clearContent();
 }
@@ -106,22 +107,26 @@ function oncancel() {
 }
 node.addEventListener('cancel', oncancel);
 
-/** Routes tab focus to top of modal because Cancel is at the bottom */
+/**
+ * Routes tab focus from Cancel to the first input or button of modal because Cancel is at the bottom
+ * 
+ * @param {Event} event
+ */
 function cancelTabHandler(event) {
     if (event.key === "Tab") {
         event.preventDefault();
-        // Iterate through each of <dialog#modal>'s child <p> nodes
+
+        // For each of <dialog#modal>'s child <p> nodes...
         for (var highNode = 0; highNode < node.childNodes.length; highNode++) {
-            // Iterates through a <p> node's children for the first instance of <input> or <button>
+            // For each child of the <p> node...
             for (var lowNode = 0; lowNode < node.childNodes[highNode].childNodes.length; lowNode++) {
-                // A node at this depth could only be a TextNode, an <input>, or a <button>
                 let tag = node.childNodes[highNode].childNodes[lowNode].tagName;
+
                 if (tag === "INPUT" || tag === "BUTTON") {
                     node.childNodes[highNode].childNodes[lowNode].focus();
                     // Escape after we've focused only one node.
                     return;
                 }
-                // If we did not find an <input> or <button>, move on to the next <p> node.
             }
         }
     }
@@ -179,9 +184,9 @@ function createCancelNode(text) {
 function createControlsNode(controlsHandler, controls) {
     let node = ui.createParagraphContainer(["modal-container", "modal-controls"]);
 
-    // Check for buttons to make
+    // Were we given buttons to make?
     if (typeof controls === "object") {
-        // Check if a control handler was specified
+        // Does it have a controlsHandler?
         if (typeof controlsHandler === "function") {
             // Iterate the controls and build buttons
             for (let item in controls) {
@@ -191,10 +196,13 @@ function createControlsNode(controlsHandler, controls) {
                     eventListeners: {"click": controlsHandler}
                 }));
             }
+            
+        // A control handler must be specified if controls are specified
         } else {
-            // A control handler must be specified if controls are specified
             throw error.range("modal.createControlsNode", "controlsHandler", "must reference a Function if parameter 'controls' is undefined");
         }
+    
+    // Controls must be specified
     } else if (controls !== undefined) {
         throw error.type("modal.createControlsNode", "controls", ["object", "undefined"], typeof controls);
     }
@@ -222,7 +230,6 @@ function createStringNode(stringHandler, placeholder, initialValue) {
     
     // If a function is specified, then create input with submit button
     if (typeof stringHandler === "function") {
-        // Create the text field
         let input = dom.create("input", {
             id: "modal-string-input",
             eventListeners: {"keydown": handleStringEnterKey},
@@ -232,19 +239,17 @@ function createStringNode(stringHandler, placeholder, initialValue) {
             }
         });
 
-        // Create the submit button
         let submitButton = dom.create("button", {
             id: "modal-string-submit",
             textContent: "Submit",
             eventListeners: {"click": stringHandler}
         });
 
-        // Add nodes
         node.appendChild(input);
         node.appendChild(submitButton);
+
     // If a string is specified instead of a function, do not include a submit button
     } else if (typeof stringHandler === "string") {
-        // Create the text field
         let input = dom.create("input", {
             id: stringHandler,
             attributes: {
@@ -253,8 +258,9 @@ function createStringNode(stringHandler, placeholder, initialValue) {
             }
         });
 
-        // Add node
         node.appendChild(input);
+
+    // We can't do anything, error out
     } else {
         throw error.type("modal.createStringNode", "stringHandler", ["string", "Function"], typeof inputId);
     }
@@ -281,7 +287,7 @@ function createStringNode(stringHandler, placeholder, initialValue) {
 function createNumberNode(numberHandler, placeholder, initialValue, range, step) {
     let node = ui.createParagraphContainer(["modal-container", "modal-number"]);
     
-    // Handle range
+    // Handle parameter range
     if (Array.isArray(range)) {
         if (range.length !== 2) {
             throw error.range("modal.createNumberNode", "range", `must have exactly 2 items, instead got ${range.length}`);
@@ -292,19 +298,18 @@ function createNumberNode(numberHandler, placeholder, initialValue, range, step)
         throw error.type("modal.createNumberNode", "range", "number[]", typeof range);
     }
 
-    // Handle placeholder
+    // Handle parameter placeholder
     if (typeof placeholder !== "number" && typeof placeholder !== "string") {
         placeholder = "";
     }
 
-    // Handle initialValue
+    // Handle parameter initialValue
     if (typeof initialValue !== "number" && typeof initialValue !== "string") {
         initialValue = "";
     }
     
     // If a function is specified, then create input with submit button
     if (typeof numberHandler === "function") {
-        // Create the text field
         let input = dom.create("input", {
             id: "modal-string-input",
             eventListeners: {"keydown": handleStringEnterKey},
@@ -318,19 +323,17 @@ function createNumberNode(numberHandler, placeholder, initialValue, range, step)
             }
         });
 
-        // Create the submit button
         let submitButton = dom.create("button", {
             id: "modal-string-submit",
             textContent: "Submit",
             eventListeners: {"click": numberHandler}
         });
 
-        // Add nodes
         node.appendChild(input);
         node.appendChild(submitButton);
+
     // If a string is specified instead of a function, do not include a submit button
     } else if (typeof numberHandler === "string") {
-        // Create the text field
         let input = dom.create("input", {
             id: numberHandler,
             attributes: {
@@ -343,8 +346,9 @@ function createNumberNode(numberHandler, placeholder, initialValue, range, step)
             }
         });
 
-        // Add node
         node.appendChild(input);
+
+    // We can't do anything, error out
     } else {
         throw error.type("modal.createNumberNode", "numberHandler", ["string", "Function"], typeof inputId);
     }
@@ -374,7 +378,11 @@ function handleNumber() {
     submit(parseFloat(dom.get("#modal-string-input").value));
 }
 
-/** Handles a submitted color prompt */
+/**
+ * Handles a submitted color prompt
+ * 
+ * WARNING: Not yet implemented
+ */
 function handleColor() {
 
 }
@@ -392,13 +400,14 @@ function handleColor() {
 function showPrompt(trace, callback, nodes) {
     clearContent();
 
-    // Handle callback
+    // Handle parameter callback
     if (typeof callback === "function") {
         currentCallback = callback;
     } else if (callback !== "NO CALLBACK") {
         throw error.type(trace, "callback", "Function", typeof callback);
     }
 
+    // Fill the modal width nodes
     for (var item = 0; item < nodes.length; item++) {
         node.appendChild(nodes[item]);
     }
@@ -510,7 +519,7 @@ function promptNumber(callback, message, placeholder, initial, range, step) {
  * @param {*} initial - The present value of the item you're describing.
  */
 function promptColor(callback, message, colorspace, initial) {
-    // Check if colorspace is specified
+    // Handle parameter colorspace
     if (colorspace === "undefined") {
         colorspace = "hsl";
     } else if (typeof colorspace === "string") {
