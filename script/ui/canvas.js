@@ -42,7 +42,7 @@ let height = 0;
  * @returns {CanvasRenderingContext2d}
  */
 function getContext() {
-    return node.getContext("2d", {alpha: "false", willReadFrequently: "true"});
+    return node.getContext("2d", {alpha: "false"});
 }
 
 
