@@ -74,6 +74,7 @@ function createMenuLink(menuName) {
 /** Deletes all children of the config DOM node */
 function clearContent() {
     node.replaceChildren();
+    node.scrollTop = 0;
 }
 
 /**
@@ -282,6 +283,17 @@ function show(menuName) {
                                 )
                             ]
                         )
+                    );
+                    break;
+
+                case "ko-fi":
+                    node.appendChild(
+                        dom.create("iframe", {
+                            classList: ["config-kofi-frame"],
+                            attributes: {
+                                src: `https://ko-fi.com/${menu[item].details}/?hidefeed=true&widget=true&embed=true&preview=true`
+                            }
+                        })
                     );
                     break;
 

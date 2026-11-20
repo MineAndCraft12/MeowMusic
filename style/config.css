@@ -74,6 +74,16 @@
     }
 }
 
+.config-kofi-frame {
+    display      : block;
+    margin       : auto;
+    width        : 400px;
+    max-width    : 100%;
+    height       : 645px;
+    border       : none;
+    border-radius: 10px;
+}
+
 .config-image-link {
     cursor: pointer;
     /* 64px on desktop */

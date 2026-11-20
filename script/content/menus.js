@@ -9,7 +9,7 @@ import * as preferences from  "./preferences.js";
 export {
     landing, musiclibrary,
     visualizerScene, visualizerTheme,
-    about
+    about, supportDeveloper
 }
 
 
@@ -117,7 +117,7 @@ const visualizerTheme = {
         target: "theme",
         onchange: handleContentSelect
     }
-}
+};
 
 /** Information about the application */
 const about = {
@@ -184,7 +184,17 @@ const about = {
             'Licensed under GNU AGPLv3'
         ]
     }
-}
+};
+
+const supportDeveloper = {
+    title: "Support the Developer",
+
+    kofi: {
+        type: "ko-fi",
+        /* This is the ko-fi username, i.e. `ko-fi.com/${details}` */
+        details: "aaronadams_aaronos"
+    }
+};
 
 
 /**
@@ -212,5 +222,10 @@ const landing = {
     about: {
         type: "link",
         target: "about"
+    },
+
+    supportDeveloper: {
+        type: "link",
+        target: "supportDeveloper"
     }
 };

@@ -209,6 +209,8 @@ function createSlider(id, eventListener, initial, float) {
 // Build UI
 
 // Top Controls - Left Float
+createButton(nodeTop, "prev", transport.prev, "left");
+createButton(nodeTop, "next", transport.next, "left");
 titleContainer = dom.create("span", {
     id: "controls-title",
     textContent: "MeowMusic",
@@ -219,9 +221,7 @@ titleContainer = dom.create("span", {
 nodeTop.appendChild(titleContainer);
 
 // Bottom Controls - Left Float
-createButton(nodeBottom, "prev", transport.prev,          "left");
 createButton(nodeBottom, "play", transport.togglePlaying, "left");
-createButton(nodeBottom, "next", transport.next,          "left");
 
 createButton(nodeBottom, "mute",   effects.toggleMute,                 "left");
 volumeBar = createSlider("volume", effects.setVolume,  effects.volume, "left");
