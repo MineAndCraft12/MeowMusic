@@ -19,7 +19,7 @@
     background-size  : contain;
     background-repeat: no-repeat;
     opacity          : 1;
-    transition       : 0.1s opacity;
+    transition       : opacity 0.1s;
     cursor           : pointer;
 }
 

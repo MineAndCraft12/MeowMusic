@@ -7,10 +7,17 @@
 
 /* Top-level parent of all context except for the modal dialog */
 #main {
-    /* Container for play, pause, etc buttons */
-    > #controls {
-        bottom: 0;
+    /* Contains buttons for Play, volume, fullscreen, etc. */
+    > .controls {
         width : calc( 100vw - var(--view-split) );
+    }
+
+    > #controls-top {
+        top: 0;
+    }
+
+    > #controls-bottom {
+        bottom: 0;
     }
 
     /* Primary content container, i.e. #visualizer, #library, #config */
@@ -46,7 +53,7 @@
 
 #main.view-visualizer {
     > #visualizer,
-    > #controls {
+    > .controls {
         width: 100vw;
 
         > #controls-visualizer {
@@ -61,7 +68,7 @@
 }
 
 #main.view-library {
-    > #controls > #controls-library {
+    > .controls > #controls-library {
         display: none;
     }
 
@@ -71,7 +78,7 @@
 }
 
 #main.view-config {
-    > #controls > #controls-config {
+    > .controls > #controls-config {
         display: none;
     }
 
@@ -80,36 +87,39 @@
     }
 }
 
-/* Mobile overrides
+/* Small screen overrides
  *
  * Moves the library and config UI to the bottom of the screen,
  * and makes them a little bigger.
  */
 
-@media (orientation: portrait) {
+@media (width < 1100px) {
     #main {
         --view-split: 40svh;
 
-        > #controls {
-             width: 100vw;
+        > .controls {
+            width : 100vw;
+        }
+
+        > #controls-bottom {
             bottom: var(--view-split);
         }
 
         > section {
-             width: 100vw;
+            width : 100vw;
             height: initial;
         }
 
         > #visualizer {
-             width: 100vw;
+            width : 100vw;
             height: calc(100svh - var(--view-split));
         }
 
         > #library,
         > #config {
             bottom: 0;
-             right: initial;
-             width: 100vw;
+            right : initial;
+            width : 100vw;
             height: var(--view-split);
         }
     }
@@ -119,7 +129,7 @@
             height: 100svh;
         }
 
-        > #controls {
+        > #controls-bottom {
             bottom: 0;
         }
     }

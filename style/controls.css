@@ -1,11 +1,18 @@
 /* Main controls bar */
 
 #main {
-    > #controls {
+    > #controls-top {
+        background: linear-gradient( oklch(0% 0% 0deg / 50%), oklch(0% 0% 0deg /  0%) );
+    }
+
+    > #controls-bottom {
+        background: linear-gradient( oklch(0% 0% 0deg /  0%), oklch(0% 0% 0deg / 50%) );
+    }
+
+    > .controls {
         height       : calc( var(--controls-margin) * 2 + var(--controls-size) );
         text-align   : center;
         align-content: center;
-        background   : linear-gradient( oklch(0% 0% 0deg / 0%), oklch(0% 0% 0deg / 50%) );
         transition   : opacity 0.25s;
 
         > button {
@@ -13,13 +20,72 @@
             filter: invert(1);
         }
 
-        /* Left Side */
+        > .controls-slider {
+            --background-position: 0%;
 
-        > #controls-fullscreen {
-            background-image: url("../image/ui/fullscreen.svg");
+            appearance: none;
+            background: transparent;
+            overflow  : hidden;
         }
 
-        /* Center */
+        > .controls-slider:hover::-webkit-slider-thumb {
+            filter: brightness(0.8);
+        }
+
+        > .controls-slider:active::-webkit-slider-thumb {
+            filter: brightness(0.675);
+        }
+
+        /* Works in most browsers */
+        > .controls-slider::-webkit-slider-runnable-track {
+            height          : 0.25rem;
+            background: linear-gradient(to right, oklch(100% 0% 0deg) var(--background-position), oklch( 50% 0% 0deg) var(--background-position));
+            border-radius   : 0.25rem;
+        }
+
+        /* Works in Firefox */
+        > .controls-slider::-moz-range-track {
+            height          : 0.25rem;
+            background-color: oklch(50% 0% 0deg);
+            border-radius   : 0.25rem;
+        }
+
+        /* Works in most browsers */
+        > .controls-slider::-webkit-slider-thumb {
+            appearance      : none;
+            margin-top      : -0.375rem;
+            height          : 1rem;
+            width           : 1rem;
+            background-color: oklch(100% 0% 0deg);
+            border-radius   : 50%;
+            filter          : brightness(1);
+            transition      : filter 0.1s;
+        }
+
+        /* Works in Firefox */
+        > .controls-slider::-moz-range-thumb {
+            appearance      : none;
+            margin-top      : -0.375rem;
+            height          : 1rem;
+            width           : 1rem;
+            background-color: oklch(100% 0% 0deg);
+            border-radius   : 50%;
+            filter          : brightness(1);
+            transition      : filter 0.1s;
+        }
+
+
+        /* Top Left */
+
+        > #controls-title {
+            font-size  : 2rem;
+            cursor     : default;
+            user-select: none;
+            margin-left: calc( var(--controls-margin) / 2 );
+        }
+
+
+        /* Bottom Left */
 
         > #controls-prev {
             background-image: url("../image/ui/prev.svg");
@@ -32,8 +98,36 @@
         > #controls-next {
             background-image: url("../image/ui/next.svg");
         }
+        
+        > #controls-mute { /* overridden by #main.volume-mute and #main.volume-low and #main.volume-off */
+            background-image: url("../image/ui/volume-high.svg");
+        }
 
-        /* Right Side */
+        > #controls-volume {
+            --background-position: 100%;
+
+            height    : var(--controls-size);
+            margin-top: -1px;
+        }
+
+
+        /* Bottom Center */
+
+        > #controls-seek {
+            display : block;
+            position: absolute;
+            left    : 1.25%;
+            top     : -8px;
+            height  : 1rem;
+            width   : 97%;
+        }
+
+
+        /* Bottom Right */
+
+        > #controls-fullscreen {
+            background-image: url("../image/ui/fullscreen.svg");
+        }
 
         > #controls-config {
             background-image: url("../image/ui/config.svg");
@@ -49,12 +143,36 @@
     }
 }
 
-#main.playing > #controls > #controls-play {
+/* Dynamic play button image */
+
+#main.playing > .controls > #controls-play {
     background-image: url("../image/ui/pause.svg");
 }
 
-@media (orientation: portrait) {
-    #controls-visualizer {
+/* Dynamic mute button image */
+
+#main.volume-low > .controls > #controls-mute {
+    background-image: url("../image/ui/volume-low.svg");
+}
+
+#main.volume-off > .controls > #controls-mute {
+    background-image: url("../image/ui/volume-off.svg");
+}
+
+#main.volume-mute > .controls > #controls-mute {
+    background-image: url("../image/ui/volume-mute.svg");
+}
+
+/* Rotate visualizer button on small screens */
+@media (width < 1100px) {
+    #main > .controls > #controls-visualizer {
         transform: rotate(90deg);
+    }
+}
+
+/* Make buttons more compact on tiny screens */
+@media (width < 600px) {
+    #main > .controls > button {
+        margin: 0 calc( var(--controls-margin) / 2 );
     }
 }

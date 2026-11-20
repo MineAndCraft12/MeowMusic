@@ -1,5 +1,6 @@
 /** Overall framework for visualizer logic */
 
+import * as controls    from "../ui/controls.js";
 import * as draw        from  "./draw.js";
 import * as themes      from "../content/themes.js";
 import * as scenes      from "../content/scenes.js";
@@ -234,6 +235,8 @@ function frame(animationFrame) {
             framesThisSecond = 0;
             second = newSecond;
         }
+
+        controls.updateSeekBar();
 
         // Debug overlay
         if (debug) {

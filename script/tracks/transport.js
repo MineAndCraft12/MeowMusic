@@ -1,8 +1,9 @@
 /** represents the loaded track and its controls */
 
-import * as library from  "./library.js";
-import * as catalog from "../ui/catalog.js";
-import * as audio   from "../audio/audio.js";
+import * as library  from  "./library.js";
+import * as catalog  from "../ui/catalog.js";
+import * as controls from "../ui/controls.js";
+import * as audio    from "../audio/audio.js";
 
 export {
     currentTrack,
@@ -40,11 +41,14 @@ function loadTrack(selected){
         } else if (selected < 0) {
             selected = library.playlist.length - 1;
         }
+
+        let trackInfo = library.trackInfoFromPlaylist(selected);
         
         catalog.highlightTrack(selected);
-        audio.setSrc(library.trackInfoFromPlaylist(selected).src);
+        audio.setSrc(trackInfo.src);
         currentTrack = selected;
         setMediaMeta();
+        controls.updateTrackName(trackInfo.title);
     }
 }
 
@@ -177,12 +181,15 @@ function getTime() {
  * 
  *     audio.setTime(1.0) // One second into the track
  * 
- * @param {number} newTime - Decimal value between 0 and 1
+ * @param {number|Event} newTime - Decimal value between 0 and 1 or an input event
  */
 function setTime(newTime) {
-    audio.setTime(audio.getDuration() * newTime);
+    if (typeof newTime === "number") {
+        audio.setTime(audio.getDuration() * newTime);
+    } else {
+        audio.setTime(audio.getDuration() * newTime.target.value);
+    }
 }
-
 
 // System Media Session
 

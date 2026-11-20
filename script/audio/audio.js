@@ -158,7 +158,7 @@ function pause() {
  * @returns {number}
  */
 function getTime() {
-    return element.currentTime;
+    return element.currentTime || 0;
 }
 
 /**
@@ -171,10 +171,10 @@ function setTime(newTime) {
 }
 
 /**
- * Get the audio duration in seconds.
+ * Get the audio duration in seconds or zero if no audio is loaded.
  * 
  * @returns {number}
  */
 function getDuration() {
-    return element.duration;
+    return element.duration || 0;
 }
