@@ -42,7 +42,7 @@ let height = 0;
  * @returns {CanvasRenderingContext2d}
  */
 function getContext() {
-    return node.getContext("2d", {alpha: "false"});
+    return node.getContext("2d", {alpha: "false", willReadFrequently: "true"});
 }
 
 
@@ -54,8 +54,8 @@ function getContext() {
  * Clears the contents of the canvas.
  */
 function resize() {
-    width = container.offsetWidth * devicePixelRatio;
-    height = container.offsetHeight * devicePixelRatio;
+    width = Math.round(container.offsetWidth * devicePixelRatio);
+    height = Math.round(container.offsetHeight * devicePixelRatio);
     node.setAttribute("width", width);
     node.setAttribute("height", height);
     node.style.width = container.offsetWidth + "px";
