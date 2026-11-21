@@ -9,7 +9,7 @@ import * as preferences from  "./preferences.js";
 export {
     landing, musiclibrary,
     visualizerScene, visualizerTheme,
-    about, supportDeveloper
+    help, about, supportDeveloper
 }
 
 
@@ -119,6 +119,39 @@ const visualizerTheme = {
     }
 };
 
+const help = {
+    title: "Help",
+
+    chromeAndroid: {
+        title: "Chrome on Android",
+        type: "paragraphs",
+        details: [
+            "<b>Poor Framerate:</b> Chrome on Android enforces a mandatory framerate cap on audio analysis.",
+            "Workaround 1: Use Firefox or try another browser.",
+            "Workaround 2: Visit MeowMusic on PC instead."
+        ]
+    },
+
+    firefoxAndroid: {
+        title: "Firefox on Android",
+        type: "paragraphs",
+        details: [
+            "<b>Poor Performance:</b> Firefox on Android can become unresponsive, freeze, or crash if a large music library folder is loaded.",
+            "Workaround 1: Select a folder with a fewer audio files.",
+            "Workaround 2: Visit MeowMusic on PC instead."
+        ]
+    },
+
+    community: {
+        title: "Need support?",
+        type: "paragraphs",
+        details: [
+            'Visit our <a href="https://discord.gg/MhSEbKkyuJ" target="_blank">Discord community</a> to get in touch!',
+            "I don't own many devices to test with; I will be happy to work with you to get a fix going."
+        ]
+    }
+};
+
 /** Information about the application */
 const about = {
     title: "About MeowMusic",
@@ -217,6 +250,11 @@ const landing = {
     visualizerTheme: {
         type: "link",
         target: "visualizerTheme"
+    },
+
+    help: {
+        type: "link",
+        target: "help"
     },
     
     about: {
