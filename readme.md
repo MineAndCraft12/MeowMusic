@@ -9,9 +9,19 @@
 
 MeowMusic is a web-based music visualizer for audio files from your device.
 
-A public release of MeowMusic is coming soon, but in the meantime you can host MeowMusic from a webserver to use it.
+Use MeowMusic right now for free at [aaronos.dev/MeowMusic](https://aaronos.dev/MeowMusic)!
 
 This project started small as an exercise in writing higher quality software, but eventually gained a true identity of its own, becoming the spiritual successor of my previous work, the AaronOS Music Player.
+
+## Develop or Deploy
+
+MeowMusic is a simple web application which works in modern web browsers on computers and mobile devices.
+
+Simply clone this repository into a directory served by your webserver of choice, and visit it with a web browser.
+
+If you edit MeowMusic, your web browser may cache old versions of script files and ignore your changes. Use your PC web browser's Developer Tools to disable script caching, and use your mobile web browser's Incognito Mode to workaround script caching by creating a new session every time you change a script.
+
+MeowMusic was originally designed for Chrome on PC and served by Apache2 on Steam Deck.
 
 ## Attribution
 
