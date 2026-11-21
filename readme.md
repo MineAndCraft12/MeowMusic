@@ -29,10 +29,10 @@ Button icons from Uicons by [Flaticon](https://www.flaticon.com/uicons)
 
 ## License
 
-Licensed under **GNU APGLv3**; see [LICENSE](LICENSE) and [NOTICE](NOTICE)
+Licensed under **GNU AGPLv3**; see [LICENSE](LICENSE) and [NOTICE](NOTICE)
 
 Per **AGPLv3 Section 7(b) & 7(e)**, any deployed or modified version must keep the visible UI credit (`Copyright © 2026 Aaron Adams. Free & Open Source at https://github.com/MineAndCraft12/MeowMusic/`) intact (though contributors may append their own modification credit alongside it), and may not use the author's or project's name for endorsement, publicity, or promotion without written consent.
 
 *In simpler terms, please retain my attribution (though you may add your own), and don't claim without my consent that I promote your business or your modifications.*
 
-All commits prior to the addition of the LICENSE and NOTICE file are also licensed under GNU APGLv3.
+All commits prior to the addition of the LICENSE and NOTICE file are also licensed under GNU AGPLv3.
