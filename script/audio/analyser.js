@@ -1,11 +1,14 @@
 /** represents the audio frequency analyser */
 
-import * as util       from "../util/util.js";
-import * as visualizer from "../graphics/visualizer.js";
+import * as calc        from "../util/calc.js";
+import * as effects     from  "./effects.js";
+import * as visualizer  from "../graphics/visualizer.js";
+import * as preferences from "../content/preferences.js";
 
 export {
-    node, registerNode,
-    getData, bufferLength, usefulRange
+    node, registerNode, getData,
+    bufferExponent, setBufferExponent,
+    ratio, size
 }
 
 
@@ -18,71 +21,122 @@ export {
 let node;
 
 /**
- * The total actual size of the analyser.getData() array
+ * The power of two which sets the size of the analyser.getData() array.
+ * 
+ * Default is 10 for 1024, minimum is 8 for 256, maximum is 14 for 16384.
  * @type {number}
  */
-const bufferLength = 1024;
+let bufferExponent = preferences.load("analyser.bufferExponent", 10);
 
 /**
- * Based on my music, most frequencies useful to the visualizer are below this index
- * @type {number}
+ * Describes the size ratios between each data bucket and the buffer.
  */
-const usefulRange = bufferLength / 8;
+const ratio = {
+    // The fft size MUST be 2x the buffer size; any other case is impossible.
+    fft   : 2,
+    buffer: 1,
+    
+    // These buckets start at the beginning of the buffer
+    standard: (128 / 1024),
+    bass    : ( 12 / 1024), // At buffer 256, bass becomes prime.
+
+    // These buckets are "leftovers" of their parents
+    mid   : (( 128 -  12) / 1024), // standard range which is not bass
+    treble: ((1024 - 128) / 1024)  // buffer range which is not standard
+}
 
 /**
- * Range of values outside of usefulRange
- * @type {number}
+ * Describes the size of each data bucket.
  */
-const trebleRange = bufferLength - usefulRange;
+let size = {
+    fft     : 1024 * ratio.fft,      // Default 2048
+    buffer  : 1024 * ratio.buffer,   // Default 1024
+    standard: 1024 * ratio.standard, // Default  128
+    bass    : 1024 * ratio.bass,     // Default   12
+    mid     : 1024 * ratio.mid,      // Default  116
+    treble  : 1024 * ratio.treble    // Default  896
+};
 
-/**
- * Raw data pulled from the AnalyserNode
- * @type {Uint8Array}
- */
-const data = new Uint8Array(bufferLength);
+/** Contains the actual data buckets used by the visualizer. */
+const buckets = {
+    buffer: {
+        source: "analyser",
+        rangeAtEnd: false,
+        data: new Uint8Array(size.buffer),
 
-/**
- * Filtered data based on data pulled from the AnalyserNode
- * @type {Uint8Array}
- */
-const filteredData = new Array(usefulRange);
+        averageAmplitude: 0,
+        averageFrequency: 0,
+        
+        frame: {
+            data            : 0,
+            averageAmplitude: 0,
+            averageFrequency: 0
+        }
+    },
 
-/**
- * Average of frequencies above usefulRange
- * @type {number}
- */
-let trebleData = 0;
+    standard: {
+        source: "buffer",
+        rangeAtEnd: false,
+        data: new Array(size.standard),
+        amplitudeModifier: "sinusoid",
 
-/**
- * The most recent frame data was pulled on.
- * @type {number}
- */
-let recentFrame = 0;
+        averageAmplitude: 0,
+        averageFrequency: 0,
 
-/**
- * The most recent frame data was filtered on.
- * @type {number}
- */
-let filteredFrame = 0;
+        frame: {
+            data            : 0,
+            averageAmplitude: 0,
+            averageFrequency: 0
+        }
+    },
 
-/**
- * The most recent frame treble was calculated on.
- * @type {number}
- */
-let trebleFrame = 0;
+    bass: {
+        source: "standard",
+        rangeAtEnd: false,
+        data: new Array(size.bass),
 
-/**
- * Emphasises quiet sounds in the treble data bucket.
- * A smaller fraction (larger denominator) amplifies the effect.
- * @type {number}
- */
-const trebleDataExponent = 1 / 4;
+        averageAmplitude: 0,
+        averageFrequency: 0,
 
-/**
- * Brings value ceiling back to baseline after trebleDataExponent is applied.
- * @type {number}
- */
-const trebleDataMultiplier = Math.pow(255, 1 - trebleDataExponent);
+        frame: {
+            data            : 0,
+            averageAmplitude: 0,
+            averageFrequency: 0
+        }
+    },
+
+    mid: {
+        source: "standard",
+        rangeAtEnd: true,
+        data: new Array(size.mid),
+
+        averageAmplitude: 0,
+        averageFrequency: 0,
+        
+        frame: {
+            data            : 0,
+            averageAmplitude: 0,
+            averageFrequency: 0
+        }
+    },
+
+    treble: {
+        source: "buffer",
+        rangeAtEnd: true,
+        data: new Array(size.treble),
+
+        averageAmplitudeModifier: "presenceSensitiveAverage",
+        averageAmplitudeSensitivity: 1 / 4,
+        averageAmplitude: 0,
+        averageFrequency: 0,
+
+        frame: {
+            data            : 0,
+            averageAmplitude: 0,
+            averageFrequency: 0
+        }
+    }
+};
 
 
 // Registration
@@ -98,8 +152,8 @@ const trebleDataMultiplier = Math.pow(255, 1 - trebleDataExponent);
 function registerNode(context) {
     node = context.createAnalyser();
 
-    // This gives us about 64 or 128 useful values
-    node.fftSize = bufferLength * 2;
+    setBufferExponent(bufferExponent);
+
     // Most of my music peaks around this range
     node.maxDecibels = -20;
     // Most of my music looks like random noise below this range
@@ -114,62 +168,153 @@ function registerNode(context) {
 
 // Methods
 
-/** Runs the usefulRange of data through a filter and saves to filteredData */
-function filterData() { 
-    for (let i = 0; i < usefulRange; i++) {
-        // Originally from Sinusoid modifier in AaronOS Music
-        filteredData[i] = -127.5 * Math.cos(util.Tau * data[i] / 510) + 127.5;
-    }
-}
-
 /**
- * Calculates the avarage of frequencies above usefulRange and saves to trebleData.
- * Prioritizes wide sweeps of weak frequencies over sharp peaks of strong frequencies.
+ * Sets a new buffer length by raising 2 to a provided power.
+ * 
+ * @param {number} newExponent - A number between 8 and 14.
  */
-function calculateTreble() {
-    trebleData = 0;
+function setBufferExponent(newExponent) {
+    // Application breaks if exponent is outside these clamp bounds
+    bufferExponent = calc.clamp(newExponent, 8, 14);
+    let bufferLength = 2 ** bufferExponent;
 
-    for (let i = usefulRange; i < bufferLength; i++) {
-        trebleData += Math.pow(data[i], trebleDataExponent) * trebleDataMultiplier;
-    }
+    size = {
+        fft     : bufferLength * ratio.fft,
+        buffer  : bufferLength * ratio.buffer,
+        standard: bufferLength * ratio.standard,
+        bass    : bufferLength * ratio.bass,
+        mid     : bufferLength * ratio.mid,
+        treble  : bufferLength * ratio.treble
+    };
 
-    trebleData = trebleData / trebleRange;
+    buckets.buffer  .data = new Uint8Array(size.buffer  );
+    buckets.standard.data = new      Array(size.standard);
+    buckets.bass    .data = new      Array(size.bass    );
+    buckets.mid     .data = new      Array(size.mid     );
+    buckets.treble  .data = new Uint8Array(size.treble  );
+
+    node.fftSize = size.fft;
+    effects.setDelayByFFT(size.fft);
 }
 
 /**
- * Get data from the AnalyserNode.
+ * Renders a data bucket and any prerequisite buckets.
  * 
- * If unfiltered, length will be analyser.bufferLength
+ * @param {string} bucket 
+ * @param {string} selected 
+ * @returns {Object}
+ */
+function renderData(bucket, selected) {
+    // If the selected hasn't been rendered yet...
+    if (buckets[bucket].frame[selected] !== visualizer.frameCount) {
+        // If this bucket's data hasn't been rendered yet...
+        if (buckets[bucket].frame.data !== visualizer.frameCount) {
+            let source = buckets[bucket].source;
+            
+            // If this bucket's data comes straight from the analyser...
+            if (source === "analyser") {
+                node.getByteFrequencyData(buckets[bucket].data);
+
+            // If this bucket's data comes from another bucket...
+            } else {
+                // Recurse to render that bucket's data
+                renderData(source, "data");
+
+                // Check if this data comes from the end of the source
+                let scanStart = 0;
+                let scanEnd = size[bucket];
+                if (buckets[bucket].rangeAtEnd) {
+                    scanStart = size[source] - size[bucket]; // TODO: See if this needs -1
+                    scanEnd = size[source];
+                }
+
+                // Apply effects and render this bucket's data based on its source
+                if (buckets[bucket].hasOwnProperty("amplitudeModifier")) {
+                    
+                    let amplitudeModifier = calc[buckets[bucket].amplitudeModifier];
+                    buckets[bucket].data = amplitudeModifier(buckets[source].data, 255, scanStart, scanEnd);
+                
+                // No effects are required, just do a plain data copy
+                } else {
+                    for (let index = 0; index < size[bucket]; index++) {
+                        buckets[bucket].data[index] = buckets[source].data[index + scanStart];
+                    }
+                }
+            }
+
+            buckets[bucket].frame.data = visualizer.frameCount;
+            
+            // If selected is data, we now have it and we are done here.
+            if (selected === "data") {
+                return buckets[bucket].data;
+            }
+        }
+
+        if (selected === "averageAmplitude") {
+            // If this bucket uses a special averager...
+            if (buckets[bucket].hasOwnProperty("averageAmplitudeModifier")) {
+
+                // Presence Sensitive Average
+                if (buckets[bucket].averageAmplitudeModifier === "presenceSensitiveAverage") {
+                    buckets[bucket].averageAmplitude =
+                        calc.presenceSensitiveAverage(buckets[bucket].data, 255, buckets[bucket].averageAmplitudeSensitivity);
+
+                // Fallback to standard average
+                } else {
+                    buckets[bucket].averageAmplitude = calc.average(buckets[bucket].data);
+                }
+            // Standard average
+            } else {
+                buckets[bucket].averageAmplitude = calc.average(buckets[bucket].data);
+            }
+
+        } else if (selected === "averageFrequency") {
+            buckets[bucket].averageFrequency = calc.weightedAverage(buckets[bucket].data);
+        }
+
+        buckets[bucket].frame[selected] = visualizer.frameCount;
+    }
+
+    return buckets[bucket][selected];
+}
+
+/**
+ * Get a certain set of data from the AnalyserNode.
  * 
- * If filtered, length will be analyser.usefulRange
+ * @example
+ * // Gets all data types
+ * getData({
+ *     buffer  : ["data", "averageAmplitude", "averageFrequency"],
+ *     standard: ["data", "averageAmplitude", "averageFrequency"],
+ *     bass    : ["data", "averageAmplitude", "averageFrequency"],
+ *     mid     : ["data", "averageAmplitude", "averageFrequency"],
+ *     treble  : ["data", "averageAmplitude", "averageFrequency"],
+ * });
+ * // Returns an object like this...
+ * // Check analyser.size for the length of each data array
+ * {
+ *     buffer: {
+ *         data: number[],
+ *         averageAmplitude: number,
+ *         averageFrequency: number
+ *     },
+ *     ...
+ * }
  * 
- * @param {boolean} filtered - Whether to apply a Sinusoid filter to the data.
+ * @param {Object} options
  * @returns {Uint8Array}
  */
-function getData(mode) {
-    // Do not pull new data multiple times in the same frame
-    if (recentFrame !== visualizer.frameCount) {
-        node.getByteFrequencyData(data);
-        recentFrame = visualizer.frameCount;
+function getData(options) {
+    let obj = {};
+
+    for (let bucket in options) {
+        for (let dataset in options[bucket]) {
+            if (!obj.hasOwnProperty(bucket)) {
+                obj[bucket] = {};
+            }
+            obj[bucket][ options[bucket][dataset] ] = renderData(bucket, options[bucket][dataset]);
+        }
     }
 
-    if (mode === "filter") {
-        // Do not filter data that we've already filtered
-        if (filteredFrame !== visualizer.frameCount) {
-            filterData();
-            filteredFrame = visualizer.frameCount;
-        }
-
-        return filteredData;
-    } else if (mode === "treble") {
-        // Do not calculate treble that we've already calculated
-        if (trebleFrame !== visualizer.frameCount) {
-            calculateTreble();
-            trebleFrame = visualizer.frameCount;
-        }
-
-        return trebleData;
-    } else {
-        return data;
-    }
+    return obj;
 }

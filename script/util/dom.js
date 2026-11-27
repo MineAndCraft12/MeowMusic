@@ -232,7 +232,7 @@ function create(tagName, options) {
 
             for (let item in options.eventListeners) {
                 if (typeof options.eventListeners[item] !== "function") {
-                    throw error.type("dom.create", "options.styles." + item, "Function", typeof options.eventListeners[item]);
+                    throw error.type("dom.create", "options.eventListeners." + item, "Function", typeof options.eventListeners[item]);
                 }
 
                 node.addEventListener(item, options.eventListeners[item]);

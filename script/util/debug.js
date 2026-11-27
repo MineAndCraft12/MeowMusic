@@ -29,6 +29,7 @@ import * as modal    from "../ui/modal.js";
 import * as view     from "../ui/view.js";
 
 // Utilities
+import * as calc  from "./calc.js";
 import * as dom   from "./dom.js";
 import * as error from "./error.js";
 import * as util  from "./util.js";
@@ -69,6 +70,7 @@ window.modal    = modal;
 window.view     = view;
 
 // Utilities
+window.calc  = calc;
 window.dom   = dom;
 window.error = error;
 window.util  = util;

@@ -1,11 +1,13 @@
 /** represents audio effects */
 
 import * as audio       from  "./audio.js";
+import * as analyser    from  "./analyser.js";
 import * as controls    from "../ui/controls.js";
 import * as preferences from "../content/preferences.js";
 
 export {
     delay, gain, registerDelayNode, registerGainNode,
+    setDelayByFFT,
     volume, setVolume,
     muted, toggleMute
 }
@@ -50,9 +52,7 @@ let muted = preferences.load("effects.muted", false);
  */
 function registerDelayNode(context) {
     delay = context.createDelay();
-    // TODO: Make this editable
-    // fftSize / likely sample rate / halfway through sample window
-    delay.delayTime.value = 2048 / 44100 / 2;
+    setDelayByFFT(analyser.size.fft);
     return delay;
 }
 
@@ -72,6 +72,15 @@ function registerGainNode(context) {
 
 
 // Methods
+
+function setDelayByFFT(newFFT) {
+    // This could get called before the delay node is ready based on race conditions.
+    // However, it will always be called when we are ready to lock in the right time.
+    if (delay) {
+        // fftSize / likely sample rate / halfway through sample window
+        delay.delayTime.value = newFFT / 44100 / 2;
+    }
+}
 
 /** Apply the current audio configuration to the gain node */
 function applyVolume() {

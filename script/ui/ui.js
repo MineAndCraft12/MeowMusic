@@ -10,6 +10,7 @@ export {
     createDetails,
     createFieldset,
     createLabel,
+    createSelectInput,
     createCheckboxInput,
     createRadioInput,
     createDirectoryInput
@@ -133,6 +134,39 @@ function createFieldset(title, classList, children) {
 
 
 // Input UI
+
+/**
+ * Creates a Select node with a default value and a set of Option children.
+ * 
+ * @param {string} id - An ID for the element, appended to the default input ID.
+ * @param {number} value - Options index of the default value.
+ * @param {Array.<string>} options - An array of user-facing text for the options.
+ * @param {Function} eventListener - Event listener for the change event.
+ * @returns 
+ */
+function createSelectInput(id, value, options, eventListener) {
+    let node = dom.create("select", {
+        id: "input-" + id,
+        attributes: {
+            name: id
+        },
+        eventListeners: {
+            change: eventListener
+        }
+    });
+
+    for (let option = 0; option < options.length; option++) {
+        node.appendChild(dom.create("option", {
+            text: options[option],
+            attributes: util.scrubObject({
+                value: option,
+                selected: (option === value) || null
+            })
+        }));
+    }
+
+    return node;
+}
 
 /**
  * Creates a checked or unchecked Checkbox Input node with a change event listener.

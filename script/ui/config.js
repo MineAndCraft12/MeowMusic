@@ -266,6 +266,30 @@ function show(menuName) {
                     }
                     break;
 
+                case "select":
+                    node.appendChild(
+                        ui.createFieldset(
+                            menu[item].title,
+                            ["config-fieldset"],
+                            [
+                                ui.createParagraphContainer(
+                                    ["config-container", "config-select-input"],
+                                    [ui.createSelectInput(
+                                        `config-select-${menuName}-${item}`,
+                                        menu[item].value,
+                                        menu[item].options,
+                                        menu[item].onchange
+                                    )]
+                                ),
+                                ui.createParagraphContainer(
+                                    ["config-container", "config-simple"],
+                                    [ui.createParagraph(menu[item].details)]
+                                )
+                            ]
+                        )
+                    );
+                    break;
+
                 // Directory File Input for the tracklist
                 case "directory":
                     node.appendChild(

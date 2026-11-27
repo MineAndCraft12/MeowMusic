@@ -68,18 +68,21 @@ const debugData = {
 
     setup: function() { },
 
-    frame: function() {
+    frame: function() { // TODO: Show all data fields
         draw.clear();
-        let data = analyser.getData();
-        let filteredData = analyser.getData("filter");
-        let trebleData = analyser.getData("treble");
+        let data = analyser.getData({
+            buffer: ["data"],
+            standard: ["data"],
+            treble: ["averageAmplitude"]
+        });
         let leftNudge = this.padding;
         let topNudge = this.padding;
 
-        // Filtered data
+        // Standard data
+
         draw.setFill("oklch(0.5 0 0 / 1)");
         draw.ctx.fillText(
-            `Filtered Data  ( ${analyser.usefulRange} )`,
+            `Standard  ( ${analyser.size.standard} )`,
             leftNudge,
             topNudge - 6
         );
@@ -88,7 +91,7 @@ const debugData = {
         draw.ctx.fillRect(
             leftNudge,
             topNudge,
-            analyser.usefulRange,
+            analyser.size.standard,
             -1
         );
 
@@ -98,16 +101,16 @@ const debugData = {
                 topNudge + 256
             ],
             [
-                analyser.usefulRange,
+                analyser.size.standard,
                 -256
             ],
             -1, 1,
-            filteredData
+            data.standard.data
         );
 
-        leftNudge += analyser.usefulRange + this.padding;
+        leftNudge += analyser.size.standard + this.padding;
 
-        // Treble data
+        // Treble average amplitude
         
         draw.setFill("oklch(0.5 0 0 / 1)");
         draw.ctx.fillText(
@@ -124,20 +127,21 @@ const debugData = {
             -1
         );
 
-        draw.setFill(visualizer.theme.mix(trebleData));
+        draw.setFill(visualizer.theme.mix(data.treble.averageAmplitude));
         draw.ctx.fillRect(
             leftNudge,
             topNudge + 256,
             this.padding,
-            trebleData * -1 - 1
+            data.treble.averageAmplitude * -1 - 1
         );
 
         leftNudge += this.padding * 2;
 
-        // Raw data
+        // Buffer data
+
         draw.setFill("oklch(0.5 0 0 / 1)");
         draw.ctx.fillText(
-            `Raw Audio Data  ( ${analyser.bufferLength} )`,
+            `Buffer Data  ( ${analyser.size.buffer} )`,
             leftNudge,
             topNudge - 6
         );
@@ -146,11 +150,11 @@ const debugData = {
         draw.ctx.fillRect(
             leftNudge,
             topNudge,
-            analyser.bufferLength,
+            analyser.size.buffer,
             -1
         );
         draw.ctx.fillRect(
-            leftNudge + analyser.usefulRange,
+            leftNudge + analyser.size.standard,
             topNudge,
             1,
             256
@@ -162,11 +166,11 @@ const debugData = {
                 topNudge + 256
             ],
             [
-                analyser.bufferLength,
+                analyser.size.buffer,
                 -256
             ],
             -1, 1,
-            data
+            data.buffer.data
         );
 
         leftNudge = this.padding;
@@ -198,13 +202,16 @@ const bars = {
     ratio: 5 / 6,
 
     setup: function() {
-        this.peaks = new Uint8Array(analyser.usefulRange);
-        this.peakFrames = new Array(analyser.usefulRange);
+        this.peaks = new Uint8Array(analyser.size.standard);
+        this.peakFrames = new Array(analyser.size.standard);
     },
 
     frame: function() {
         draw.clear();
-        let data = analyser.getData("filter");
+
+        let data = analyser.getData({
+            standard: ["data"]
+        }).standard.data;
 
         let left = canvas.width * 0.1;
         let base = canvas.height * 0.75;
@@ -218,7 +225,7 @@ const bars = {
             let bobberTime = 15;
             let bobberSpeed = 1;
 
-            for (let bobber = 0; bobber < analyser.usefulRange; bobber++) {
+            for (let bobber = 0; bobber < analyser.size.standard; bobber++) {
                 // If bobber has been pushed up, reset it.
                 if (data[bobber] >= this.peaks[bobber]) {
                     this.peaks[bobber] = data[bobber];
@@ -250,13 +257,16 @@ const bars = {
         }
 
         if (this.options.treble.value) {
-            let trebleData = analyser.getData("treble");
+            let trebleData = analyser.getData({
+                treble: ["averageAmplitude"]
+            }).treble.averageAmplitude;
+
             let trebleDec = trebleData / 255;
 
             let trebleTop = trebleHints.space * 2;
             let trebleFactor = height * -0.1 * (trebleHints.space + 1);
             let treblePush = trebleDec * trebleFactor;
-            let trebleWidth = analyser.usefulRange * (trebleHints.width + trebleHints.space) - trebleHints.space;
+            let trebleWidth = analyser.size.standard * (trebleHints.width + trebleHints.space) - trebleHints.space;
             let trebleHeight = Math.max(trebleHints.space, 1);
 
             draw.setFill(visualizer.theme.mix(trebleData, trebleDec));

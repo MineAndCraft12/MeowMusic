@@ -1,6 +1,7 @@
 /** Represents menus in the config screen */
 
 import * as library     from "../tracks/library.js";
+import * as analyser    from "../audio/analyser.js";
 import * as visualizer  from "../graphics/visualizer.js";
 import * as view        from "../ui/view.js";
 import * as config      from "../ui/config.js";
@@ -9,6 +10,7 @@ import * as preferences from  "./preferences.js";
 export {
     landing, musiclibrary,
     visualizerScene, visualizerTheme,
+    audioAnalyser,
     help, about, supportDeveloper
 }
 
@@ -61,6 +63,11 @@ function handleContentSelect(event) {
         config.show("visualizerScene");
         preferences.save("visualizer.scene", target[3]);
     }
+}
+
+function handleAnalyserLOD(event) {
+    console.log("New exponent: " + (parseInt(event.target.value) + 8));
+    analyser.setBufferExponent(parseInt(event.target.value) + 8);
 }
 
 
@@ -116,6 +123,22 @@ const visualizerTheme = {
         type: "list",
         target: "theme",
         onchange: handleContentSelect
+    }
+};
+
+const audioAnalyser = {
+    title: "Audio Analyser",
+
+    lod: {
+        title: "Level of Detail",
+        type: "select",
+
+        details: "Higher settings reveal finer details, but reduce visualizer responsiveness and may degrade performance.<br><br>" +
+            "<i>Setting this to 8x or 16x can break the visualizer or make it very lethargic, and is not recommended.</i>",
+
+        value: preferences.load("analyser.bufferExponent", 10) - 8,
+        options: ["(1/4x) Very Low", "(1/2x) Low", "(1x) Default", "(2x) High", "(4x) Very High", "(8x) Crazy", "(16x) Insane"],
+        onchange: handleAnalyserLOD
     }
 };
 
@@ -250,6 +273,11 @@ const landing = {
     visualizerTheme: {
         type: "link",
         target: "visualizerTheme"
+    },
+
+    audioAnalyser: {
+        type: "link",
+        target: "audioAnalyser"
     },
 
     help: {

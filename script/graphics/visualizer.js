@@ -220,6 +220,7 @@ function frame(animationFrame) {
         // Draw the scene
         try {
             scene.frame();
+        // Do not erase this try-catch; if scene bugs we still want further logic to survive
         } catch (error) {
             console.warn("Error in scene " + scene.title + " with theme " + theme.title);
             draw.setFill("#F00");
@@ -241,7 +242,7 @@ function frame(animationFrame) {
         // Debug overlay
         if (debug) {
             draw.setFill("#FFF");
-            draw.ctx.fillText(`${fps}`, 20, 30);
+            draw.ctx.fillText(`${fps}`, 20, 80);
         }
     }
 }
