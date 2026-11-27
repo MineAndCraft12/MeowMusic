@@ -7,7 +7,7 @@ import * as scenes      from "../content/scenes.js";
 import * as preferences from "../content/preferences.js";
 
 export {
-    setup, setupContent,
+    setup, setupContent, ready,
     play, pause,
     frame, frameCount, delta,
     themeStr, sceneStr,
@@ -122,6 +122,8 @@ let scene; // TODO: do this when scenes are ready
  */
 let contentDirty = true;
 
+let ready = false;
+
 
 // Setup
 
@@ -133,6 +135,7 @@ let contentDirty = true;
  */
 function setup() {
     draw.registerRenderingContext();
+    ready = true;
     setTheme(preferences.load("visualizer.theme") || "meowmusic");
     setScene(preferences.load("visualizer.scene") || "bars");
     requestAnimationFrame(frame);

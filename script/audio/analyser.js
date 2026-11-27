@@ -195,6 +195,10 @@ function setBufferExponent(newExponent) {
 
     node.fftSize = size.fft;
     effects.setDelayByFFT(size.fft);
+
+    if (visualizer.ready) {
+        visualizer.setupContent();
+    }
 }
 
 /**

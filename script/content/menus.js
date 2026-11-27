@@ -66,8 +66,8 @@ function handleContentSelect(event) {
 }
 
 function handleAnalyserLOD(event) {
-    console.log("New exponent: " + (parseInt(event.target.value) + 8));
     analyser.setBufferExponent(parseInt(event.target.value) + 8);
+    preferences.save("analyser.bufferExponent", parseInt(event.target.value) + 8);
 }
 
 
@@ -127,7 +127,7 @@ const visualizerTheme = {
 };
 
 const audioAnalyser = {
-    title: "Audio Analyser",
+    title: "Audio Analyzer",
 
     lod: {
         title: "Level of Detail",
